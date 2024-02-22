@@ -18,9 +18,8 @@
         android:id="@+id/createUsernameText"
         android:layout_width="220dp"
         android:layout_height="50dp"
-        android:inputType="textEmailAddress"
-        android:autofillHints="emailAddress"
-        android:text="Email"
+        android:inputType="text"
+        android:hint="Username"
         tools:layout_editor_absoluteX="63dp"
         tools:layout_editor_absoluteY="154dp" />
 
