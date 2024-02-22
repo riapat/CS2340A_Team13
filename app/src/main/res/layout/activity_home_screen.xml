@@ -1,9 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".views.HomeScreen">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- Content area -->
+<FrameLayout
+android:id="@+id/content_container"
+android:layout_width="match_parent"
+android:layout_height="0dp"
+android:layout_weight="1"/>
+
+    <!-- Navigation bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#444444">
+
+<Button
+    android:id="@+id/InputMeal"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:text="Input Meal" />
+
+        <Button
+            android:id="@+id/Recipe"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Recipe" />
+
+        <Button
+    android:id="@+id/Ingredients"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:text="Ingredients" />
+
+<Button
+    android:id="@+id/ShoppingList"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:text="Shopping List" />
+</LinearLayout>
+    </LinearLayout>
+
