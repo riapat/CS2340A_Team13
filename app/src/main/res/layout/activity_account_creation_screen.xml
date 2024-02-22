@@ -6,4 +6,32 @@
     android:layout_height="match_parent"
     tools:context=".views.AccountCreationScreen">
 
+    <Button
+        android:id="@+id/createAccountButton"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:text="Create Account"
+        tools:layout_editor_absoluteX="105dp"
+        tools:layout_editor_absoluteY="342dp" />
+
+    <EditText
+        android:id="@+id/createUsernameText"
+        android:layout_width="220dp"
+        android:layout_height="50dp"
+        android:inputType="textEmailAddress"
+        android:autofillHints="emailAddress"
+        android:text="Email"
+        tools:layout_editor_absoluteX="63dp"
+        tools:layout_editor_absoluteY="154dp" />
+
+    <EditText
+        android:id="@+id/createPasswordText"
+        android:layout_width="220dp"
+        android:layout_height="50dp"
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textWebPassword"
+        tools:layout_editor_absoluteX="63dp"
+        tools:layout_editor_absoluteY="224dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
