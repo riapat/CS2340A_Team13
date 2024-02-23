@@ -8,7 +8,6 @@ import android.widget.EditText;
 import com.example.cs2340a_team13.R;
 
 public class AccountCreationScreen extends AppCompatActivity {
-    private AccountCreationViewModel viewModel;
     private EditText usernameEditText;
     private EditText passwordEditText;
     @Override
