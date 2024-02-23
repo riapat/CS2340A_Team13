@@ -16,7 +16,4 @@ public class AccountCreationScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_creation_screen);
     }
-
-
-
 }
