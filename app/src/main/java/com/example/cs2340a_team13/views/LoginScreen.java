@@ -25,7 +25,7 @@ public class LoginScreen extends AppCompatActivity {
     private Button createAccountButton;
     private Button loginButton;
 
-    private FirebaseAuth mAuth;
+
 
 
     @Override
@@ -41,7 +41,6 @@ public class LoginScreen extends AppCompatActivity {
         createAccountButton = findViewById(R.id.createAccountButton);
         loginButton = findViewById(R.id.logInButton);
 
-        mAuth = FirebaseAuth.getInstance();
     }
 
     public void createAccountButtonClicked(View v) {
@@ -50,42 +49,18 @@ public class LoginScreen extends AppCompatActivity {
     }
 
     public void logInButtonClicked(View v) {
-
-        String username = "";
-        String password = "";
-
-        //Removes the whitespace from the username and password and null checks them
-        if (editTextUsername != null) {
-            username = editTextUsername.getText().toString().trim();
+        if (editTextUsername.getText() == null) {
+            editTextUsername.setError("Username is required");
+            editTextUsername.requestFocus();
+        } else if (editTextPassword.getText() == null) {
+            editTextPassword.setError("Password is required");
+            editTextPassword.requestFocus();
         }
-        if (editTextPassword != null) {
-            password = editTextPassword.getText().toString().trim();
-        }
-
-        // Checks if the username and password are empty, if so, it will display an error message.
-        if (username.isEmpty() && editTextUsername != null) {
-            editTextUsername.setError(("Please enter a username."));
-            editTextUsername.requestFocus(); // Puts the cursor in the username field
-        }
-        if (password.isEmpty() && editTextPassword != null) {
-            editTextPassword.setError("Please enter a password.");
-            editTextPassword.requestFocus(); // Puts the cursor in the password field
-        }
-
-        // If the username and password are not empty, it will attempt to log in the user.
-        if (!username.isEmpty() && !password.isEmpty()) {
-            mAuth.signInWithEmailAndPassword(username, password)
-                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                Toast.makeText(LoginScreen.this, "Successful Sign-In", Toast.LENGTH_LONG).show();
-                            } else {
-                                Toast.makeText(LoginScreen.this, "Sign-In Failed", Toast.LENGTH_LONG).show();
-                            }
-                        }
-                    }
-                );
+        String usernameText = editTextUsername.getText().toString().trim();
+        String passwordText = editTextPassword.getText().toString().trim();
+        boolean response = loginViewModel.signIn(usernameText, passwordText);
+        if (!response) {
+            Toast.makeText(LoginScreen.this, "Invalid username or password", Toast.LENGTH_LONG).show();
         }
 
     }
