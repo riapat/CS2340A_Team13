@@ -81,13 +81,4 @@
             android:textSize="17sp"
             android:textColor="#FFFFFF"
             tools:ignore="HardcodedText" />
-        <!--Error Messages Field ID:errorMessageAACS>-->
-            <TextView
-            android:id="@+id/errorMessagesAACS"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textSize="17dp"
-            android:textColor="#FF0000"
-            android:textStyle="normal"/>
 </LinearLayout>
