@@ -7,6 +7,14 @@
     android:background="@color/white"
     tools:context=".views.IngredientScreen">
 
+    <Button
+        android:id="@+id/home2"
+        android:layout_width="12dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Home"
+        android:textSize="14sp" />
+
     <TextView
         android:id="@+id/titleTextView"
         android:layout_width="wrap_content"
@@ -35,7 +43,7 @@
 
         <Button
             android:id="@+id/InputMeal"
-            android:layout_width="0dp"
+            android:layout_width="12dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Input Meal"
@@ -43,15 +51,16 @@
 
         <Button
             android:id="@+id/Recipe"
-            android:layout_width="0dp"
+            android:layout_width="12dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Recipe"
             android:textSize="14sp" />
 
+
         <Button
             android:id="@+id/Home"
-            android:layout_width="0dp"
+            android:layout_width="12dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Home"
@@ -59,7 +68,7 @@
 
         <Button
             android:id="@+id/Ingredients"
-            android:layout_width="0dp"
+            android:layout_width="12dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Ingredients"
@@ -67,7 +76,7 @@
 
         <Button
             android:id="@+id/ShoppingList"
-            android:layout_width="0dp"
+            android:layout_width="12dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Shopping List"
@@ -76,3 +85,4 @@
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
