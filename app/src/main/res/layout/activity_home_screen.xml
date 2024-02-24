@@ -8,11 +8,11 @@
     tools:context=".views.HomeScreen">
 
     <!-- Content area -->
-<FrameLayout
-android:id="@+id/content_container"
-android:layout_width="match_parent"
-android:layout_height="0dp"
-android:layout_weight="1"/>
+    <FrameLayout
+        android:id="@+id/content_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
     <!-- Navigation bar -->
     <LinearLayout
@@ -21,33 +21,48 @@ android:layout_weight="1"/>
         android:orientation="horizontal"
         android:background="#444444">
 
-<Button
-    android:id="@+id/InputMeal"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:layout_weight="1"
-    android:text="Input Meal" />
+        <Button
+            android:id="@+id/InputMeal"
+            android:layout_width="12dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Input Meal"
+            android:textSize="14sp" />
 
         <Button
             android:id="@+id/Recipe"
-            android:layout_width="0dp"
+            android:layout_width="12dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Recipe" />
+            android:text="Recipe"
+            android:textSize="14sp" />
+
 
         <Button
-    android:id="@+id/Ingredients"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:layout_weight="1"
-    android:text="Ingredients" />
+            android:id="@+id/Home"
+            android:layout_width="12dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Home"
+            android:textSize="14sp" />
+        <Button
+            android:id="@+id/Ingredients"
+            android:layout_width="12dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Ingredients"
+            android:textSize="14sp" />
 
-<Button
-    android:id="@+id/ShoppingList"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:layout_weight="1"
-    android:text="Shopping List" />
-</LinearLayout>
+        <Button
+            android:id="@+id/ShoppingList"
+            android:layout_width="12dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Shopping List"
+            android:textSize="14sp" />
     </LinearLayout>
+</LinearLayout>
+
+
+
 
