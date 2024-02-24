@@ -61,6 +61,10 @@ public class LoginScreen extends AppCompatActivity {
         boolean response = loginViewModel.signIn(usernameText, passwordText);
         if (!response) {
             Toast.makeText(LoginScreen.this, "Invalid username or password", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(LoginScreen.this, "Login successful", Toast.LENGTH_LONG).show();
+            editTextUsername.setText("");
+            editTextPassword.setText("");
         }
 
     }
