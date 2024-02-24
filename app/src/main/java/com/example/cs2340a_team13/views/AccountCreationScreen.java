@@ -89,7 +89,8 @@ public class AccountCreationScreen extends AppCompatActivity {
                     createUsernameEditText.setText("");
                     createPasswordEditText.setText("");
                     confirmPasswordEditText.setText("");
-                    Intent intent = new Intent(AccountCreationScreen.this, HomeScreen.class);
+                    Intent creationToHome = new Intent(AccountCreationScreen.this, HomeScreen.class);
+                    startActivity(creationToHome);
                 }
             } else {
                 confirmPasswordEditText.setError("Passwords do not match");

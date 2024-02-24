@@ -46,10 +46,10 @@ public class LoginScreen extends AppCompatActivity {
 
     public void createAccountButtonClicked(View v) {
         // This will take the user to the AccountCreationScreen when the create account button is clicked
-        Intent intent = new Intent(LoginScreen.this, AccountCreationScreen.class);
+        Intent loginToAccount = new Intent(LoginScreen.this, AccountCreationScreen.class);
         editTextUsername.setText("");
         editTextPassword.setText("");
-        startActivity(intent);
+        startActivity(loginToAccount);
     }
 
     public void logInButtonClicked(View v) {
@@ -69,7 +69,8 @@ public class LoginScreen extends AppCompatActivity {
             Toast.makeText(LoginScreen.this, "Login successful", Toast.LENGTH_LONG).show();
             editTextUsername.setText("");
             editTextPassword.setText("");
-            Intent intent = new Intent(LoginScreen.this, HomeScreen.class);
+            Intent loginToHome = new Intent(LoginScreen.this, HomeScreen.class);
+            startActivity(loginToHome);
         }
 
     }
