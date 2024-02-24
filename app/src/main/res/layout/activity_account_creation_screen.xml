@@ -72,7 +72,7 @@
             <!--On-Click:createAccountButtonAACSClicked>-->
             <Button
             android:id="@+id/createAccountButtonAACS"
-            android:onClick="createAccountButtonAACSClicked"
+            android:onClick="createPasswordScreenButtonClicked"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="#94B36F"
