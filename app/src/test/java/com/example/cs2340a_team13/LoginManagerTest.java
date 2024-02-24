@@ -48,4 +48,13 @@ public class LoginManagerTest {
         LoginViewModel viewModel = LoginViewModel.getInstance();
         assertTrue(viewModel.signIn("valid_username", "valid_password"));
     }
+    
+    // Test for preventing login with only spaces in username and or password
+    @Test
+    public void testSpacesInUsernamePasswordLogin() {
+        LoginViewModel viewModel = LoginViewModel.getInstance();
+        assertFalse(viewModel.signIn(" ", "password"));
+        assertFalse(viewModel.signIn("username", " "));
+        assertFalse(viewModel.signIn(" ", " "));
+    }
 }
