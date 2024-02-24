@@ -1,6 +1,7 @@
 package com.example.cs2340a_team13.views;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,6 +16,8 @@ public class AccountCreationScreen extends AppCompatActivity {
     private EditText createPasswordEditText;
     private EditText confirmPasswordEditText;
     private Button createAccountScreenButton;
+
+    private Button backToLoginScreenButton;
 
     private LoginViewModel loginViewModel;
 
@@ -77,7 +80,6 @@ public class AccountCreationScreen extends AppCompatActivity {
             if (createPassword.equals(confirmPassword)) {
                 //Create Account Logic Goes Here
                 if (!(loginViewModel.signUp(createUsername, createPassword))) {
-                    //If account is created, return to login screen
                     Toast
                             .makeText(AccountCreationScreen.this,
                                     "Invalid username or password",
@@ -87,8 +89,7 @@ public class AccountCreationScreen extends AppCompatActivity {
                     createUsernameEditText.setText("");
                     createPasswordEditText.setText("");
                     confirmPasswordEditText.setText("");
-
-                    //code navigation here!
+                    Intent intent = new Intent(AccountCreationScreen.this, HomeScreen.class);
                 }
             } else {
                 confirmPasswordEditText.setError("Passwords do not match");

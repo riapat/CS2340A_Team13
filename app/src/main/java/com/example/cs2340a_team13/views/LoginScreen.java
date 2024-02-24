@@ -2,7 +2,7 @@ package com.example.cs2340a_team13.views;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -24,7 +24,7 @@ public class LoginScreen extends AppCompatActivity {
     private EditText editTextPassword;
     private Button createAccountButton;
     private Button loginButton;
-
+    private Button exitButton;
 
 
 
@@ -40,12 +40,16 @@ public class LoginScreen extends AppCompatActivity {
 
         createAccountButton = findViewById(R.id.createAccountButton);
         loginButton = findViewById(R.id.logInButton);
+        exitButton = findViewById(R.id.ExitButton);
 
     }
 
     public void createAccountButtonClicked(View v) {
-        // This will take the user to the create account screen
-
+        // This will take the user to the AccountCreationScreen when the create account button is clicked
+        Intent intent = new Intent(LoginScreen.this, AccountCreationScreen.class);
+        editTextUsername.setText("");
+        editTextPassword.setText("");
+        startActivity(intent);
     }
 
     public void logInButtonClicked(View v) {
@@ -65,10 +69,16 @@ public class LoginScreen extends AppCompatActivity {
             Toast.makeText(LoginScreen.this, "Login successful", Toast.LENGTH_LONG).show();
             editTextUsername.setText("");
             editTextPassword.setText("");
+            Intent intent = new Intent(LoginScreen.this, HomeScreen.class);
         }
 
     }
 
-
-
+    //exit the app if exit button is clicked
+    public void createExitButtonClicked(View v) {
+        editTextUsername.setText("");
+        editTextPassword.setText("");
+        finish();
+        System.exit(0);
+    }
 }

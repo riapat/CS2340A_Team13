@@ -81,4 +81,16 @@
             android:textSize="17sp"
             android:textColor="#FFFFFF"
             tools:ignore="HardcodedText" />
+
+    <Button
+        android:id="@+id/backToLogInButton"
+        android:layout_width="141dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#067F0B"
+        android:onClick="createPasswordScreenButtonClicked"
+        android:padding="10sp"
+        android:text="Back to Log In"
+        android:textColor="#FFFFFF"
+        android:textSize="17sp"
+        tools:ignore="HardcodedText" />
 </LinearLayout>
