@@ -80,15 +80,19 @@ public class LoginViewModel {
 
     }
 
-    public boolean signUp(String username, String password) {
+    public interface AuthResultCallback {
+        void onComplete(boolean isSuccess);
+    }
+
+    public void signUp(String username, String password, AuthResultCallback callback) {
         mAuth = FirebaseAuth.getInstance();
         // Checks if the username and password are not null and not empty.
         if (username != null && password != null) {
             if (username.isEmpty() || password.isEmpty() || password.length() < 6) {
-                return false;
+                callback.onComplete(false);
             }
         } else {
-            return false;
+            callback.onComplete(false);
         }
 
         // Attempts to create an account with the given username and password.
@@ -115,22 +119,23 @@ public class LoginViewModel {
                                                 }
                                         );
                                 Log.d("LoginViewModel", "createUserAuth:success");
+                                callback.onComplete(true);
                             } else {
                                 if (task.getException() instanceof FirebaseAuthUserCollisionException) {
                                     Log.w("LoginViewModel", "Email already in use by another account.");
                                 } else {
                                     Log.w("LoginViewModel", "createUserAuth:failure", task.getException());
                                 }
-
+                                callback.onComplete(false);
                             }
                         } catch (Exception e) {
                             Log.w("LoginViewModel", "createUserAuth:failure", e);
+                            callback.onComplete(false);
                         }
 
                     }
                 });
         //Return true if the user is created, false otherwise
         Log.d("LoginViewModel", "signUp: " + (mAuth.getCurrentUser() != null));
-        return mAuth.getCurrentUser() != null;
     }
 }
