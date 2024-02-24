@@ -75,21 +75,18 @@ public class AccountCreationScreen extends AppCompatActivity {
         if (emptyCheck) {
             //Checks that Password and Confirmed Password match
             if (createPassword.equals(confirmPassword)) {
-                //Create Account Logic Goes Here
-                if (!(loginViewModel.signUp(createUsername, createPassword))) {
-                    //If account is created, return to login screen
-                    Toast
-                            .makeText(AccountCreationScreen.this,
-                                    "Invalid username or password",
-                                    Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(AccountCreationScreen.this, "Account Created", Toast.LENGTH_LONG).show();
-                    createUsernameEditText.setText("");
-                    createPasswordEditText.setText("");
-                    confirmPasswordEditText.setText("");
 
-                    //code navigation here!
-                }
+                loginViewModel.signUp(createUsername, createPassword, isSuccess -> {
+                    if (isSuccess) {
+                        Toast.makeText(AccountCreationScreen.this, "Account Created", Toast.LENGTH_LONG).show();
+                        createUsernameEditText.setText("");
+                        createPasswordEditText.setText("");
+                        confirmPasswordEditText.setText("");
+                    } else {
+                        // Handle failure (e.g., show error message)
+                        Toast.makeText(AccountCreationScreen.this, "Account Creation Failed", Toast.LENGTH_LONG).show();
+                    }
+                });
             } else {
                 confirmPasswordEditText.setError("Passwords do not match");
                 confirmPasswordEditText.requestFocus();
