@@ -30,7 +30,6 @@ public class AccountCreationScreen extends AppCompatActivity {
         createPasswordEditText = findViewById(R.id.passwordFieldAACS);
         confirmPasswordEditText = findViewById(R.id.confirmPasswordFieldAACS);
         createAccountScreenButton = findViewById(R.id.createAccountButtonAACS);
-
         loginViewModel = LoginViewModel.getInstance();
     }
     public void createPasswordScreenButtonClicked(View v) {
@@ -97,5 +96,12 @@ public class AccountCreationScreen extends AppCompatActivity {
                 confirmPasswordEditText.requestFocus();
             }
         }
+    }
+    public void backToLoginScreenButtonClicked(View v) {
+        createUsernameEditText.setText("");
+        createPasswordEditText.setText("");
+        confirmPasswordEditText.setText("");
+        Intent creationToLogin = new Intent(AccountCreationScreen.this, LoginScreen.class);
+        startActivity(creationToLogin);
     }
 }

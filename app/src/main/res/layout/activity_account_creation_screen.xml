@@ -87,7 +87,7 @@
         android:layout_width="141dp"
         android:layout_height="wrap_content"
         android:backgroundTint="#067F0B"
-        android:onClick="createPasswordScreenButtonClicked"
+        android:onClick="backToLoginScreenButtonClicked"
         android:padding="10sp"
         android:text="Back to Log In"
         android:textColor="#FFFFFF"
