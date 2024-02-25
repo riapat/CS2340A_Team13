@@ -39,7 +39,7 @@ public class ShoppingListScreen extends AppCompatActivity {
             }
         });
 
-        btnHome.setOnClickListener(new View.OnClickListener() {
+        btnIngredient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Handle ingredients button click (navigate to ingredients screen)
@@ -47,7 +47,7 @@ public class ShoppingListScreen extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        btnShoppingList.setOnClickListener(new View.OnClickListener() {
+        btnHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ShoppingListScreen.this, HomeScreen.class);
