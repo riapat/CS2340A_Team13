@@ -83,5 +83,16 @@
         android:onClick="createAccountButtonClicked"
         android:textColor="#FFFFFF" />
 
+    <Button
+        android:id="@+id/ExitButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#C74375"
+        android:onClick="createExitButtonClicked"
+        android:paddingTop="10sp"
+        android:paddingBottom="10sp"
+        android:text="Exit"
+        android:textColor="#FFFFFF" />
+
 </LinearLayout>
 <!--</androidx.constraintlayout.widget.ConstraintLayout>-->

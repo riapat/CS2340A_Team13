@@ -71,7 +71,7 @@
         <!--Create Account Button ID:createAccountButtonAACS>-->
             <!--On-Click:createAccountButtonAACSClicked>-->
             <Button
-            android:id="@+id/createAccountButtonAACS"
+            android:id="@+id/createAccountScreenButton"
             android:onClick="createPasswordScreenButtonClicked"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -81,4 +81,16 @@
             android:textSize="17sp"
             android:textColor="#FFFFFF"
             tools:ignore="HardcodedText" />
+
+    <Button
+        android:id="@+id/backToLogInButton"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#067F0B"
+        android:onClick="backToLoginScreenButtonClicked"
+        android:padding="10sp"
+        android:text="Back to Login"
+        android:textColor="#FFFFFF"
+        android:textSize="17sp"
+        tools:ignore="HardcodedText" />
 </LinearLayout>

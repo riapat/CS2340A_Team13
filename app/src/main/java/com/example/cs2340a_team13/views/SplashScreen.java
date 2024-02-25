@@ -9,7 +9,7 @@ import android.content.Intent;
 
 public class SplashScreen extends AppCompatActivity {
 
-    private static final int splashTimeOut = 4000; //time in milliseconds of wait
+    private static final int SPLASH_TIME_OUT = 4000; //time in milliseconds of wait
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,6 +22,6 @@ public class SplashScreen extends AppCompatActivity {
                 startActivity(i);
                 finish();           //close activity
             }
-        }, splashTimeOut);
+        }, SPLASH_TIME_OUT);
     }
 }

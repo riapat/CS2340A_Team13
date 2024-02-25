@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.content.Intent;
 
 import com.example.cs2340a_team13.R;
 import com.example.cs2340a_team13.viewModels.LoginViewModel;
@@ -15,6 +16,8 @@ public class AccountCreationScreen extends AppCompatActivity {
     private EditText createPasswordEditText;
     private EditText confirmPasswordEditText;
     private Button createAccountScreenButton;
+
+    private Button backToLogInButton;
 
     private LoginViewModel loginViewModel;
 
@@ -26,12 +29,13 @@ public class AccountCreationScreen extends AppCompatActivity {
         createUsernameEditText = findViewById(R.id.usernameFieldAACS);
         createPasswordEditText = findViewById(R.id.passwordFieldAACS);
         confirmPasswordEditText = findViewById(R.id.confirmPasswordFieldAACS);
-        createAccountScreenButton = findViewById(R.id.createAccountButtonAACS);
+        createAccountScreenButton = findViewById(R.id.createAccountScreenButton);
 
         loginViewModel = LoginViewModel.getInstance();
     }
     public void createPasswordScreenButtonClicked(View v) {
-        //Verify no null fields, remove whitespace from all fields, and that password and confirm password match
+        //Verify no null fields, remove whitespace from all fields,
+        // and that password and confirm password match
         boolean emptyCheck = true;
         String createUsername = "";
         String createPassword = "";
@@ -46,18 +50,25 @@ public class AccountCreationScreen extends AppCompatActivity {
                 createUsernameEditText.requestFocus();
             }
         } else {
-            Toast.makeText(AccountCreationScreen.this, "Please enter a username.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(AccountCreationScreen.this,
+                    "Please enter a username.",
+                    Toast.LENGTH_SHORT).show();
         }
 
         if (createPasswordEditText != null) {
             createPassword = createPasswordEditText.getText().toString().trim();
             if (createPassword.isEmpty() || createPassword.length() < 6) {
                 emptyCheck = false;
-                createPasswordEditText.setError("Please enter a password that is greater than 6 characters.");
+                createPasswordEditText
+                        .setError("Please enter a password that is greater than 6 characters.");
                 createPasswordEditText.requestFocus();
             }
         } else {
-            Toast.makeText(AccountCreationScreen.this, "Please enter a password that is greater than 6 characters.ria", Toast.LENGTH_SHORT).show();
+            Toast
+                    .makeText(AccountCreationScreen.this,
+                            "Please enter a password that is greater than 6 characters.ria",
+                            Toast.LENGTH_SHORT)
+                    .show();
         }
 
         if (confirmPasswordEditText != null) {
@@ -68,7 +79,11 @@ public class AccountCreationScreen extends AppCompatActivity {
                 confirmPasswordEditText.requestFocus();
             }
         } else {
-            Toast.makeText(AccountCreationScreen.this, "Please verify your password.", Toast.LENGTH_SHORT).show();
+            Toast
+                    .makeText(AccountCreationScreen.this,
+                            "Please verify your password.",
+                            Toast.LENGTH_SHORT)
+                    .show();
         }
 
         //Checks if any fields are empty before creating account
@@ -78,13 +93,24 @@ public class AccountCreationScreen extends AppCompatActivity {
 
                 loginViewModel.signUp(createUsername, createPassword, isSuccess -> {
                     if (isSuccess) {
-                        Toast.makeText(AccountCreationScreen.this, "Account Created", Toast.LENGTH_LONG).show();
+                        Toast
+                                .makeText(AccountCreationScreen.this,
+                                        "Account Created",
+                                        Toast.LENGTH_LONG)
+                                .show();
                         createUsernameEditText.setText("");
                         createPasswordEditText.setText("");
                         confirmPasswordEditText.setText("");
+                        Intent creationToHome = new Intent(AccountCreationScreen.this,
+                                HomeScreen.class);
+                        startActivity(creationToHome);
                     } else {
                         // Handle failure (e.g., show error message)
-                        Toast.makeText(AccountCreationScreen.this, "Account Creation Failed", Toast.LENGTH_LONG).show();
+                        Toast
+                                .makeText(AccountCreationScreen.this,
+                                        "Account Creation Failed",
+                                        Toast.LENGTH_LONG)
+                                .show();
                     }
                 });
             } else {
@@ -92,5 +118,13 @@ public class AccountCreationScreen extends AppCompatActivity {
                 confirmPasswordEditText.requestFocus();
             }
         }
+    }
+
+    public void backToLoginScreenButtonClicked(View v) {
+        createUsernameEditText.setText("");
+        createPasswordEditText.setText("");
+        confirmPasswordEditText.setText("");
+        Intent creationToLogin = new Intent(AccountCreationScreen.this, LoginScreen.class);
+        startActivity(creationToLogin);
     }
 }
