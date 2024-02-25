@@ -23,7 +23,7 @@ public class InputMealScreen extends AppCompatActivity {
         Button btnShoppingList = findViewById(R.id.ShoppingList);
         Button btnHome = findViewById(R.id.Home);
 
-        btnInputMeal.setOnClickListener(new View.OnClickListener() {
+        btnHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(InputMealScreen.this, HomeScreen.class);
@@ -39,7 +39,7 @@ public class InputMealScreen extends AppCompatActivity {
             }
         });
 
-        btnHome.setOnClickListener(new View.OnClickListener() {
+        btnIngredient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Handle ingredients button click (navigate to ingredients screen)

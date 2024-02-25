@@ -30,7 +30,7 @@ public class RecipeScreen extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        btnRecipe.setOnClickListener(new View.OnClickListener() {
+        btnHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(RecipeScreen.this, HomeScreen.class);
@@ -38,7 +38,7 @@ public class RecipeScreen extends AppCompatActivity {
             }
         });
 
-        btnHome.setOnClickListener(new View.OnClickListener() {
+        btnIngredient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(RecipeScreen.this, IngredientScreen.class);
