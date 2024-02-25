@@ -10,7 +10,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class LoginViewModel {
@@ -80,10 +79,6 @@ public class LoginViewModel {
 
     }
 
-    public interface AuthResultCallback {
-        void onComplete(boolean isSuccess);
-    }
-
     public void signUp(String username, String password, AuthResultCallback callback) {
         mAuth = FirebaseAuth.getInstance();
         // Checks if the username and password are not null and not empty.
@@ -109,11 +104,15 @@ public class LoginViewModel {
                                         .setValue(newUser).addOnCompleteListener(
                                                 new OnCompleteListener<Void>() {
                                                     @Override
-                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                    public void onComplete(
+                                                            @NonNull Task<Void> task) {
                                                         if (task.isSuccessful()) {
-                                                            Log.d("LoginViewModel", "createUserDatabase:success");
+                                                            Log.d("LoginViewModel",
+                                                                    "createUserDatabase:success");
                                                         } else {
-                                                            Log.w("LoginViewModel", "createUserDatabase:failure", task.getException());
+                                                            Log.w("LoginViewModel",
+                                                                    "createUserDatabase:failure",
+                                                                    task.getException());
                                                         }
                                                     }
                                                 }
@@ -121,10 +120,15 @@ public class LoginViewModel {
                                 Log.d("LoginViewModel", "createUserAuth:success");
                                 callback.onComplete(true);
                             } else {
-                                if (task.getException() instanceof FirebaseAuthUserCollisionException) {
-                                    Log.w("LoginViewModel", "Email already in use by another account.");
+                                if (task
+                                        .getException()
+                                        instanceof FirebaseAuthUserCollisionException) {
+                                    Log.w("LoginViewModel",
+                                            "Email already in use by another account.");
                                 } else {
-                                    Log.w("LoginViewModel", "createUserAuth:failure", task.getException());
+                                    Log.w("LoginViewModel",
+                                            "createUserAuth:failure",
+                                            task.getException());
                                 }
                                 callback.onComplete(false);
                             }
@@ -137,5 +141,9 @@ public class LoginViewModel {
                 });
         //Return true if the user is created, false otherwise
         Log.d("LoginViewModel", "signUp: " + (mAuth.getCurrentUser() != null));
+    }
+
+    public interface AuthResultCallback {
+        void onComplete(boolean isSuccess);
     }
 }
