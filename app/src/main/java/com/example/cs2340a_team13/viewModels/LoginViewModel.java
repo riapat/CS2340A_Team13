@@ -9,6 +9,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class LoginViewModel {
     private User user;
@@ -41,8 +43,9 @@ public class LoginViewModel {
         this.user.setPassword(password);
     }
 
-    public void createUser(String username, String password) {
+    public User createUser(String username, String password) {
         user = new User(username, password);
+        return user;
     }
 
     public boolean signIn(String username, String password) {
@@ -74,5 +77,73 @@ public class LoginViewModel {
 
         return mAuth.getCurrentUser() != null;
 
+    }
+
+    public void signUp(String username, String password, AuthResultCallback callback) {
+        mAuth = FirebaseAuth.getInstance();
+        // Checks if the username and password are not null and not empty.
+        if (username != null && password != null) {
+            if (username.isEmpty() || password.isEmpty() || password.length() < 6) {
+                callback.onComplete(false);
+            }
+        } else {
+            callback.onComplete(false);
+        }
+
+        // Attempts to create an account with the given username and password.
+        mAuth.createUserWithEmailAndPassword(username + "@mail.com", password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        try {
+                            if (task.isSuccessful()) {
+                                User newUser = createUser(username, password);
+                                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                database.getReference("Users")
+                                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                        .setValue(newUser).addOnCompleteListener(
+                                                new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(
+                                                            @NonNull Task<Void> task) {
+                                                        if (task.isSuccessful()) {
+                                                            Log.d("LoginViewModel",
+                                                                    "createUserDatabase:success");
+                                                        } else {
+                                                            Log.w("LoginViewModel",
+                                                                    "createUserDatabase:failure",
+                                                                    task.getException());
+                                                        }
+                                                    }
+                                                }
+                                        );
+                                Log.d("LoginViewModel", "createUserAuth:success");
+                                callback.onComplete(true);
+                            } else {
+                                if (task
+                                        .getException()
+                                        instanceof FirebaseAuthUserCollisionException) {
+                                    Log.w("LoginViewModel",
+                                            "Email already in use by another account.");
+                                } else {
+                                    Log.w("LoginViewModel",
+                                            "createUserAuth:failure",
+                                            task.getException());
+                                }
+                                callback.onComplete(false);
+                            }
+                        } catch (Exception e) {
+                            Log.w("LoginViewModel", "createUserAuth:failure", e);
+                            callback.onComplete(false);
+                        }
+
+                    }
+                });
+        //Return true if the user is created, false otherwise
+        Log.d("LoginViewModel", "signUp: " + (mAuth.getCurrentUser() != null));
+    }
+
+    public interface AuthResultCallback {
+        void onComplete(boolean isSuccess);
     }
 }

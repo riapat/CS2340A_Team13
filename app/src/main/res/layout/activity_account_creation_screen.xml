@@ -71,8 +71,8 @@
         <!--Create Account Button ID:createAccountButtonAACS>-->
             <!--On-Click:createAccountButtonAACSClicked>-->
             <Button
-            android:id="@+id/createAccountButtonAACS"
-            android:onClick="createAccountButtonAACSClicked"
+            android:id="@+id/createAccountScreenButton"
+            android:onClick="createPasswordScreenButtonClicked"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="#94B36F"
@@ -81,13 +81,24 @@
             android:textSize="17sp"
             android:textColor="#FFFFFF"
             tools:ignore="HardcodedText" />
-        <!--Error Messages Field ID:errorMessageAACS>-->
-            <TextView
-            android:id="@+id/errorMessagesAACS"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textSize="17dp"
-            android:textColor="#FF0000"
-            android:textStyle="normal"/>
+
+    <Button
+        android:id="@+id/backToLogInButton"
+<<<<<<< HEAD
+        android:layout_width="141dp"
+=======
+        android:layout_width="140dp"
+>>>>>>> main
+        android:layout_height="wrap_content"
+        android:backgroundTint="#067F0B"
+        android:onClick="backToLoginScreenButtonClicked"
+        android:padding="10sp"
+<<<<<<< HEAD
+        android:text="Back to Log In"
+=======
+        android:text="Back to Login"
+>>>>>>> main
+        android:textColor="#FFFFFF"
+        android:textSize="17sp"
+        tools:ignore="HardcodedText" />
 </LinearLayout>

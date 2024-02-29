@@ -1,7 +1,7 @@
 package com.example.cs2340a_team13.views;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import android.content.Intent;
 
 import android.os.Bundle;
 import android.view.View;
@@ -11,10 +11,6 @@ import android.widget.Toast;
 
 import com.example.cs2340a_team13.R;
 import com.example.cs2340a_team13.viewModels.LoginViewModel;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginScreen extends AppCompatActivity {
 
@@ -24,6 +20,7 @@ public class LoginScreen extends AppCompatActivity {
     private EditText editTextPassword;
     private Button createAccountButton;
     private Button loginButton;
+    private Button exitButton;
 
 
 
@@ -40,12 +37,17 @@ public class LoginScreen extends AppCompatActivity {
 
         createAccountButton = findViewById(R.id.createAccountButton);
         loginButton = findViewById(R.id.logInButton);
+        exitButton = findViewById(R.id.ExitButton);
 
     }
 
     public void createAccountButtonClicked(View v) {
         // This will take the user to the create account screen
-
+        // when create account button is clicked
+        Intent loginToAccount = new Intent(LoginScreen.this, AccountCreationScreen.class);
+        editTextUsername.setText("");
+        editTextPassword.setText("");
+        startActivity(loginToAccount);
     }
 
     public void logInButtonClicked(View v) {
@@ -60,11 +62,33 @@ public class LoginScreen extends AppCompatActivity {
         String passwordText = editTextPassword.getText().toString().trim();
         boolean response = loginViewModel.signIn(usernameText, passwordText);
         if (!response) {
-            Toast.makeText(LoginScreen.this, "Invalid username or password", Toast.LENGTH_LONG).show();
+            Toast
+                    .makeText(LoginScreen.this,
+                            "Invalid username or password",
+                            Toast.LENGTH_LONG)
+                    .show();
+        } else {
+            Toast.makeText(LoginScreen.this, "Login successful", Toast.LENGTH_LONG).show();
+            editTextUsername.setText("");
+            editTextPassword.setText("");
+            Intent loginToHome = new Intent(LoginScreen.this, HomeScreen.class);
+            startActivity(loginToHome);
         }
-
     }
 
+    //exit the app if exit button is clicked
+    public void createExitButtonClicked(View v) {
+        editTextUsername.setText("");
+        editTextPassword.setText("");
+        finish();
+        System.exit(0);
+    }
 
-
+    //exit the app if exit button is clicked
+    public void createExitButtonClicked(View v) {
+        editTextUsername.setText("");
+        editTextPassword.setText("");
+        finish();
+        System.exit(0);
+    }
 }

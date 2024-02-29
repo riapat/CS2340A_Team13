@@ -7,12 +7,24 @@
     android:orientation="vertical"
     tools:context=".views.HomeScreen">
 
-    <!-- Content area -->
-<FrameLayout
-android:id="@+id/content_container"
-android:layout_width="match_parent"
-android:layout_height="0dp"
-android:layout_weight="1"/>
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Home Screen"
+        android:textColor="#E91E63"
+        android:textSize="24sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:padding="16dp"/>
+    <FrameLayout
+        android:id="@+id/content_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        app:layout_constraintBottom_toTopOf="@+id/navigation_bar" />
+
 
     <!-- Navigation bar -->
     <LinearLayout
@@ -21,33 +33,48 @@ android:layout_weight="1"/>
         android:orientation="horizontal"
         android:background="#444444">
 
-<Button
-    android:id="@+id/InputMeal"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:layout_weight="1"
-    android:text="Input Meal" />
+        <Button
+            android:id="@+id/InputMeal"
+            android:layout_width="12dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Input Meal"
+            android:textSize="14sp" />
 
         <Button
             android:id="@+id/Recipe"
-            android:layout_width="0dp"
+            android:layout_width="12dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Recipe" />
+            android:text="Recipe"
+            android:textSize="14sp" />
+
 
         <Button
-    android:id="@+id/Ingredients"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:layout_weight="1"
-    android:text="Ingredients" />
+            android:id="@+id/Home"
+            android:layout_width="12dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Home"
+            android:textSize="14sp" />
+        <Button
+            android:id="@+id/Ingredients"
+            android:layout_width="12dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Ingredients"
+            android:textSize="14sp" />
 
-<Button
-    android:id="@+id/ShoppingList"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:layout_weight="1"
-    android:text="Shopping List" />
-</LinearLayout>
+        <Button
+            android:id="@+id/ShoppingList"
+            android:layout_width="12dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Shopping List"
+            android:textSize="14sp" />
     </LinearLayout>
+</LinearLayout>
+
+
+
 
