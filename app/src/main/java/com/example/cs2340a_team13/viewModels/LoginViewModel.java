@@ -4,14 +4,13 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.cs2340a_team13.DatabaseAccess;
 import com.example.cs2340a_team13.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
-import com.google.firebase.database.FirebaseDatabase;
-
 public class LoginViewModel {
     private User user;
     private static LoginViewModel instance;
@@ -98,25 +97,7 @@ public class LoginViewModel {
                         try {
                             if (task.isSuccessful()) {
                                 User newUser = createUser(username, password);
-                                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                                database.getReference("Users")
-                                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                        .setValue(newUser).addOnCompleteListener(
-                                                new OnCompleteListener<Void>() {
-                                                    @Override
-                                                    public void onComplete(
-                                                            @NonNull Task<Void> task) {
-                                                        if (task.isSuccessful()) {
-                                                            Log.d("LoginViewModel",
-                                                                    "createUserDatabase:success");
-                                                        } else {
-                                                            Log.w("LoginViewModel",
-                                                                    "createUserDatabase:failure",
-                                                                    task.getException());
-                                                        }
-                                                    }
-                                                }
-                                        );
+                                DatabaseAccess.getInstance().writeToUserDB(newUser);
                                 Log.d("LoginViewModel", "createUserAuth:success");
                                 callback.onComplete(true);
                             } else {
