@@ -63,7 +63,37 @@
         android:layout_weight="1"
         app:layout_constraintBottom_toTopOf="@+id/navigation_bar" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_vertical_center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <!--Buttons-->
+
     <!-- Navigation bar -->
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="276dp"
+        android:layout_marginEnd="52dp"
+        android:text="@string/intake_vs_goal"
+        app:layout_constraintEnd_toStartOf="@id/guideline_vertical_center"
+        app:layout_constraintTop_toBottomOf="@id/titleTextView" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="424dp"
+        android:layout_marginEnd="52dp"
+        android:text="@string/month_s_intake"
+        app:layout_constraintEnd_toStartOf="@id/guideline_vertical_center"
+        app:layout_constraintTop_toBottomOf="@id/titleTextView" />
+
     <LinearLayout
         android:id="@+id/navigation_bar"
         android:layout_width="match_parent"
