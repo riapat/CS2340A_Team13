@@ -5,6 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".views.InputMealScreen">
+
+    <Button
+        android:id="@+id/PersonalInfo"
+        android:layout_width="113dp"
+        android:layout_height="57dp"
+        android:layout_marginStart="16dp"
+        android:layout_weight="1"
+        android:text="Personal Info"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="82dp" />
+
     <TextView
         android:id="@+id/titleTextView"
         android:layout_width="wrap_content"
