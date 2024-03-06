@@ -1,5 +1,6 @@
 package com.example.cs2340a_team13;
 import com.example.cs2340a_team13.model.User;
+import com.example.cs2340a_team13.model.Meal;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class DatabaseAccess {
@@ -58,7 +59,7 @@ public class DatabaseAccess {
 
     //Write to Meals table by sending in a Meal object
     public void writeToMealsDB(Meal meal) {
-        fbInstance.getReference("Meals").child(meal.getMealName()).setValue(meal)
+        fbInstance.getReference("Meals").child(meal.getName()).setValue(meal)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         System.out.println("Meal added to meals database");
@@ -74,7 +75,8 @@ public class DatabaseAccess {
         fbInstance.getReference("Meals").child(mealName).get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        meal.setMeal(task.getResult().getValue(Meal.class));
+                        meal.updateMeal(task.getResult().getValue(Meal.class).getName(),
+                                task.getResult().getValue(Meal.class).getCalorieCount());
                     } else {
                         System.out.println("Meal not found in meals database");
                     }
@@ -84,7 +86,7 @@ public class DatabaseAccess {
 
     //Update Meals table by sending in a Meal object
     public void updateToMealsDB(Meal meal) {
-        fbInstance.getReference("Meals").child(meal.getMealName()).setValue(meal)
+        fbInstance.getReference("Meals").child(meal.getName()).setValue(meal)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         System.out.println("Meal updated in meals database");
