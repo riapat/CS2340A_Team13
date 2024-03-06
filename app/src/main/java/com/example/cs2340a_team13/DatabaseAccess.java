@@ -13,7 +13,7 @@ public class DatabaseAccess {
 
     public static synchronized DatabaseAccess getInstance() {
         if (databaseInstance == null) {
-            DatabaseAccess databaseInstance = new DatabaseAccess(FirebaseDatabase.getInstance());
+            databaseInstance = new DatabaseAccess(FirebaseDatabase.getInstance()); // Removed the redeclaration
         }
         return databaseInstance;
     }
