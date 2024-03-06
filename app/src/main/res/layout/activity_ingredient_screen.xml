@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     tools:context=".views.IngredientScreen">
+
     <TextView
         android:id="@+id/titleTextView"
         android:layout_width="wrap_content"
@@ -16,6 +17,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:padding="16dp"/>
+
+    <Button
+        android:id="@+id/PersonalInfo"
+        android:layout_width="113dp"
+        android:layout_height="57dp"
+        android:layout_marginStart="16dp"
+        android:layout_weight="1"
+        android:text="Personal Info"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="92dp"
+        tools:ignore="MissingConstraints" />
+
     <FrameLayout
         android:id="@+id/content_container"
         android:layout_width="match_parent"

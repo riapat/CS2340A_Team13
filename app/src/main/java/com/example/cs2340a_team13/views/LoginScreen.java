@@ -83,12 +83,4 @@ public class LoginScreen extends AppCompatActivity {
         finish();
         System.exit(0);
     }
-
-    //exit the app if exit button is clicked
-    public void createExitButtonClicked(View v) {
-        editTextUsername.setText("");
-        editTextPassword.setText("");
-        finish();
-        System.exit(0);
-    }
 }

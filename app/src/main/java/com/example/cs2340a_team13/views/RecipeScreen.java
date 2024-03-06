@@ -21,6 +21,7 @@ public class RecipeScreen extends AppCompatActivity {
         Button btnIngredient = findViewById(R.id.Ingredients);
         Button btnShoppingList = findViewById(R.id.ShoppingList);
         Button btnHome = findViewById(R.id.Home);
+        Button btnPersonalInfo = findViewById(R.id.PersonalInfo);
 
         btnInputMeal.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,6 +51,15 @@ public class RecipeScreen extends AppCompatActivity {
             public void onClick(View v) {
                 // Handle shopping list button click (navigate to shopping list screen)
                 Intent intent = new Intent(RecipeScreen.this, ShoppingListScreen.class);
+                startActivity(intent);
+            }
+        });
+
+        btnPersonalInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Handle personal info button click (navigate to personal info screen)
+                Intent intent = new Intent(RecipeScreen.this, PersonalInformation.class);
                 startActivity(intent);
             }
         });
