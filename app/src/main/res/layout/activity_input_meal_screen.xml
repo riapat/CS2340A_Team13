@@ -72,15 +72,13 @@
 
     <!--Buttons-->
 
-    <!-- Navigation bar -->
-
     <Button
         android:id="@+id/button1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="276dp"
-        android:layout_marginEnd="52dp"
-        android:text="@string/intake_vs_goal"
+        android:layout_marginTop="248dp"
+        android:layout_marginEnd="48dp"
+        android:text="Intake VS Goal"
         app:layout_constraintEnd_toStartOf="@id/guideline_vertical_center"
         app:layout_constraintTop_toBottomOf="@id/titleTextView" />
 
@@ -88,12 +86,31 @@
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="424dp"
-        android:layout_marginEnd="52dp"
-        android:text="@string/month_s_intake"
+        android:layout_marginTop="412dp"
+        android:layout_marginEnd="56dp"
+        android:text="Daily Intake"
         app:layout_constraintEnd_toStartOf="@id/guideline_vertical_center"
         app:layout_constraintTop_toBottomOf="@id/titleTextView" />
 
+    <!--Data Viz Charts-->
+
+    <com.anychart.AnyChartView
+        android:id="@+id/any_chart_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="84dp"
+        tools:layout_editor_absoluteY="-16dp" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="92dp"
+        android:layout_height="68dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Navigation bar -->
     <LinearLayout
         android:id="@+id/navigation_bar"
         android:layout_width="match_parent"
