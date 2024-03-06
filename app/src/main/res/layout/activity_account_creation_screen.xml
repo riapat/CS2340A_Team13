@@ -84,20 +84,12 @@
 
     <Button
         android:id="@+id/backToLogInButton"
-<<<<<<< HEAD
-        android:layout_width="141dp"
-=======
         android:layout_width="140dp"
->>>>>>> main
         android:layout_height="wrap_content"
         android:backgroundTint="#067F0B"
         android:onClick="backToLoginScreenButtonClicked"
         android:padding="10sp"
-<<<<<<< HEAD
-        android:text="Back to Log In"
-=======
         android:text="Back to Login"
->>>>>>> main
         android:textColor="#FFFFFF"
         android:textSize="17sp"
         tools:ignore="HardcodedText" />
