@@ -32,5 +32,4 @@ public class Meal {
     public void setCalorieCount(int calorieCount) {
         this.calorieCount = calorieCount;
     }
-
 }
