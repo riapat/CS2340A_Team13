@@ -33,9 +33,4 @@ public class Meal {
         this.calorieCount = calorieCount;
     }
 
-    //update the meal
-    public void updateMeal(String name, int calorieCount) {
-        this.name = name;
-        this.calorieCount = calorieCount;
-    }
 }
