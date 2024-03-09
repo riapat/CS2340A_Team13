@@ -17,7 +17,7 @@ public class MealViewModel {
         }
         return instance;
     }
-    private DatabaseAccess databaseAccess;
+    private DatabaseAccess databaseAccess = DatabaseAccess.getInstance();
 
     public Meal createMeal(String mealName, int calories) {
         if (meal == null) {
@@ -36,15 +36,12 @@ public class MealViewModel {
 
         // Add created meal to array of user
         if (currentUser != null) {
-            currentUser.addLoggedMeal(meal, currentDate);
+            currentUser.addMeal(meal);
             // Update the user's entry in the database
             databaseAccess.updateToUserDB(currentUser);
         }
         return meal;
     }
 
-    public void setCurrentUser(User user) {
-        this.currentUser = user;
-    }
 }
 

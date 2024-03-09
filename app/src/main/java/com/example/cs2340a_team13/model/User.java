@@ -1,18 +1,17 @@
 package com.example.cs2340a_team13.model;
 
-import android.util.Pair;
-
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class User {
 
     private String username;
     private String password;
-    private List<Pair<Meal, Date>> loggedMeals;
+    private List<Meal> loggedMeals;
 
     public User() {
+        this.username = "";
+        this.password = "";
         loggedMeals = new ArrayList<>();
     }
 
@@ -38,12 +37,12 @@ public class User {
         this.password = password;
     }
 
-    public List<Pair<Meal, Date>> getLoggedMeals() {
+    public List<Meal> getMeals() {
         return loggedMeals;
     }
 
-    public void addLoggedMeal(Meal meal, Date date) {
-        loggedMeals.add(new Pair<>(meal, date));
+    public void addMeal(Meal meal) {
+        loggedMeals.add(meal);
     }
 
     public void clearLoggedMeals() {
@@ -54,6 +53,4 @@ public class User {
         this.username = user.getUsername();
         this.password = user.getPassword();
     }
-
-
 }
