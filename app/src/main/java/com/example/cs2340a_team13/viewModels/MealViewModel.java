@@ -24,7 +24,7 @@ public class MealViewModel {
             meal = new Meal();
         }
 
-        meal.setMeal(mealName);
+        meal.setName(mealName);
         meal.setCalorieCount(calories);
 
         // new date object

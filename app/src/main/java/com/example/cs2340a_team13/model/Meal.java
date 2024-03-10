@@ -21,21 +21,17 @@ public class Meal {
         this.date = new Date();
     }
 
-    public String getName() {
+    // Getters and setters
+    public String getMealName() {
         return name;
     }
 
-    public void setMeal(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
     public int getCalorieCount() {
         return calorieCount;
-    }
-
-    public void updateMeal(String name, int calorieCount) {
-        this.name = name;
-        this.calorieCount = calorieCount;
     }
 
     public void setCalorieCount(int calorieCount) {
@@ -48,5 +44,12 @@ public class Meal {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    // Method to update the whole Meal object
+    public void setMeal(Meal meal) {
+        this.name = meal.getMealName();
+        this.calorieCount = meal.getCalorieCount();
+        this.date = meal.getDate();
     }
 }
