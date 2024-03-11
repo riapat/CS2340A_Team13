@@ -24,6 +24,9 @@
             android:name=".views.InputMealScreen"
             android:exported="false" />
         <activity
+            android:name=".views.PersonalInformation"
+            android:exported="false" />
+        <activity
             android:name=".views.SplashScreen"
             android:exported="true" >
             <intent-filter>
