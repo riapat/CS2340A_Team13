@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,12 +13,14 @@ import android.widget.EditText;
 import com.example.cs2340a_team13.R;
 import com.example.cs2340a_team13.model.Meal;
 import com.example.cs2340a_team13.viewModels.MealViewModel;
+import com.example.cs2340a_team13.viewModels.UserViewModel;
 
 import java.util.Date;
 
 public class InputMealScreen extends AppCompatActivity {
 
     private MealViewModel mealViewModel;
+    private UserViewModel userViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,10 +39,16 @@ public class InputMealScreen extends AppCompatActivity {
         mealViewModel = MealViewModel.getInstance();
         Button btnPersonalInfo = findViewById(R.id.PersonalInfo);
 
+        userViewModel = UserViewModel.getInstance();
+        String username = getIntent().getStringExtra("username");
+        userViewModel.loadUser(username);
+        Log.d("InputMealScreen", "User loaded in input meal screen " + userViewModel.getUser().getUsername());
+
         btnHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(InputMealScreen.this, HomeScreen.class);
+                intent.putExtra("username", username);
                 startActivity(intent);
             }
         });
@@ -48,6 +57,7 @@ public class InputMealScreen extends AppCompatActivity {
             public void onClick(View v) {
                 // Handle recipe button click (navigate to recipe screen)
                 Intent intent = new Intent(InputMealScreen.this, RecipeScreen.class);
+                intent.putExtra("username", username);
                 startActivity(intent);
             }
         });
@@ -57,6 +67,7 @@ public class InputMealScreen extends AppCompatActivity {
             public void onClick(View v) {
                 // Handle ingredients button click (navigate to ingredients screen)
                 Intent intent = new Intent(InputMealScreen.this, IngredientScreen.class);
+                intent.putExtra("username", username);
                 startActivity(intent);
             }
         });
@@ -65,6 +76,7 @@ public class InputMealScreen extends AppCompatActivity {
             public void onClick(View v) {
                 // Handle shopping list button click (navigate to shopping list screen)
                 Intent intent = new Intent(InputMealScreen.this, ShoppingListScreen.class);
+                intent.putExtra("username", username);
                 startActivity(intent);
             }
         });
@@ -93,11 +105,14 @@ public class InputMealScreen extends AppCompatActivity {
                     builder.setPositiveButton("OK", null);
                     builder.show();
                 }
+            }
+        });
 
         btnPersonalInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(InputMealScreen.this, PersonalInformation.class);
+                intent.putExtra("username", username);
                 startActivity(intent);
             }
         });

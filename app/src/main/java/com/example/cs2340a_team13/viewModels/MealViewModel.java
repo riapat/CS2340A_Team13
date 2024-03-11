@@ -7,8 +7,10 @@ import com.example.cs2340a_team13.model.User; // User class
 import java.util.Date;
 
 public class MealViewModel {
-    private Meal meal;
-    private User currentUser; // Reference to current user
+
+    private UserViewModel userViewModel = UserViewModel.getInstance();
+    private Meal meal = null;
+    private User currentUser = userViewModel.getUser(); // Reference to current user
     private static MealViewModel instance;
 
     public static synchronized MealViewModel getInstance(){
@@ -32,13 +34,26 @@ public class MealViewModel {
         meal.setDate(currentDate);
 
         // write to meal db
-        databaseAccess.writeToMealsDB(meal);
+        databaseAccess.writeToMealsDB(meal, mealCallback -> {
+            if (mealCallback != null) {
+                System.out.println("Meal added to meal database");
+                meal = mealCallback;
+            } else {
+                System.out.println("Meal not added to meal database");
+            }
+        });
 
         // Add created meal to array of user
         if (currentUser != null) {
             currentUser.addMeal(meal);
             // Update the user's entry in the database
-            databaseAccess.updateToUserDB(currentUser);
+            databaseAccess.updateToUserDB(currentUser, userCallback -> {
+                if (userCallback != null) {
+                    System.out.println("User updated in user database");
+                } else {
+                    System.out.println("User not updated in user database");
+                }
+            });
         }
         return meal;
     }

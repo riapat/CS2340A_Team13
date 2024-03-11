@@ -47,15 +47,18 @@ public class LoginViewModel {
         return user;
     }
 
-    public boolean signIn(String username, String password) {
+    public void signIn(String username, String password, AuthResultCallback callback) {
+        Log.d("LoginViewModel", "signInAttempt: " + username + " " + password);
         mAuth = FirebaseAuth.getInstance();
         // Checks if the username and password are not null and not empty.
         if (username != null && password != null) {
             if (username.isEmpty() || password.isEmpty()) {
-                return false;
+                callback.onComplete(false, null);
+                return;
             }
         } else {
-            return false;
+            callback.onComplete(false, null);
+            return;
         }
 
 
@@ -67,15 +70,24 @@ public class LoginViewModel {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Log.d("LoginViewModel", "signInWithEmail:success");
+                            DatabaseAccess.getInstance()
+                                    .readFromUserDB(username, user -> {
+                                if (user != null) {
+                                    Log.d("LoginViewModel", "signInWithEmail:success Username: " + user.getUsername() + " Password: " + user.getPassword());
+                                    updateUser(user);
+                                    callback.onComplete(true, user);
+                                } else {
+                                    Log.w("LoginViewModel", "signInWithEmail:failure ", task.getException());
+                                    callback.onComplete(false, null);
+                                }
+                            });
+
                         } else {
-                            Log.w("LoginViewModel", "signInWithEmail:failure", task.getException());
+                            Log.w("LoginViewModel", "signInWithEmail:failure ", task.getException());
+                            callback.onComplete(false, null);
                         }
                     }
                 });
-
-        return mAuth.getCurrentUser() != null;
-
     }
 
     public void signUp(String username, String password, AuthResultCallback callback) {
@@ -83,10 +95,12 @@ public class LoginViewModel {
         // Checks if the username and password are not null and not empty.
         if (username != null && password != null) {
             if (username.isEmpty() || password.isEmpty() || password.length() < 6) {
-                callback.onComplete(false);
+                callback.onComplete(false, null);
+                return;
             }
         } else {
-            callback.onComplete(false);
+            callback.onComplete(false, null);
+            return;
         }
 
         // Attempts to create an account with the given username and password.
@@ -97,9 +111,10 @@ public class LoginViewModel {
                         try {
                             if (task.isSuccessful()) {
                                 User newUser = createUser(username, password);
-                                DatabaseAccess.getInstance().writeToUserDB(newUser);
-                                Log.d("LoginViewModel", "createUserAuth:success");
-                                callback.onComplete(true);
+                                DatabaseAccess.getInstance().writeToUserDB(newUser, user -> {
+                                    Log.d("LoginViewModel", "createUserAuth:success");
+                                    callback.onComplete(true, newUser);
+                                });
                             } else {
                                 if (task
                                         .getException()
@@ -111,11 +126,11 @@ public class LoginViewModel {
                                             "createUserAuth:failure",
                                             task.getException());
                                 }
-                                callback.onComplete(false);
+                                callback.onComplete(false, null);
                             }
                         } catch (Exception e) {
                             Log.w("LoginViewModel", "createUserAuth:failure", e);
-                            callback.onComplete(false);
+                            callback.onComplete(false, null);
                         }
 
                     }
@@ -125,6 +140,6 @@ public class LoginViewModel {
     }
 
     public interface AuthResultCallback {
-        void onComplete(boolean isSuccess);
+        void onComplete(boolean isSuccess, User user);
     }
 }

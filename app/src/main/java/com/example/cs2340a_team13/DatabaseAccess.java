@@ -1,6 +1,9 @@
 package com.example.cs2340a_team13;
+import android.util.Log;
+
 import com.example.cs2340a_team13.model.User;
 import com.example.cs2340a_team13.model.Meal;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class DatabaseAccess {
@@ -19,79 +22,99 @@ public class DatabaseAccess {
         return databaseInstance;
     }
 
+    public interface UserCallback {
+        void onComplete(User user);
+    }
+
     //Write to "Users" table by sending in a User object
-    public void writeToUserDB(User user) {
+    //Has a callback function to turn this function to become synchronous
+    public void writeToUserDB(User user, UserCallback callback) {
         fbInstance.getReference("Users").child(user.getUsername()).setValue(user)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         System.out.println("User added to user database");
+                        callback.onComplete(user);
                     } else {
                         System.out.println("User not added to user database");
+                        callback.onComplete(null);
                     }
                 });
     }
 
     //Query from "Users" table by sending in a username
-    public User readFromUserDB(String username) {
+    public void readFromUserDB(String username, UserCallback callback) {
         User user = new User();
         fbInstance.getReference("Users").child(username).get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
+                        Log.d("DatabaseAccess", "User found in user database " + task.getResult().getValue(User.class).getUsername());
                         user.setUser(task.getResult().getValue(User.class));
+                        callback.onComplete(user);
                     } else {
                         System.out.println("User not found in user database");
+                        callback.onComplete(null);
                     }
                 });
-        return user;
     }
 
     //Update "Users" table by sending in a User object
-    public void updateToUserDB(User user) {
+    public void updateToUserDB(User user, UserCallback callback) {
             fbInstance.getReference("Users").child(user.getUsername()).setValue(user)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             System.out.println("User updated in user database");
+                            callback.onComplete(user);
                         } else {
                             System.out.println("User not updated in user database");
+                            callback.onComplete(null);
                         }
                     });
     }
 
+    public interface MealCallback {
+        void onComplete(Meal meal);
+    }
     //Write to Meals table by sending in a Meal object
-    public void writeToMealsDB(Meal meal) {
-        fbInstance.getReference("Meals").child(meal.getName()).setValue(meal)
+    public void writeToMealsDB(Meal meal, MealCallback callback) {
+        fbInstance.getReference("Meals").child(meal.getMealName()).setValue(meal)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         System.out.println("Meal added to meals database");
+                        callback.onComplete(meal);
                     } else {
                         System.out.println("Meal not added to meals database");
+                        callback.onComplete(null);
                     }
                 });
     }
 
     //Query from Meals table by sending in a meal name
-    public Meal readFromMealsDB(String mealName) {
+    public Meal readFromMealsDB(String mealName, MealCallback callback) {
         Meal meal = new Meal();
         fbInstance.getReference("Meals").child(mealName).get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        meal.updateMeal(task.getResult().getValue(Meal.class).getName(),
-                                task.getResult().getValue(Meal.class).getCalorieCount());
+                        meal.setMeal(task.getResult().getValue(Meal.class));
+                        System.out.println("Meal found in meals database");
+                        callback.onComplete(meal);
                     } else {
                         System.out.println("Meal not found in meals database");
+                        callback.onComplete(null);
                     }
                 });
         return meal;
     }
 
     //Update Meals table by sending in a Meal object
-    public void updateToMealsDB(Meal meal) {
-        fbInstance.getReference("Meals").child(meal.getName()).setValue(meal)
+    public void updateToMealsDB(Meal meal, MealCallback callback) {
+        fbInstance.getReference("Meals").child(meal.getMealName()).setValue(meal)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         System.out.println("Meal updated in meals database");
+                        callback.onComplete(meal);
                     } else {
                         System.out.println("Meal not updated in meals database");
+                        callback.onComplete(null);
                     }
                 });
     }

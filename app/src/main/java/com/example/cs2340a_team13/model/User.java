@@ -74,6 +74,7 @@ public class User {
 
     public void clearLoggedMeals() {
         loggedMeals.clear();
+    }
 
     public void setHeight(int height) {
         this.height = height;
