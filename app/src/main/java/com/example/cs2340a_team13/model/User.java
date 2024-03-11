@@ -1,8 +1,12 @@
 package com.example.cs2340a_team13.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class User {
     private String username;
     private String password;
+    private List<Meal> loggedMeals;
 
     private int height;
 
@@ -13,12 +17,15 @@ public class User {
     private String gender;
 
     public User() {
-
+        this.username = "";
+        this.password = "";
+        loggedMeals = new ArrayList<>();
     }
 
     public User(String username, String password) {
         this.username = username;
         this.password = password;
+        loggedMeals = new ArrayList<>();
         this.height = 0;
         this.weight = 0;
         this.age = 0;
@@ -57,6 +64,17 @@ public class User {
         this.password = password;
     }
 
+    public List<Meal> getMeals() {
+        return loggedMeals;
+    }
+
+    public void addMeal(Meal meal) {
+        loggedMeals.add(meal);
+    }
+
+    public void clearLoggedMeals() {
+        loggedMeals.clear();
+
     public void setHeight(int height) {
         this.height = height;
     }
@@ -71,6 +89,7 @@ public class User {
 
     public void setAge(int age) {
         this.age = age;
+
     }
 
     public void setUser(User user) {
