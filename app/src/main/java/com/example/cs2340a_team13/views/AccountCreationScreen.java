@@ -66,7 +66,7 @@ public class AccountCreationScreen extends AppCompatActivity {
         } else {
             Toast
                     .makeText(AccountCreationScreen.this,
-                            "Please enter a password that is greater than 6 characters.ria",
+                            "Please enter a password that is greater than 6 characters",
                             Toast.LENGTH_SHORT)
                     .show();
         }

@@ -4,10 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class User {
-
     private String username;
     private String password;
     private List<Meal> loggedMeals;
+
+    private int height;
+
+    private int weight;
+
+    private int age;
+
+    private String gender;
 
     public User() {
         this.username = "";
@@ -19,6 +26,10 @@ public class User {
         this.username = username;
         this.password = password;
         loggedMeals = new ArrayList<>();
+        this.height = 0;
+        this.weight = 0;
+        this.age = 0;
+        this.gender = "";
     }
 
     public String getUsername() {
@@ -27,6 +38,22 @@ public class User {
 
     public String getPassword() {
         return password;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public int getWeight() {
+        return weight;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public int getAge() {
+        return age;
     }
 
     public void setUsername(String username) {
@@ -47,10 +74,30 @@ public class User {
 
     public void clearLoggedMeals() {
         loggedMeals.clear();
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+
     }
 
     public void setUser(User user) {
         this.username = user.getUsername();
         this.password = user.getPassword();
+        this.height = user.getHeight();
+        this.weight = user.getWeight();
+        this.age = user.getAge();
+        this.gender = user.getGender();
     }
 }

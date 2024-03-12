@@ -34,6 +34,7 @@ public class InputMealScreen extends AppCompatActivity {
         Button submitButton = findViewById(R.id.submitButton);
 
         mealViewModel = MealViewModel.getInstance();
+        Button btnPersonalInfo = findViewById(R.id.PersonalInfo);
 
         btnHome.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,6 +95,12 @@ public class InputMealScreen extends AppCompatActivity {
                     builder.setPositiveButton("OK", null);
                     builder.show();
                 }
+
+        btnPersonalInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(InputMealScreen.this, PersonalInformation.class);
+                startActivity(intent);
             }
         });
     }
