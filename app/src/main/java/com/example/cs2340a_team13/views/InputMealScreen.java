@@ -15,11 +15,14 @@ import com.anychart.charts.Cartesian;
 import com.anychart.enums.Anchor;
 import com.anychart.enums.MarkerType;
 import com.anychart.core.cartesian.series.Line;
+import com.anychart.core.cartesian.series.Column;
 import com.anychart.data.Mapping;
 import com.anychart.data.Set;
 import com.anychart.enums.TooltipPositionMode;
 import com.anychart.graphics.vector.Stroke;
+import com.anychart.enums.HoverMode;
 import com.example.cs2340a_team13.R;
+import com.anychart.enums.Position;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,80 +82,128 @@ public class InputMealScreen extends AppCompatActivity {
         lineChart.padding(10d, 20d, 5d, 20d);
 
         //chart settings
-        lineChart.crosshair().enabled(true);
-        lineChart.crosshair()
-                .yLabel(true)
-                .yStroke((Stroke) null, null, null, (String) null, (String) null);
+        Button lineButton = findViewById(R.id.lineChart);
+        lineButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                lineChart.crosshair().enabled(true);
+                lineChart.crosshair()
+                        .yLabel(true)
+                        .yStroke((Stroke) null, null, null, (String) null, (String) null);
 
-        lineChart.tooltip().positionMode(TooltipPositionMode.POINT);
+                lineChart.tooltip().positionMode(TooltipPositionMode.POINT);
 
-        lineChart.title("Trend of Daily Calorie Intake");
-        lineChart.yAxis(0).title("Number of Calories");
-        lineChart.xAxis(0).labels().padding(5d, 5d, 5d, 5d);
+                lineChart.title("Trend of Daily Calorie Intake");
+                lineChart.yAxis(0).title("Number of Calories");
+                lineChart.xAxis(0).labels().padding(5d, 5d, 5d, 5d);
 
-        //create a loop going through the database, how to restrict to a week?
+                //create a loop going through the database, using the time stamp
 
-        List <DataEntry> weeklyData = new ArrayList<>();
-        weeklyData.add(new CustomDataEntry("1986", 3.6, 2.3, 2.8));
-        weeklyData.add(new CustomDataEntry("1987", 7.1, 4.0, 4.1));
-        weeklyData.add(new CustomDataEntry("1988", 8.5, 6.2, 5.1));
-        weeklyData.add(new CustomDataEntry("1989", 9.2, 11.8, 6.5));
-        weeklyData.add(new CustomDataEntry("1990", 10.1, 13.0, 12.5));
-        weeklyData.add(new CustomDataEntry("1991", 11.6, 13.9, 18.0));
-        weeklyData.add(new CustomDataEntry("1992", 16.4, 18.0, 21.0));
-        weeklyData.add(new CustomDataEntry("1993", 18.0, 23.3, 20.3));
-        weeklyData.add(new CustomDataEntry("1994", 13.2, 24.7, 19.2));
+                List <DataEntry> weeklyData = new ArrayList<>();
+                weeklyData.add(new CustomDataEntry("1986", 3.6, 2.3, 2.8));
+                weeklyData.add(new CustomDataEntry("1987", 7.1, 4.0, 4.1));
+                weeklyData.add(new CustomDataEntry("1988", 8.5, 6.2, 5.1));
+                weeklyData.add(new CustomDataEntry("1989", 9.2, 11.8, 6.5));
+                weeklyData.add(new CustomDataEntry("1990", 10.1, 13.0, 12.5));
+                weeklyData.add(new CustomDataEntry("1991", 11.6, 13.9, 18.0));
+                weeklyData.add(new CustomDataEntry("1992", 16.4, 18.0, 21.0));
+                weeklyData.add(new CustomDataEntry("1993", 18.0, 23.3, 20.3));
+                weeklyData.add(new CustomDataEntry("1994", 13.2, 24.7, 19.2));
 
-        //cartesian.data(data);
 
-        Set weeklySet = Set.instantiate();
-        weeklySet.data(weeklyData);
+                Set weeklySet = Set.instantiate();
+                weeklySet.data(weeklyData);
 
-        Mapping series1Mapping = weeklySet.mapAs("{ x: 'x', value: 'value' }");
-        Mapping series2Mapping = weeklySet.mapAs("{ x: 'x', value: 'value2' }");
-        Mapping series3Mapping = weeklySet.mapAs("{ x: 'x', value: 'value3' }");
+                Mapping series1Mapping = weeklySet.mapAs("{ x: 'x', value: 'value' }");
+                Mapping series2Mapping = weeklySet.mapAs("{ x: 'x', value: 'value2' }");
+                Mapping series3Mapping = weeklySet.mapAs("{ x: 'x', value: 'value3' }");
 
-        Line series1 = lineChart.line(series1Mapping);
-        series1.name("Brandy");
-        series1.hovered().markers().enabled(true);
-        series1.hovered().markers()
-                .type(MarkerType.CIRCLE)
-                .size(4d);
-        series1.tooltip()
-                .position("right")
-                .anchor(Anchor.LEFT_CENTER)
-                .offsetX(5d)
-                .offsetY(5d);
+                Line series1 = lineChart.line(series1Mapping);
+                series1.name("Brandy");
+                series1.hovered().markers().enabled(true);
+                series1.hovered().markers()
+                        .type(MarkerType.CIRCLE)
+                        .size(4d);
+                series1.tooltip()
+                        .position("right")
+                        .anchor(Anchor.LEFT_CENTER)
+                        .offsetX(5d)
+                        .offsetY(5d);
 
-        Line series2 = lineChart.line(series2Mapping);
-        series2.name("Whiskey");
-        series2.hovered().markers().enabled(true);
-        series2.hovered().markers()
-                .type(MarkerType.CIRCLE)
-                .size(4d);
-        series2.tooltip()
-                .position("right")
-                .anchor(Anchor.LEFT_CENTER)
-                .offsetX(5d)
-                .offsetY(5d);
+                Line series2 = lineChart.line(series2Mapping);
+                series2.name("Whiskey");
+                series2.hovered().markers().enabled(true);
+                series2.hovered().markers()
+                        .type(MarkerType.CIRCLE)
+                        .size(4d);
+                series2.tooltip()
+                        .position("right")
+                        .anchor(Anchor.LEFT_CENTER)
+                        .offsetX(5d)
+                        .offsetY(5d);
 
-        Line series3 = lineChart.line(series3Mapping);
-        series3.name("Tequila");
-        series3.hovered().markers().enabled(true);
-        series3.hovered().markers()
-                .type(MarkerType.CIRCLE)
-                .size(4d);
-        series3.tooltip()
-                .position("right")
-                .anchor(Anchor.LEFT_CENTER)
-                .offsetX(5d)
-                .offsetY(5d);
+                Line series3 = lineChart.line(series3Mapping);
+                series3.name("Tequila");
+                series3.hovered().markers().enabled(true);
+                series3.hovered().markers()
+                        .type(MarkerType.CIRCLE)
+                        .size(4d);
+                series3.tooltip()
+                        .position("right")
+                        .anchor(Anchor.LEFT_CENTER)
+                        .offsetX(5d)
+                        .offsetY(5d);
 
-        lineChart.legend().enabled(true);
-        lineChart.legend().fontSize(13d);
-        lineChart.legend().padding(0d, 0d, 10d, 0d);
+                lineChart.legend().enabled(true);
+                lineChart.legend().fontSize(13d);
+                lineChart.legend().padding(0d, 0d, 10d, 0d);
 
-        anyChartView.setChart(lineChart);
+                anyChartView.setChart(lineChart);
+            }
+        });
+
+
+        Button barChartButton = findViewById(R.id.barChart);
+        barChartButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Cartesian cartesian = AnyChart.column();
+
+                //get calculated goal value
+                //get daily value so far
+
+                List<DataEntry> data = new ArrayList<>();
+                data.add(new ValueDataEntry("Achieved", 1500));  //tester values
+                data.add(new ValueDataEntry("Goal", 2500));
+
+                Column column = cartesian.column(data);
+
+                column.tooltip()
+                        .titleFormat("{%X}")
+                        .position(Position.CENTER_BOTTOM)
+                        .anchor(Anchor.CENTER_BOTTOM)
+                        .offsetX(0d)
+                        .offsetY(5d)
+                        .format("${%Value}{groupsSeparator: }");
+
+                cartesian.animation(true);
+                cartesian.title("Goal vs Achieved Daily Calorie Count");
+
+                cartesian.yScale().minimum(0d);
+
+                cartesian.yAxis(0).labels().format("${%Value}{groupsSeparator: }");
+
+                cartesian.tooltip().positionMode(TooltipPositionMode.POINT);
+                cartesian.interactivity().hoverMode(HoverMode.BY_X);
+
+                cartesian.xAxis(0).title("Categories");
+                cartesian.yAxis(0).title("Calories");
+
+                anyChartView.setChart(cartesian);
+            }
+        });
+
+
     }
     private class CustomDataEntry extends ValueDataEntry {
         CustomDataEntry(String x, Number value, Number value2, Number value3) {
