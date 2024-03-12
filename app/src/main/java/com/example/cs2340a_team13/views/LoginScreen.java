@@ -60,20 +60,22 @@ public class LoginScreen extends AppCompatActivity {
         }
         String usernameText = editTextUsername.getText().toString().trim();
         String passwordText = editTextPassword.getText().toString().trim();
-        boolean response = loginViewModel.signIn(usernameText, passwordText);
-        if (!response) {
-            Toast
-                    .makeText(LoginScreen.this,
-                            "Invalid username or password",
-                            Toast.LENGTH_LONG)
-                    .show();
-        } else {
-            Toast.makeText(LoginScreen.this, "Login successful", Toast.LENGTH_LONG).show();
-            editTextUsername.setText("");
-            editTextPassword.setText("");
-            Intent loginToHome = new Intent(LoginScreen.this, HomeScreen.class);
-            startActivity(loginToHome);
-        }
+        loginViewModel.signIn(usernameText, passwordText, (isSuccess, user) -> {
+            if (isSuccess) {
+                Toast.makeText(LoginScreen.this, "Login successful", Toast.LENGTH_LONG).show();
+                editTextUsername.setText("");
+                editTextPassword.setText("");
+                Intent loginToHome = new Intent(LoginScreen.this, HomeScreen.class);
+                loginToHome.putExtra("username", user.getUsername());
+                startActivity(loginToHome);
+            } else {
+                Toast
+                        .makeText(LoginScreen.this,
+                                "Invalid username or password",
+                                Toast.LENGTH_LONG)
+                        .show();
+            }
+        });
     }
 
     //exit the app if exit button is clicked

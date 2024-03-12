@@ -1,11 +1,11 @@
-package com.example.cs2340a_team13.viewModels;
+package com.example.cs2340a_team13;
 
 
-import org.testng.annotations.Test;
-
-import static org.junit.Assert.assertEquals;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
 import com.example.cs2340a_team13.model.Meal;
+import com.example.cs2340a_team13.viewModels.MealViewModel;
 
 public class VishruthTests {
 
@@ -16,7 +16,7 @@ public class VishruthTests {
         int calories = 350;
 
         Meal meal = mealViewModel.createMeal(mealName, calories);
-        assertEquals(mealName, meal.getName());
+        assertEquals(mealName, meal.getMealName());
         assertEquals(calories, meal.getCalorieCount());
     }
 

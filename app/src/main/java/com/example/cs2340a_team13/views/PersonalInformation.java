@@ -4,6 +4,7 @@ import static android.widget.Toast.makeText;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,12 +39,16 @@ public class PersonalInformation extends AppCompatActivity {
         createAgeEditText = findViewById(R.id.ageFieldAACS);
         Button createPersonalInfoScreenButton = findViewById(R.id.createPersonalInfoButtonAACS);
         userViewModel = UserViewModel.getInstance();
+        String username = getIntent().getStringExtra("username");
+        userViewModel.loadUser(username);
+        Log.d("PersonalInformation", "User loaded in personal information screen " + userViewModel.getUser().getUsername());
 
         btnInputMeal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Handle input meal button click (navigate to input meal screen)
                 Intent intent = new Intent(PersonalInformation.this, InputMealScreen.class);
+                intent.putExtra("username", username);
                 startActivity(intent);
             }
         });
@@ -52,6 +57,7 @@ public class PersonalInformation extends AppCompatActivity {
             public void onClick(View v) {
                 // Handle recipe button click (navigate to recipe screen)
                 Intent intent = new Intent(PersonalInformation.this, RecipeScreen.class);
+                intent.putExtra("username", username);
                 startActivity(intent);
             }
         });
@@ -61,6 +67,7 @@ public class PersonalInformation extends AppCompatActivity {
             public void onClick(View v) {
 
                 Intent intent = new Intent(PersonalInformation.this, HomeScreen.class);
+                intent.putExtra("username", username);
                 startActivity(intent);
             }
         });
@@ -69,6 +76,7 @@ public class PersonalInformation extends AppCompatActivity {
             public void onClick(View v) {
                 // Handle shopping list button click (navigate to shopping list screen)
                 Intent intent = new Intent(PersonalInformation.this, ShoppingListScreen.class);
+                intent.putExtra("username", username);
                 startActivity(intent);
             }
         });
@@ -77,6 +85,7 @@ public class PersonalInformation extends AppCompatActivity {
             public void onClick(View v) {
                 // Handle ingredient button click (navigate to ingredient screen)
                 Intent intent = new Intent(PersonalInformation.this, IngredientScreen.class);
+                intent.putExtra("username", username);
                 startActivity(intent);
             }
         });
@@ -132,6 +141,10 @@ public class PersonalInformation extends AppCompatActivity {
             if (createGender.isEmpty()) {
                 emptyCheck = false;
                 createGenderEditText.setError(("Please enter a gender"));
+                createGenderEditText.requestFocus();
+            } else if (!(createGender.equals("M") || createGender.equals("F"))) {
+                emptyCheck = false;
+                createGenderEditText.setError(("Please enter M or F"));
                 createGenderEditText.requestFocus();
             } else {
                 userViewModel.updateUserGender(createGender);
