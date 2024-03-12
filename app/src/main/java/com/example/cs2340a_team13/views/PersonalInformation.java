@@ -142,6 +142,10 @@ public class PersonalInformation extends AppCompatActivity {
                 emptyCheck = false;
                 createGenderEditText.setError(("Please enter a gender"));
                 createGenderEditText.requestFocus();
+            } else if (!(createGender.equals("M") || createGender.equals("F"))) {
+                emptyCheck = false;
+                createGenderEditText.setError(("Please enter M or F"));
+                createGenderEditText.requestFocus();
             } else {
                 userViewModel.updateUserGender(createGender);
             }

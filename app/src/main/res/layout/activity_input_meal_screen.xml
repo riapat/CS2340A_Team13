@@ -168,8 +168,6 @@
 
     <!--Buttons-->
 
-    <!-- Navigation bar -->
-
     <Button
         android:id="@+id/button1"
         android:layout_width="wrap_content"
@@ -190,6 +188,25 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/submitButton" />
 
+    <!--Data Viz Charts-->
+
+    <com.anychart.AnyChartView
+        android:id="@+id/any_chart_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="84dp"
+        tools:layout_editor_absoluteY="-16dp" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="92dp"
+        android:layout_height="68dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Navigation bar -->
     <LinearLayout
         android:id="@+id/navigation_bar"
         android:layout_width="match_parent"
