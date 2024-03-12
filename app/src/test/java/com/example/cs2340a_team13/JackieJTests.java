@@ -18,7 +18,6 @@ public class JackieJTests {
     }
     @Test
     public void testFemaleUser() {
-
         User userF =  new User();
         userF.setAge(20);
         userF.setGender("Female");
@@ -28,7 +27,6 @@ public class JackieJTests {
         double testF = UserViewModel.getInstance().calculateCalories();
         assertEquals(testF, 1741.8);
     }
-
     @Test
     public void testMaleUser() {
         User userM = new User();
