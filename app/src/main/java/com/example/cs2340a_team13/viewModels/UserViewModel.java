@@ -4,6 +4,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.cs2340a_team13.DatabaseAccess;
+import com.example.cs2340a_team13.model.Meal;
 import com.example.cs2340a_team13.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -11,6 +12,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.database.core.DatabaseConfig;
+import java.util.Date;
+import java.util.List;
 
 public class UserViewModel {
     private static User user;
@@ -118,5 +121,19 @@ public class UserViewModel {
             }
             return idealCal;
         }
+    }
+    public int currentCalories(UserViewModel userVM){
+        if(userVM.getUser() == null){
+            return 0;
+        }
+        int currentCal;
+        List<Meal> meals = userVM.getUser().getMeals();
+        Date today = new Date();
+        for(Meal meal:meals) {
+            if(meal.getDate().equals(today){
+                currentCal += meal.getCalorieCount();
+            }
+        }
+        return currentCal;
     }
 }
