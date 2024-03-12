@@ -40,7 +40,7 @@ public class InputMealScreen extends AppCompatActivity {
     private MealViewModel mealViewModel;
     private UserViewModel userViewModel;
 
-    @SuppressLint({"DefaultLocale", "SetTextI18n"})
+    @SuppressLint({ "DefaultLocale", "SetTextI18n" })
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -134,13 +134,32 @@ public class InputMealScreen extends AppCompatActivity {
             public void onClick(View v) {
                 String mealName = mealNameEditText.getText().toString();
                 String caloriesText = caloriesEditText.getText().toString();
-
                 if (!caloriesText.isEmpty()) {
                     try {
                         int calories = Integer.parseInt(caloriesText);
-                        Meal meal = mealViewModel.createMeal(mealName, calories);
-                        currentCaloriesTextView.setText(String.format("Current Day's Calories: %d",
-                                userViewModel.currentCalories()));
+                        // Check if meal name contains numbers
+                        boolean containsNumber = false;
+                        for (char c : mealName.toCharArray()) {
+                            if (Character.isDigit(c)) {
+                                containsNumber = true;
+                                break;
+                            }
+                        }
+                        if (containsNumber) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(InputMealScreen.this);
+                            builder.setTitle("Invalid Input");
+                            builder.setMessage("Meal name cannot contain numbers");
+                            builder.setPositiveButton("OK", null);
+                            builder.show();
+                        } else {
+                            // Create meal object
+                            Meal meal = mealViewModel.createMeal(mealName, calories);
+                            currentCaloriesTextView.setText(String.format("Current Day's Calories: %d",
+                                    userViewModel.currentCalories()));
+                            // Clear EditText fields
+                            mealNameEditText.setText("");
+                            caloriesEditText.setText("");
+                        }
                     } catch (NumberFormatException e) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(InputMealScreen.this);
                         builder.setTitle("Invalid Input");
@@ -167,14 +186,14 @@ public class InputMealScreen extends AppCompatActivity {
             }
         });
 
-        //add a AnyChartView in the XML layout with id any_chart_view
+        // add a AnyChartView in the XML layout with id any_chart_view
         AnyChartView anyChartView = findViewById(R.id.any_chart_view);
         anyChartView.setProgressBar(findViewById(R.id.progress_bar));
         Cartesian lineChart = AnyChart.line();
         lineChart.animation(true);
         lineChart.padding(10d, 20d, 5d, 20d);
 
-        //chart settings
+        // chart settings
         Button lineButton = findViewById(R.id.lineChart);
         lineButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -190,9 +209,9 @@ public class InputMealScreen extends AppCompatActivity {
                 lineChart.yAxis(0).title("Number of Calories");
                 lineChart.xAxis(0).labels().padding(5d, 5d, 5d, 5d);
 
-                //create a loop going through the database, using the time stamp
+                // create a loop going through the database, using the time stamp
 
-                List <DataEntry> weeklyData = new ArrayList<>();
+                List<DataEntry> weeklyData = new ArrayList<>();
                 weeklyData.add(new CustomDataEntry("1986", 3.6, 2.3, 2.8));
                 weeklyData.add(new CustomDataEntry("1987", 7.1, 4.0, 4.1));
                 weeklyData.add(new CustomDataEntry("1988", 8.5, 6.2, 5.1));
@@ -202,7 +221,6 @@ public class InputMealScreen extends AppCompatActivity {
                 weeklyData.add(new CustomDataEntry("1992", 16.4, 18.0, 21.0));
                 weeklyData.add(new CustomDataEntry("1993", 18.0, 23.3, 20.3));
                 weeklyData.add(new CustomDataEntry("1994", 13.2, 24.7, 19.2));
-
 
                 Set weeklySet = Set.instantiate();
                 weeklySet.data(weeklyData);
@@ -255,18 +273,17 @@ public class InputMealScreen extends AppCompatActivity {
             }
         });
 
-
         Button barChartButton = findViewById(R.id.barChart);
         barChartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Cartesian cartesian = AnyChart.column();
 
-                //get calculated goal value
-                //get daily value so far
+                // get calculated goal value
+                // get daily value so far
 
                 List<DataEntry> data = new ArrayList<>();
-                data.add(new ValueDataEntry("Achieved", 1500));  //tester values
+                data.add(new ValueDataEntry("Achieved", 1500)); // tester values
                 data.add(new ValueDataEntry("Goal", 2500));
 
                 Column column = cartesian.column(data);
@@ -296,8 +313,8 @@ public class InputMealScreen extends AppCompatActivity {
             }
         });
 
-
     }
+
     private class CustomDataEntry extends ValueDataEntry {
         CustomDataEntry(String x, Number value, Number value2, Number value3) {
             super(x, value);
