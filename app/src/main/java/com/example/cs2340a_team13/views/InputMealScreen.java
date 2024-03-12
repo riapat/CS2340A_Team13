@@ -36,26 +36,6 @@ public class InputMealScreen extends AppCompatActivity {
         TextView recommendedCaloriesTextView = findViewById(R.id.recommendedCaloriesTextView);
         TextView currentCaloriesTextView = findViewById(R.id.currentCaloriesTextView);
 
-        if(userViewModel.getUser() == null) {
-            ageTextView.setText("Age:  yrs");
-            genderTextView.setText("Gender: ");
-            heightTextView.setText("Height:  cm");
-            weightTextView.setText("Weight:  kg");
-            recommendedCaloriesTextView.setText("Advised Daily Calories: 0");
-            currentCaloriesTextView.setText("Current Day's Calories: 0");
-        }else{
-            ageTextView.setText(String.format("Age: %d yrs", userViewModel.getUser().getAge()));
-            genderTextView.setText(String.format("Gender: %s", userViewModel.getUser().getGender()));
-            heightTextView.setText(String.format("Height: %d cm",
-                    userViewModel.getUser().getHeight()));
-            weightTextView.setText(String.format("Weight: %d kg",
-                    userViewModel.getUser().getWeight()));
-            recommendedCaloriesTextView.setText(String.format("Advised Daily Calories: %f",
-                    userViewModel.calculateCalories(userViewModel)));
-            currentCaloriesTextView.setText(String.format("Current Day's Calories: %f", 0.0));
-        }
-
-
         Button btnInputMeal = findViewById(R.id.InputMeal);
         Button btnRecipe = findViewById(R.id.Recipe);
         Button btnIngredient = findViewById(R.id.Ingredients);
@@ -72,6 +52,27 @@ public class InputMealScreen extends AppCompatActivity {
         String username = getIntent().getStringExtra("username");
         userViewModel.loadUser(username);
         Log.d("InputMealScreen", "User loaded in input meal screen " + userViewModel.getUser().getUsername());
+
+        if(userViewModel.getUser() == null) {
+            ageTextView.setText("Age:  yrs");
+            genderTextView.setText("Gender: ");
+            heightTextView.setText("Height:  cm");
+            weightTextView.setText("Weight:  kg");
+            recommendedCaloriesTextView.setText("Advised Daily Calories: 0");
+            currentCaloriesTextView.setText("Current Day's Calories: 0");
+        }else{
+            ageTextView.setText(String.format("Age: %d yrs",
+                    userViewModel.getUser().getAge()));
+            genderTextView.setText(String.format("Gender: %s",
+                    userViewModel.getUser().getGender()));
+            heightTextView.setText(String.format("Height: %d cm",
+                    userViewModel.getUser().getHeight()));
+            weightTextView.setText(String.format("Weight: %d kg",
+                    userViewModel.getUser().getWeight()));
+            recommendedCaloriesTextView.setText(String.format("Advised Daily Calories: %f",
+                    userViewModel.calculateCalories(userViewModel)));
+            currentCaloriesTextView.setText(String.format("Current Day's Calories: %f", 0.0));
+        }
 
         btnHome.setOnClickListener(new View.OnClickListener() {
             @Override
