@@ -3,12 +3,14 @@ package com.example.cs2340a_team13.views;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -43,10 +45,17 @@ public class InputMealScreen extends AppCompatActivity {
     private MealViewModel mealViewModel;
     private UserViewModel userViewModel;
 
+    @SuppressLint({"DefaultLocale", "SetTextI18n"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_input_meal_screen);
+
+        TextView ageTextView = findViewById(R.id.ageTextView);
+        TextView genderTextView = findViewById(R.id.genderTextView);
+        TextView heightTextView = findViewById(R.id.heightTextView);
+        TextView weightTextView = findViewById(R.id.weightTextView);
+        TextView recommendedCaloriesTextView = findViewById(R.id.recommendedCaloriesTextView);
+        TextView currentCaloriesTextView = findViewById(R.id.currentCaloriesTextView);
 
         Button btnInputMeal = findViewById(R.id.InputMeal);
         Button btnRecipe = findViewById(R.id.Recipe);
@@ -64,6 +73,28 @@ public class InputMealScreen extends AppCompatActivity {
         String username = getIntent().getStringExtra("username");
         userViewModel.loadUser(username);
         Log.d("InputMealScreen", "User loaded in input meal screen " + userViewModel.getUser().getUsername());
+
+        if(userViewModel.getUser() == null) {
+            ageTextView.setText("Age:  yrs");
+            genderTextView.setText("Gender: ");
+            heightTextView.setText("Height:  cm");
+            weightTextView.setText("Weight:  kg");
+            recommendedCaloriesTextView.setText("Advised Daily Calories: 0");
+            currentCaloriesTextView.setText("Current Day's Calories: 0");
+        }else{
+            ageTextView.setText(String.format("Age: %d yrs",
+                    userViewModel.getUser().getAge()));
+            genderTextView.setText(String.format("Gender: %s",
+                    userViewModel.getUser().getGender()));
+            heightTextView.setText(String.format("Height: %d cm",
+                    userViewModel.getUser().getHeight()));
+            weightTextView.setText(String.format("Weight: %d kg",
+                    userViewModel.getUser().getWeight()));
+            recommendedCaloriesTextView.setText(String.format("Advised Daily Calories: %f",
+                    userViewModel.calculateCalories()));
+            currentCaloriesTextView.setText(String.format("Current Day's Calories: %d",
+                    userViewModel.currentCalories()));
+        }
 
         btnHome.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,6 +143,8 @@ public class InputMealScreen extends AppCompatActivity {
                     try {
                         int calories = Integer.parseInt(caloriesText);
                         Meal meal = mealViewModel.createMeal(mealName, calories);
+                        currentCaloriesTextView.setText(String.format("Current Day's Calories: %d",
+                                userViewModel.currentCalories()));
                     } catch (NumberFormatException e) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(InputMealScreen.this);
                         builder.setTitle("Invalid Input");
