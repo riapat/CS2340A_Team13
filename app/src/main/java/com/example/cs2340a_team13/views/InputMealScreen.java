@@ -3,12 +3,14 @@ package com.example.cs2340a_team13.views;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.cs2340a_team13.R;
 import com.example.cs2340a_team13.model.Meal;
@@ -22,10 +24,37 @@ public class InputMealScreen extends AppCompatActivity {
     private MealViewModel mealViewModel;
     private UserViewModel userViewModel;
 
+    @SuppressLint({"DefaultLocale", "SetTextI18n"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_input_meal_screen);
+
+        TextView ageTextView = findViewById(R.id.ageTextView);
+        TextView genderTextView = findViewById(R.id.genderTextView);
+        TextView heightTextView = findViewById(R.id.heightTextView);
+        TextView weightTextView = findViewById(R.id.weightTextView);
+        TextView recommendedCaloriesTextView = findViewById(R.id.recommendedCaloriesTextView);
+        TextView currentCaloriesTextView = findViewById(R.id.currentCaloriesTextView);
+
+        if(userViewModel.getUser() == null) {
+            ageTextView.setText("Age: ");
+            genderTextView.setText("Gender: ");
+            heightTextView.setText("Height: ");
+            weightTextView.setText("Weight: ");
+            recommendedCaloriesTextView.setText("Advised Daily Calories: 0");
+            currentCaloriesTextView.setText("Current Day's Calories: 0");
+        }else{
+            ageTextView.setText(String.format("Age: %d", userViewModel.getUser().getAge()));
+            genderTextView.setText(String.format("Gender: %s", userViewModel.getUser().getGender()));
+            heightTextView.setText(String.format("Height: %d cm",
+                    userViewModel.getUser().getHeight()));
+            weightTextView.setText(String.format("Weight: %d kg",
+                    userViewModel.getUser().getWeight()));
+            recommendedCaloriesTextView.setText(String.format("Advised Daily Calories: %f",
+                    userViewModel.calculateCalories(userViewModel)));
+            currentCaloriesTextView.setText("Current Day's Calories: ");
+        }
+
 
         Button btnInputMeal = findViewById(R.id.InputMeal);
         Button btnRecipe = findViewById(R.id.Recipe);

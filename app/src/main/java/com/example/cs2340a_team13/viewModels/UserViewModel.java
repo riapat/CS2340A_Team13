@@ -91,4 +91,32 @@ public class UserViewModel {
             }
         });
     }
+    public double calculateCalories(UserViewModel userVM){
+        if(userVM.getUser() == null){
+            return 0;
+        }else {
+            double age = (double) userVM.getUser().getAge();
+            String gender =  userVM.getUser().getGender();
+            double weight = (double) userVM.getUser().getWeight();
+            double height = (double) userVM.getUser().getHeight();
+            double idealCal = 0;
+            switch(gender.toLowerCase()){
+                case "female":
+                case  "woman":
+                case "f":
+                case "w":
+                    idealCal = 1.2 * ((10.0 * weight) + (height * 6.25) - (5.0 * age) + 5.0);
+                    break;
+                case "male":
+                case  "man":
+                case "m":
+                    idealCal = 1.2 * (10.0 * weight) + (height * 6.25) - (5.0 * age) - 161.0;
+                    break;
+                default:
+                    idealCal = 0;
+                    break;
+            }
+            return idealCal;
+        }
+    }
 }
