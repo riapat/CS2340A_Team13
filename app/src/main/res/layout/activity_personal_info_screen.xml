@@ -131,7 +131,7 @@
         android:layout_marginStart="4dp"
         android:layout_marginTop="1dp"
         android:layout_marginBottom="1dp"
-        android:hint="Gender"
+        android:hint="Gender (M/F)"
         android:inputType="text"
         android:padding="10sp"
         android:textSize="14sp"
