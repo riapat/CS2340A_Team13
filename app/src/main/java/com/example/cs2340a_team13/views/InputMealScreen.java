@@ -70,8 +70,9 @@ public class InputMealScreen extends AppCompatActivity {
             weightTextView.setText(String.format("Weight: %d kg",
                     userViewModel.getUser().getWeight()));
             recommendedCaloriesTextView.setText(String.format("Advised Daily Calories: %f",
-                    userViewModel.calculateCalories(userViewModel)));
-            currentCaloriesTextView.setText(String.format("Current Day's Calories: %f", 0.0));
+                    userViewModel.calculateCalories()));
+            currentCaloriesTextView.setText(String.format("Current Day's Calories: %d",
+                    userViewModel.currentCalories()));
         }
 
         btnHome.setOnClickListener(new View.OnClickListener() {
@@ -121,6 +122,8 @@ public class InputMealScreen extends AppCompatActivity {
                     try {
                         int calories = Integer.parseInt(caloriesText);
                         Meal meal = mealViewModel.createMeal(mealName, calories);
+                        currentCaloriesTextView.setText(String.format("Current Day's Calories: %d",
+                                userViewModel.currentCalories()));
                     } catch (NumberFormatException e) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(InputMealScreen.this);
                         builder.setTitle("Invalid Input");

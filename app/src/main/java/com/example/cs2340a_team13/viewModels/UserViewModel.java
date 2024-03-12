@@ -94,14 +94,14 @@ public class UserViewModel {
             }
         });
     }
-    public double calculateCalories(UserViewModel userVM){
-        if(userVM.getUser() == null){
+    public double calculateCalories(){
+        if(user == null){
             return 0;
         }else {
-            double age = (double) userVM.getUser().getAge();
-            String gender =  userVM.getUser().getGender();
-            double weight = (double) userVM.getUser().getWeight();
-            double height = (double) userVM.getUser().getHeight();
+            double age = (double) user.getAge();
+            String gender =  user.getGender();
+            double weight = (double) user.getWeight();
+            double height = (double) user.getHeight();
             double idealCal = 0;
             switch(gender.toLowerCase()){
                 case "female":
@@ -122,18 +122,23 @@ public class UserViewModel {
             return idealCal;
         }
     }
-    public int currentCalories(UserViewModel userVM){
-        if(userVM.getUser() == null){
+    public int currentCalories(){
+        if(user == null){
             return 0;
         }
         int currentCal;
-        List<Meal> meals = userVM.getUser().getMeals();
+        List<Meal> meals = user.getMeals();
         Date today = new Date();
         for(Meal meal:meals) {
-            if(meal.getDate().equals(today){
+            if(meal.getDate().get.equals(today){
                 currentCal += meal.getCalorieCount();
             }
         }
         return currentCal;
+    }
+
+    //DO NOT USE - Testing Purposes Only
+    public void setTestUser(User testUser){
+        this.user = testUser;
     }
 }
