@@ -78,6 +78,8 @@ public class InputMealScreen extends AppCompatActivity {
                     try {
                         int calories = Integer.parseInt(caloriesText);
                         Meal meal = mealViewModel.createMeal(mealName, calories);
+                        mealNameEditText.setText("");
+                        caloriesEditText.setText("");
                     } catch (NumberFormatException e) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(InputMealScreen.this);
                         builder.setTitle("Invalid Input");
