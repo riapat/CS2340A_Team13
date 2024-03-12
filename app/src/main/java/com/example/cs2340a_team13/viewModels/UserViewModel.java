@@ -14,6 +14,7 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.database.core.DatabaseConfig;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 public class UserViewModel {
     private static User user;
@@ -129,9 +130,14 @@ public class UserViewModel {
         int currentCal;
         List<Meal> meals = user.getMeals();
         Date today = new Date();
+        
         for(Meal meal:meals) {
-            if(meal.getDate().get.equals(today){
-                currentCal += meal.getCalorieCount();
+            if(Objects.equals(meal.getDate().getDay(), today.getDay()) {
+                if(Objects.equals(meal.getDate().getMonth(), today.getMonth()){
+                    if(Objects.equals(meal.getDate().getYear(), today.getYear()){
+                        currentCal += meal.getCalorieCount();
+                    }
+                }
             }
         }
         return currentCal;
