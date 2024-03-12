@@ -66,7 +66,7 @@ public class AccountCreationScreen extends AppCompatActivity {
         } else {
             Toast
                     .makeText(AccountCreationScreen.this,
-                            "Please enter a password that is greater than 6 characters.ria",
+                            "Please enter a password that is greater than 6 characters",
                             Toast.LENGTH_SHORT)
                     .show();
         }
@@ -91,7 +91,7 @@ public class AccountCreationScreen extends AppCompatActivity {
             //Checks that Password and Confirmed Password match
             if (createPassword.equals(confirmPassword)) {
 
-                loginViewModel.signUp(createUsername, createPassword, isSuccess -> {
+                loginViewModel.signUp(createUsername, createPassword, (isSuccess, user) -> {
                     if (isSuccess) {
                         Toast
                                 .makeText(AccountCreationScreen.this,
@@ -103,6 +103,7 @@ public class AccountCreationScreen extends AppCompatActivity {
                         confirmPasswordEditText.setText("");
                         Intent creationToHome = new Intent(AccountCreationScreen.this,
                                 HomeScreen.class);
+                        creationToHome.putExtra("username", user.getUsername());
                         startActivity(creationToHome);
                     } else {
                         // Handle failure (e.g., show error message)
