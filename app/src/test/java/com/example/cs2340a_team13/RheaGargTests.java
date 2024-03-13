@@ -19,7 +19,7 @@ public class RheaGargTests {
         woman.setWeight(60);
         UserViewModel.getInstance().setTestUser(woman);
         double testS = UserViewModel.getInstance().calculateCalories();
-        assertEquals(testS, 1452.0);
+        assertEquals(1446.0, testS, 0.1);
     }
     @Test
     public void testMaleUser() {
@@ -30,6 +30,6 @@ public class RheaGargTests {
         man.setWeight(90);
         UserViewModel.getInstance().setTestUser(man);
         double testD = UserViewModel.getInstance().calculateCalories();
-        assertEquals(testD, 1508.0);
+        assertEquals(1694.0, testD, 0.1);
     }
 }

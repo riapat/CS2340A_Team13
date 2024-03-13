@@ -40,22 +40,22 @@ public class InputMealScreen extends AppCompatActivity {
     private MealViewModel mealViewModel;
     private UserViewModel userViewModel;
 
-    private TextView ageTextView = findViewById(R.id.ageTextView);
-    private TextView genderTextView = findViewById(R.id.genderTextView);
-    private TextView heightTextView = findViewById(R.id.heightTextView);
-    private TextView weightTextView = findViewById(R.id.weightTextView);
-    private TextView recommendedCaloriesTextView = findViewById(R.id.recommendedCaloriesTextView);
-    private TextView currentCaloriesTextView = findViewById(R.id.currentCaloriesTextView);
+    private TextView ageTextView;
+    private TextView genderTextView;
+    private TextView heightTextView;
+    private TextView weightTextView;
+    private TextView recommendedCaloriesTextView;
+    private TextView currentCaloriesTextView;
 
-    private Button btnRecipe = findViewById(R.id.Recipe);
-    private Button btnIngredient = findViewById(R.id.Ingredients);
-    private Button btnShoppingList = findViewById(R.id.ShoppingList);
-    private Button btnHome = findViewById(R.id.Home);
-    private EditText mealNameEditText = findViewById(R.id.mealNameEditText);
-    private EditText caloriesEditText = findViewById(R.id.estimatedCaloriesEditText);
-    private Button submitButton = findViewById(R.id.submitButton);
-
-    private AnyChartView anyChartView = findViewById(R.id.any_chart_view);
+    private Button btnRecipe;
+    private Button btnIngredient;
+    private Button btnShoppingList;
+    private Button btnHome;
+    private EditText mealNameEditText;
+    private EditText caloriesEditText;
+    private Button btnPersonalInfo;
+    private Button lineButton;
+    private AnyChartView anyChartView;
 
     @SuppressLint({ "DefaultLocale", "SetTextI18n" })
     @Override
@@ -63,12 +63,23 @@ public class InputMealScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_input_meal_screen);
         mealViewModel = MealViewModel.getInstance();
-        Button btnPersonalInfo = findViewById(R.id.PersonalInfo);
-
+        ageTextView = findViewById(R.id.ageTextView);
+        genderTextView = findViewById(R.id.genderTextView);
+        heightTextView = findViewById(R.id.heightTextView);
+        weightTextView = findViewById(R.id.weightTextView);
+        recommendedCaloriesTextView = findViewById(R.id.recommendedCaloriesTextView);
+        currentCaloriesTextView = findViewById(R.id.currentCaloriesTextView);
+        btnRecipe = findViewById(R.id.Recipe);
+        btnIngredient = findViewById(R.id.Ingredients);
+        btnShoppingList = findViewById(R.id.ShoppingList);
+        btnHome = findViewById(R.id.Home);
+        mealNameEditText = findViewById(R.id.mealNameEditText);
+        caloriesEditText = findViewById(R.id.estimatedCaloriesEditText);
+        btnPersonalInfo = findViewById(R.id.PersonalInfo);
+        anyChartView = findViewById(R.id.any_chart_view);
         userViewModel = UserViewModel.getInstance();
         String username = getIntent().getStringExtra("username");
         userViewModel.loadUser(username);
-
         if (userViewModel.getUser() == null) {
             ageTextView.setText("Age:  yrs");
             genderTextView.setText("Gender: ");
@@ -86,7 +97,6 @@ public class InputMealScreen extends AppCompatActivity {
             currentCaloriesTextView.setText("Current Day's Calories: "
                     + userViewModel.currentCalories());
         }
-
         btnHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,13 +108,9 @@ public class InputMealScreen extends AppCompatActivity {
         btnRecipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Handle recipe button click (navigate to recipe screen)
-                Intent intent = new Intent(InputMealScreen.this, RecipeScreen.class);
-                intent.putExtra("username", username);
-                startActivity(intent);
+
             }
         });
-
         btnIngredient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,7 +129,6 @@ public class InputMealScreen extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
         btnPersonalInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -132,46 +137,8 @@ public class InputMealScreen extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        lineButton = findViewById(R.id.lineChart);
 
-        Button lineButton = findViewById(R.id.lineChart);
-        lineButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Cartesian lineChart = AnyChart.line();
-                lineChart.animation(true);
-                lineChart.padding(10d, 20d, 5d, 20d);
-                lineChart.crosshair().enabled(true);
-                lineChart.crosshair()
-                        .yLabel(true)
-                        .yStroke((Stroke) null, null, null, (String) null, (String) null);
-                lineChart.tooltip().positionMode(TooltipPositionMode.POINT);
-                lineChart.title("Trend of Daily Calorie Intake");
-                lineChart.yAxis(0).title("Number of Calories");
-                lineChart.xAxis(0).labels().padding(5d, 5d, 5d, 5d);
-                List<DataEntry> monthlyData = userViewModel.calculateMonthlyCalories();
-                Set monthlySet = Set.instantiate();
-                monthlySet.data(monthlyData);
-                Mapping seriesMapping = monthlySet.mapAs("{ x: 'x', value: 'value' }");
-                Line series = lineChart.line(seriesMapping);
-                series.name("Monthly Calorie Intake");
-                series.data(monthlyData);
-                series.hovered().markers().enabled(true);
-                series.hovered().markers()
-                        .type(MarkerType.CIRCLE)
-                        .size(4d);
-                series.tooltip()
-                        .position("right")
-                        .anchor(Anchor.LEFT_CENTER)
-                        .offsetX(5d)
-                        .offsetY(5d);
-                lineChart.legend().enabled(true);
-                lineChart.legend().fontSize(13d);
-                lineChart.legend().padding(0d, 0d, 10d, 0d);
-                lineChart.draw(true);
-                anyChartView.setChart(lineChart);
-                anyChartView.setVisibility(View.VISIBLE);
-            }
-        });
         Button barChartButton = findViewById(R.id.barChart);
         barChartButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -207,7 +174,6 @@ public class InputMealScreen extends AppCompatActivity {
                 anyChartView.setVisibility(View.VISIBLE);
             }
         });
-
     }
 
     public void submitButtonClicked(View v) {
@@ -255,6 +221,42 @@ public class InputMealScreen extends AppCompatActivity {
             builder.setPositiveButton("OK", null);
             builder.show();
         }
+    }
+
+    public void lineChartClicked(View v) {
+        Cartesian lineChart = AnyChart.line();
+        lineChart.animation(true);
+        lineChart.padding(10d, 20d, 5d, 20d);
+        lineChart.crosshair().enabled(true);
+        lineChart.crosshair()
+                .yLabel(true)
+                .yStroke((Stroke) null, null, null, (String) null, (String) null);
+        lineChart.tooltip().positionMode(TooltipPositionMode.POINT);
+        lineChart.title("Trend of Daily Calorie Intake");
+        lineChart.yAxis(0).title("Number of Calories");
+        lineChart.xAxis(0).labels().padding(5d, 5d, 5d, 5d);
+        List<DataEntry> monthlyData = userViewModel.calculateMonthlyCalories();
+        Set monthlySet = Set.instantiate();
+        monthlySet.data(monthlyData);
+        Mapping seriesMapping = monthlySet.mapAs("{ x: 'x', value: 'value' }");
+        Line series = lineChart.line(seriesMapping);
+        series.name("Monthly Calorie Intake");
+        series.data(monthlyData);
+        series.hovered().markers().enabled(true);
+        series.hovered().markers()
+                .type(MarkerType.CIRCLE)
+                .size(4d);
+        series.tooltip()
+                .position("right")
+                .anchor(Anchor.LEFT_CENTER)
+                .offsetX(5d)
+                .offsetY(5d);
+        lineChart.legend().enabled(true);
+        lineChart.legend().fontSize(13d);
+        lineChart.legend().padding(0d, 0d, 10d, 0d);
+        lineChart.draw(true);
+        anyChartView.setChart(lineChart);
+        anyChartView.setVisibility(View.VISIBLE);
     }
 
 }
