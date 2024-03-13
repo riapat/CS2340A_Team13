@@ -4,30 +4,30 @@ import java.util.Date;
 
 public class Meal {
     // Attributes
-    private String name;
+    private String mealName;
     private int calorieCount;
     private Date date;
 
     // Constructors
     public Meal() {
-        this.name = "";
+        this.mealName = "";
         this.calorieCount = 0;
         this.date = new Date();
     }
 
     public Meal(String name, int calorieCount) {
-        this.name = name;
+        this.mealName = name;
         this.calorieCount = calorieCount;
         this.date = new Date();
     }
 
     // Getters and setters
     public String getMealName() {
-        return name;
+        return mealName;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.mealName = name;
     }
 
     public int getCalorieCount() {
@@ -48,7 +48,7 @@ public class Meal {
 
     // Method to update the whole Meal object
     public void setMeal(Meal meal) {
-        this.name = meal.getMealName();
+        this.mealName = meal.getMealName();
         this.calorieCount = meal.getCalorieCount();
         this.date = meal.getDate();
     }

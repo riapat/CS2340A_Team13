@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.anychart.AnyChart;
 import com.anychart.AnyChartView;
@@ -38,7 +37,6 @@ import com.example.cs2340a_team13.model.Meal;
 import com.example.cs2340a_team13.viewModels.MealViewModel;
 import com.example.cs2340a_team13.viewModels.UserViewModel;
 
-import java.util.Date;
 
 public class InputMealScreen extends AppCompatActivity {
 
@@ -49,6 +47,7 @@ public class InputMealScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_input_meal_screen);
 
         TextView ageTextView = findViewById(R.id.ageTextView);
         TextView genderTextView = findViewById(R.id.genderTextView);
@@ -57,7 +56,6 @@ public class InputMealScreen extends AppCompatActivity {
         TextView recommendedCaloriesTextView = findViewById(R.id.recommendedCaloriesTextView);
         TextView currentCaloriesTextView = findViewById(R.id.currentCaloriesTextView);
 
-        Button btnInputMeal = findViewById(R.id.InputMeal);
         Button btnRecipe = findViewById(R.id.Recipe);
         Button btnIngredient = findViewById(R.id.Ingredients);
         Button btnShoppingList = findViewById(R.id.ShoppingList);
@@ -82,18 +80,14 @@ public class InputMealScreen extends AppCompatActivity {
             recommendedCaloriesTextView.setText("Advised Daily Calories: 0");
             currentCaloriesTextView.setText("Current Day's Calories: 0");
         } else {
-            ageTextView.setText(String.format("Age: %d yrs",
-                    userViewModel.getUser().getAge()));
-            genderTextView.setText(String.format("Gender: %s",
-                    userViewModel.getUser().getGender()));
-            heightTextView.setText(String.format("Height: %d cm",
-                    userViewModel.getUser().getHeight()));
-            weightTextView.setText(String.format("Weight: %d kg",
-                    userViewModel.getUser().getWeight()));
-            recommendedCaloriesTextView.setText(String.format("Advised Daily Calories: %f",
-                    userViewModel.calculateCalories()));
-            currentCaloriesTextView.setText(String.format("Current Day's Calories: %d",
-                    userViewModel.currentCalories()));
+            Log.d("InputMealScreen", "User loaded in input meal screen " + userViewModel.getUser().getAge());
+            ageTextView.setText("Age: " + userViewModel.getUser().getAge() + " yrs");
+            genderTextView.setText("Gender: " +  userViewModel.getUser().getGender());
+            heightTextView.setText("Height: " + userViewModel.getUser().getHeight() + " cm");
+            weightTextView.setText("Weight: " + userViewModel.getUser().getWeight() + " kg");
+            recommendedCaloriesTextView.setText("Advised Daily Calories: " + userViewModel.calculateCalories());
+            Log.d("InputMealScreen", "Current calories: " + userViewModel.currentCalories());
+            currentCaloriesTextView.setText("Current Day's Calories: " + userViewModel.currentCalories());
         }
 
         btnHome.setOnClickListener(new View.OnClickListener() {
@@ -192,16 +186,16 @@ public class InputMealScreen extends AppCompatActivity {
 
         // add a AnyChartView in the XML layout with id any_chart_view
         AnyChartView anyChartView = findViewById(R.id.any_chart_view);
-        anyChartView.setProgressBar(findViewById(R.id.progress_bar));
-        Cartesian lineChart = AnyChart.line();
-        lineChart.animation(true);
-        lineChart.padding(10d, 20d, 5d, 20d);
 
         // chart settings
         Button lineButton = findViewById(R.id.lineChart);
         lineButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
+                Cartesian lineChart = AnyChart.line();
+                lineChart.animation(true);
+                lineChart.padding(10d, 20d, 5d, 20d);
                 lineChart.crosshair().enabled(true);
                 lineChart.crosshair()
                         .yLabel(true)
@@ -213,57 +207,21 @@ public class InputMealScreen extends AppCompatActivity {
                 lineChart.yAxis(0).title("Number of Calories");
                 lineChart.xAxis(0).labels().padding(5d, 5d, 5d, 5d);
 
-                // create a loop going through the database, using the time stamp
+                List<DataEntry> monthlyData = userViewModel.calculateMonthlyCalories();
 
-                List<DataEntry> weeklyData = new ArrayList<>();
-                weeklyData.add(new CustomDataEntry("1986", 3.6, 2.3, 2.8));
-                weeklyData.add(new CustomDataEntry("1987", 7.1, 4.0, 4.1));
-                weeklyData.add(new CustomDataEntry("1988", 8.5, 6.2, 5.1));
-                weeklyData.add(new CustomDataEntry("1989", 9.2, 11.8, 6.5));
-                weeklyData.add(new CustomDataEntry("1990", 10.1, 13.0, 12.5));
-                weeklyData.add(new CustomDataEntry("1991", 11.6, 13.9, 18.0));
-                weeklyData.add(new CustomDataEntry("1992", 16.4, 18.0, 21.0));
-                weeklyData.add(new CustomDataEntry("1993", 18.0, 23.3, 20.3));
-                weeklyData.add(new CustomDataEntry("1994", 13.2, 24.7, 19.2));
+                Set monthlySet = Set.instantiate();
+                monthlySet.data(monthlyData);
 
-                Set weeklySet = Set.instantiate();
-                weeklySet.data(weeklyData);
+                Mapping seriesMapping = monthlySet.mapAs("{ x: 'x', value: 'value' }");
 
-                Mapping series1Mapping = weeklySet.mapAs("{ x: 'x', value: 'value' }");
-                Mapping series2Mapping = weeklySet.mapAs("{ x: 'x', value: 'value2' }");
-                Mapping series3Mapping = weeklySet.mapAs("{ x: 'x', value: 'value3' }");
-
-                Line series1 = lineChart.line(series1Mapping);
-                series1.name("Brandy");
-                series1.hovered().markers().enabled(true);
-                series1.hovered().markers()
+                Line series = lineChart.line(seriesMapping);
+                series.name("Monthly Calorie Intake");
+                series.data(monthlyData);
+                series.hovered().markers().enabled(true);
+                series.hovered().markers()
                         .type(MarkerType.CIRCLE)
                         .size(4d);
-                series1.tooltip()
-                        .position("right")
-                        .anchor(Anchor.LEFT_CENTER)
-                        .offsetX(5d)
-                        .offsetY(5d);
-
-                Line series2 = lineChart.line(series2Mapping);
-                series2.name("Whiskey");
-                series2.hovered().markers().enabled(true);
-                series2.hovered().markers()
-                        .type(MarkerType.CIRCLE)
-                        .size(4d);
-                series2.tooltip()
-                        .position("right")
-                        .anchor(Anchor.LEFT_CENTER)
-                        .offsetX(5d)
-                        .offsetY(5d);
-
-                Line series3 = lineChart.line(series3Mapping);
-                series3.name("Tequila");
-                series3.hovered().markers().enabled(true);
-                series3.hovered().markers()
-                        .type(MarkerType.CIRCLE)
-                        .size(4d);
-                series3.tooltip()
+                series.tooltip()
                         .position("right")
                         .anchor(Anchor.LEFT_CENTER)
                         .offsetX(5d)
@@ -272,8 +230,9 @@ public class InputMealScreen extends AppCompatActivity {
                 lineChart.legend().enabled(true);
                 lineChart.legend().fontSize(13d);
                 lineChart.legend().padding(0d, 0d, 10d, 0d);
-
+                lineChart.draw(true);
                 anyChartView.setChart(lineChart);
+                anyChartView.setVisibility(View.VISIBLE);
             }
         });
 
@@ -281,16 +240,21 @@ public class InputMealScreen extends AppCompatActivity {
         barChartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Cartesian cartesian = AnyChart.column();
+
+                Log.d("bar chart", "bar chart clicked");
+
+                Cartesian bar = AnyChart.column();
+                bar.animation(true);
+                bar.padding(10d, 20d, 5d, 20d);
 
                 // get calculated goal value
                 // get daily value so far
 
                 List<DataEntry> data = new ArrayList<>();
-                data.add(new ValueDataEntry("Achieved", 1500)); // tester values
-                data.add(new ValueDataEntry("Goal", 2500));
+                data.add(new ValueDataEntry("Goal", userViewModel.calculateCalories()));
+                data.add(new ValueDataEntry("Consumed", userViewModel.currentCalories()));
 
-                Column column = cartesian.column(data);
+                Column column = bar.column(data);
 
                 column.tooltip()
                         .titleFormat("{%X}")
@@ -300,30 +264,23 @@ public class InputMealScreen extends AppCompatActivity {
                         .offsetY(5d)
                         .format("${%Value}{groupsSeparator: }");
 
-                cartesian.animation(true);
-                cartesian.title("Goal vs Achieved Daily Calorie Count");
+                bar.animation(true);
+                bar.title("Goal vs Achieved Daily Calorie Count");
 
-                cartesian.yScale().minimum(0d);
+                bar.yScale().minimum(0d);
 
-                cartesian.yAxis(0).labels().format("${%Value}{groupsSeparator: }");
+                bar.yAxis(0).labels().format("{%Value}{groupsSeparator: }");
 
-                cartesian.tooltip().positionMode(TooltipPositionMode.POINT);
-                cartesian.interactivity().hoverMode(HoverMode.BY_X);
+                bar.tooltip().positionMode(TooltipPositionMode.POINT);
+                bar.interactivity().hoverMode(HoverMode.BY_X);
 
-                cartesian.xAxis(0).title("Categories");
-                cartesian.yAxis(0).title("Calories");
-
-                anyChartView.setChart(cartesian);
+                bar.xAxis(0).title("Categories");
+                bar.yAxis(0).title("Calories");
+                anyChartView.setChart(bar);
+                anyChartView.setVisibility(View.VISIBLE);
             }
         });
 
     }
 
-    private class CustomDataEntry extends ValueDataEntry {
-        CustomDataEntry(String x, Number value, Number value2, Number value3) {
-            super(x, value);
-            setValue("value2", value2);
-            setValue("value3", value3);
-        }
-    }
 }

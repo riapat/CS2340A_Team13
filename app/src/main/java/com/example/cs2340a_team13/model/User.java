@@ -100,5 +100,6 @@ public class User {
         this.weight = user.getWeight();
         this.age = user.getAge();
         this.gender = user.getGender();
+        this.loggedMeals = user.getMeals();
     }
 }
