@@ -2,6 +2,7 @@ package com.example.cs2340a_team13.viewModels;
 import android.annotation.SuppressLint;
 import android.util.Log;
 
+
 import androidx.annotation.NonNull;
 
 import com.anychart.chart.common.dataentry.DataEntry;
@@ -15,12 +16,14 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.database.core.DatabaseConfig;
-import java.text.SimpleDateFormat;
+
+
 import java.util.ArrayList;
+import java.util.Locale;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
 
 public class UserViewModel {
     private static User user;
@@ -101,49 +104,49 @@ public class UserViewModel {
             }
         });
     }
-    public double calculateCalories(){
-        if(user == null){
+    public double calculateCalories() {
+        if (user == null) {
             return 0;
-        }else {
+        } else {
             double age = (double) user.getAge();
             String gender =  user.getGender();
             double weight = (double) user.getWeight();
             double height = (double) user.getHeight();
             double idealCal = 0;
-            switch(gender.toLowerCase()){
-                case "female":
-                case  "woman":
-                case "f":
-                case "w":
-                    idealCal = 1.2 * ((10.0 * weight) + (height * 6.25) - (5.0 * age) + 5.0);
-                    break;
-                case "male":
-                case  "man":
-                case "m":
-                    idealCal = 1.2 * (10.0 * weight) + (height * 6.25) - (5.0 * age) - 161.0;
-                    break;
-                default:
-                    idealCal = 0;
-                    break;
+            switch (gender.toLowerCase()) {
+            case "female":
+            case  "woman":
+            case "f":
+            case "w":
+                idealCal = 1.2 * ((10.0 * weight) + (height * 6.25) - (5.0 * age) + 5.0);
+                break;
+            case "male":
+            case  "man":
+            case "m":
+                idealCal = 1.2 * (10.0 * weight) + (height * 6.25) - (5.0 * age) - 161.0;
+                break;
+            default:
+                idealCal = 0;
+                break;
             }
             return idealCal;
         }
     }
-    public int currentCalories(){
-        if(user == null){
+    public int currentCalories() {
+        if (user == null) {
             return 0;
         }
-        int currentCal;
+        int currentCal = 0;
         List<Meal> meals = user.getMeals();
-        Date today = new Date();
-        
-        for(Meal meal:meals) {
-            if(Objects.equals(meal.getDate().getDay(), today.getDay()) {
-                if(Objects.equals(meal.getDate().getMonth(), today.getMonth()){
-                    if(Objects.equals(meal.getDate().getYear(), today.getYear()){
-                        currentCal += meal.getCalorieCount();
-                    }
-                }
+        Date currentDate = new Date();
+        @SuppressLint("SimpleDateFormat")
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        String today = dateFormat.format(currentDate);
+        String currentMealDate = "";
+        for (Meal meal:meals) {
+            currentMealDate = dateFormat.format(meal.getDate());
+            if (today.equals(currentMealDate)) {
+                currentCal += meal.getCalorieCount();
             }
         }
         return currentCal;
@@ -171,7 +174,7 @@ public class UserViewModel {
     }
 
     //DO NOT USE - Testing Purposes Only
-    public void setTestUser(User testUser){
+    public void setTestUser(User testUser) {
         this.user = testUser;
     }
 }

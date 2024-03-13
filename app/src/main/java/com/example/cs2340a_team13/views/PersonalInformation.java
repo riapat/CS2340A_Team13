@@ -111,6 +111,7 @@ public class PersonalInformation extends AppCompatActivity {
                 createHeightEditText.requestFocus();
             } else {
                 userViewModel.updateUserHeight(createHeight);
+                createHeightEditText.setText("");
             }
         } else {
             makeText(PersonalInformation.this,
@@ -133,6 +134,7 @@ public class PersonalInformation extends AppCompatActivity {
                 createWeightEditText.requestFocus();
             } else {
                 userViewModel.updateUserWeight(createWeight);
+                createWeightEditText.setText("");
             }
         } else {
             makeText(PersonalInformation.this,
@@ -153,6 +155,7 @@ public class PersonalInformation extends AppCompatActivity {
                 createGenderEditText.requestFocus();
             } else {
                 userViewModel.updateUserGender(createGender);
+                createGenderEditText.setText("");
             }
         }
         if (createAgeEditText != null) {
@@ -169,6 +172,7 @@ public class PersonalInformation extends AppCompatActivity {
                 createAgeEditText.requestFocus();
             } else {
                 userViewModel.updateUserAge(createAge);
+                createAgeEditText.setText("");
             }
         } else {
             makeText(PersonalInformation.this,

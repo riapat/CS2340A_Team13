@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-
 import com.anychart.AnyChart;
 import com.anychart.AnyChartView;
 import com.anychart.chart.common.dataentry.DataEntry;
@@ -35,7 +34,6 @@ import java.util.List;
 import com.example.cs2340a_team13.model.Meal;
 import com.example.cs2340a_team13.viewModels.MealViewModel;
 import com.example.cs2340a_team13.viewModels.UserViewModel;
-
 
 public class InputMealScreen extends AppCompatActivity {
 
