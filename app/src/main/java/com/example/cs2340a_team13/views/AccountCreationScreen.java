@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import android.content.Intent;
 
 import com.example.cs2340a_team13.R;
 import com.example.cs2340a_team13.viewModels.LoginViewModel;

@@ -4,7 +4,6 @@ import static android.widget.Toast.makeText;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,7 +12,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cs2340a_team13.R;
-import com.example.cs2340a_team13.viewModels.LoginViewModel;
 import com.example.cs2340a_team13.viewModels.UserViewModel;
 
 public class PersonalInformation extends AppCompatActivity {
@@ -41,7 +39,6 @@ public class PersonalInformation extends AppCompatActivity {
         userViewModel = UserViewModel.getInstance();
         String username = getIntent().getStringExtra("username");
         userViewModel.loadUser(username);
-        Log.d("PersonalInformation", "User loaded in personal information screen " + userViewModel.getUser().getUsername());
 
         btnInputMeal.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,7 +101,9 @@ public class PersonalInformation extends AppCompatActivity {
             try {
                 createHeight = Integer.parseInt(createHeightEditText.getText().toString().trim());
             } catch (NumberFormatException e) {
-                makeText(PersonalInformation.this, "Please enter a valid height", Toast.LENGTH_SHORT).show();
+                makeText(PersonalInformation.this,
+                        "Please enter a valid height",
+                        Toast.LENGTH_SHORT).show();
             }
             if (createHeight == 0) {
                 emptyCheck = false;
@@ -114,7 +113,9 @@ public class PersonalInformation extends AppCompatActivity {
                 userViewModel.updateUserHeight(createHeight);
             }
         } else {
-            makeText(PersonalInformation.this, "Please enter a valid height", Toast.LENGTH_SHORT).show();
+            makeText(PersonalInformation.this,
+                    "Please enter a valid height",
+                    Toast.LENGTH_SHORT).show();
             createHeightEditText.requestFocus();
         }
 
@@ -122,7 +123,9 @@ public class PersonalInformation extends AppCompatActivity {
             try {
                 createWeight = Integer.parseInt(createWeightEditText.getText().toString().trim());
             } catch (NumberFormatException e) {
-                makeText(PersonalInformation.this, "Please enter a valid weight", Toast.LENGTH_SHORT).show();
+                makeText(PersonalInformation.this,
+                        "Please enter a valid weight",
+                        Toast.LENGTH_SHORT).show();
             }
             if (createWeight == 0) {
                 emptyCheck = false;
@@ -132,7 +135,9 @@ public class PersonalInformation extends AppCompatActivity {
                 userViewModel.updateUserWeight(createWeight);
             }
         } else {
-            makeText(PersonalInformation.this, "Please enter a valid weight", Toast.LENGTH_SHORT).show();
+            makeText(PersonalInformation.this,
+                    "Please enter a valid weight",
+                    Toast.LENGTH_SHORT).show();
             createWeightEditText.requestFocus();
         }
 
@@ -154,7 +159,9 @@ public class PersonalInformation extends AppCompatActivity {
             try {
                 createAge = Integer.parseInt(createAgeEditText.getText().toString().trim());
             } catch (NumberFormatException e) {
-                makeText(PersonalInformation.this, "Please enter a valid age", Toast.LENGTH_SHORT).show();
+                makeText(PersonalInformation.this,
+                        "Please enter a valid age",
+                        Toast.LENGTH_SHORT).show();
             }
             if (createAge == 0) {
                 emptyCheck = false;
@@ -164,7 +171,9 @@ public class PersonalInformation extends AppCompatActivity {
                 userViewModel.updateUserAge(createAge);
             }
         } else {
-            makeText(PersonalInformation.this, "Please enter a valid age", Toast.LENGTH_SHORT).show();
+            makeText(PersonalInformation.this,
+                    "Please enter a valid age",
+                    Toast.LENGTH_SHORT).show();
             createAgeEditText.requestFocus();
         }
     }

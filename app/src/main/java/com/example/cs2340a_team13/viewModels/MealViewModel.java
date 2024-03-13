@@ -13,8 +13,8 @@ public class MealViewModel {
     private User currentUser = userViewModel.getUser(); // Reference to current user
     private static MealViewModel instance;
 
-    public static synchronized MealViewModel getInstance(){
-        if (instance == null){
+    public static synchronized MealViewModel getInstance() {
+        if (instance == null) {
             instance = new MealViewModel();
         }
         return instance;

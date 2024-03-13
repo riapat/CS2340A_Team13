@@ -12,7 +12,7 @@ import com.example.cs2340a_team13.viewModels.UserViewModel;
 
 public class HomeScreen extends AppCompatActivity {
 
-    UserViewModel userViewModel;
+    private UserViewModel userViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

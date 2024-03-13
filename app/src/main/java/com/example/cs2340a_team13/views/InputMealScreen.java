@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -43,34 +42,34 @@ public class InputMealScreen extends AppCompatActivity {
     private MealViewModel mealViewModel;
     private UserViewModel userViewModel;
 
+    private TextView ageTextView = findViewById(R.id.ageTextView);
+    private TextView genderTextView = findViewById(R.id.genderTextView);
+    private TextView heightTextView = findViewById(R.id.heightTextView);
+    private TextView weightTextView = findViewById(R.id.weightTextView);
+    private TextView recommendedCaloriesTextView = findViewById(R.id.recommendedCaloriesTextView);
+    private TextView currentCaloriesTextView = findViewById(R.id.currentCaloriesTextView);
+
+    private Button btnRecipe = findViewById(R.id.Recipe);
+    private Button btnIngredient = findViewById(R.id.Ingredients);
+    private Button btnShoppingList = findViewById(R.id.ShoppingList);
+    private Button btnHome = findViewById(R.id.Home);
+    private EditText mealNameEditText = findViewById(R.id.mealNameEditText);
+    private EditText caloriesEditText = findViewById(R.id.estimatedCaloriesEditText);
+    private Button submitButton = findViewById(R.id.submitButton);
+
+    private AnyChartView anyChartView = findViewById(R.id.any_chart_view);
+
     @SuppressLint({ "DefaultLocale", "SetTextI18n" })
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_input_meal_screen);
-
-        TextView ageTextView = findViewById(R.id.ageTextView);
-        TextView genderTextView = findViewById(R.id.genderTextView);
-        TextView heightTextView = findViewById(R.id.heightTextView);
-        TextView weightTextView = findViewById(R.id.weightTextView);
-        TextView recommendedCaloriesTextView = findViewById(R.id.recommendedCaloriesTextView);
-        TextView currentCaloriesTextView = findViewById(R.id.currentCaloriesTextView);
-
-        Button btnRecipe = findViewById(R.id.Recipe);
-        Button btnIngredient = findViewById(R.id.Ingredients);
-        Button btnShoppingList = findViewById(R.id.ShoppingList);
-        Button btnHome = findViewById(R.id.Home);
-        EditText mealNameEditText = findViewById(R.id.mealNameEditText);
-        EditText caloriesEditText = findViewById(R.id.estimatedCaloriesEditText);
-        Button submitButton = findViewById(R.id.submitButton);
-
         mealViewModel = MealViewModel.getInstance();
         Button btnPersonalInfo = findViewById(R.id.PersonalInfo);
 
         userViewModel = UserViewModel.getInstance();
         String username = getIntent().getStringExtra("username");
         userViewModel.loadUser(username);
-        Log.d("InputMealScreen", "User loaded in input meal screen " + userViewModel.getUser().getUsername());
 
         if (userViewModel.getUser() == null) {
             ageTextView.setText("Age:  yrs");
@@ -80,14 +79,14 @@ public class InputMealScreen extends AppCompatActivity {
             recommendedCaloriesTextView.setText("Advised Daily Calories: 0");
             currentCaloriesTextView.setText("Current Day's Calories: 0");
         } else {
-            Log.d("InputMealScreen", "User loaded in input meal screen " + userViewModel.getUser().getAge());
             ageTextView.setText("Age: " + userViewModel.getUser().getAge() + " yrs");
             genderTextView.setText("Gender: " +  userViewModel.getUser().getGender());
             heightTextView.setText("Height: " + userViewModel.getUser().getHeight() + " cm");
             weightTextView.setText("Weight: " + userViewModel.getUser().getWeight() + " kg");
-            recommendedCaloriesTextView.setText("Advised Daily Calories: " + userViewModel.calculateCalories());
-            Log.d("InputMealScreen", "Current calories: " + userViewModel.currentCalories());
-            currentCaloriesTextView.setText("Current Day's Calories: " + userViewModel.currentCalories());
+            recommendedCaloriesTextView.setText("Advised Daily Calories: "
+                    + userViewModel.calculateCalories());
+            currentCaloriesTextView.setText("Current Day's Calories: "
+                    + userViewModel.currentCalories());
         }
 
         btnHome.setOnClickListener(new View.OnClickListener() {
@@ -127,54 +126,6 @@ public class InputMealScreen extends AppCompatActivity {
             }
         });
 
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String mealName = mealNameEditText.getText().toString();
-                String caloriesText = caloriesEditText.getText().toString();
-                if (!caloriesText.isEmpty()) {
-                    try {
-                        int calories = Integer.parseInt(caloriesText);
-                        // Check if meal name contains numbers
-                        boolean containsNumber = false;
-                        for (char c : mealName.toCharArray()) {
-                            if (Character.isDigit(c)) {
-                                containsNumber = true;
-                                break;
-                            }
-                        }
-                        if (containsNumber) {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(InputMealScreen.this);
-                            builder.setTitle("Invalid Input");
-                            builder.setMessage("Meal name cannot contain numbers");
-                            builder.setPositiveButton("OK", null);
-                            builder.show();
-                        } else {
-                            // Create meal object
-                            Meal meal = mealViewModel.createMeal(mealName, calories);
-                            currentCaloriesTextView.setText(String.format("Current Day's Calories: %d",
-                                    userViewModel.currentCalories()));
-                            // Clear EditText fields
-                            mealNameEditText.setText("");
-                            caloriesEditText.setText("");
-                        }
-                    } catch (NumberFormatException e) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(InputMealScreen.this);
-                        builder.setTitle("Invalid Input");
-                        builder.setMessage("Calories must be a number");
-                        builder.setPositiveButton("OK", null);
-                        builder.show();
-                    }
-                } else {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(InputMealScreen.this);
-                    builder.setTitle("Invalid Input");
-                    builder.setMessage("Please enter calories");
-                    builder.setPositiveButton("OK", null);
-                    builder.show();
-                }
-            }
-        });
-
         btnPersonalInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -184,13 +135,8 @@ public class InputMealScreen extends AppCompatActivity {
             }
         });
 
-        // add a AnyChartView in the XML layout with id any_chart_view
-        AnyChartView anyChartView = findViewById(R.id.any_chart_view);
-
-        // chart settings
         Button lineButton = findViewById(R.id.lineChart);
         lineButton.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 Cartesian lineChart = AnyChart.line();
@@ -200,20 +146,14 @@ public class InputMealScreen extends AppCompatActivity {
                 lineChart.crosshair()
                         .yLabel(true)
                         .yStroke((Stroke) null, null, null, (String) null, (String) null);
-
                 lineChart.tooltip().positionMode(TooltipPositionMode.POINT);
-
                 lineChart.title("Trend of Daily Calorie Intake");
                 lineChart.yAxis(0).title("Number of Calories");
                 lineChart.xAxis(0).labels().padding(5d, 5d, 5d, 5d);
-
                 List<DataEntry> monthlyData = userViewModel.calculateMonthlyCalories();
-
                 Set monthlySet = Set.instantiate();
                 monthlySet.data(monthlyData);
-
                 Mapping seriesMapping = monthlySet.mapAs("{ x: 'x', value: 'value' }");
-
                 Line series = lineChart.line(seriesMapping);
                 series.name("Monthly Calorie Intake");
                 series.data(monthlyData);
@@ -226,7 +166,6 @@ public class InputMealScreen extends AppCompatActivity {
                         .anchor(Anchor.LEFT_CENTER)
                         .offsetX(5d)
                         .offsetY(5d);
-
                 lineChart.legend().enabled(true);
                 lineChart.legend().fontSize(13d);
                 lineChart.legend().padding(0d, 0d, 10d, 0d);
@@ -235,27 +174,17 @@ public class InputMealScreen extends AppCompatActivity {
                 anyChartView.setVisibility(View.VISIBLE);
             }
         });
-
         Button barChartButton = findViewById(R.id.barChart);
         barChartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Log.d("bar chart", "bar chart clicked");
-
                 Cartesian bar = AnyChart.column();
                 bar.animation(true);
                 bar.padding(10d, 20d, 5d, 20d);
-
-                // get calculated goal value
-                // get daily value so far
-
                 List<DataEntry> data = new ArrayList<>();
                 data.add(new ValueDataEntry("Goal", userViewModel.calculateCalories()));
                 data.add(new ValueDataEntry("Consumed", userViewModel.currentCalories()));
-
                 Column column = bar.column(data);
-
                 column.tooltip()
                         .titleFormat("{%X}")
                         .position(Position.CENTER_BOTTOM)
@@ -281,6 +210,53 @@ public class InputMealScreen extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void submitButtonClicked(View v) {
+        String mealName = mealNameEditText.getText().toString();
+        String caloriesText = caloriesEditText.getText().toString();
+        if (!caloriesText.isEmpty()) {
+            try {
+                int calories = Integer.parseInt(caloriesText);
+                // Check if meal name contains numbers
+                boolean containsNumber = false;
+                for (char c : mealName.toCharArray()) {
+                    if (Character.isDigit(c)) {
+                        containsNumber = true;
+                        break;
+                    }
+                }
+                if (containsNumber) {
+                    AlertDialog.Builder builder = new AlertDialog
+                            .Builder(InputMealScreen.this);
+                    builder.setTitle("Invalid Input");
+                    builder.setMessage("Meal name cannot contain numbers");
+                    builder.setPositiveButton("OK", null);
+                    builder.show();
+                } else {
+                    // Create meal object
+                    Meal meal = mealViewModel.createMeal(mealName, calories);
+                    currentCaloriesTextView
+                            .setText(String.format("Current Day's Calories: %d",
+                                    userViewModel.currentCalories()));
+                    // Clear EditText fields
+                    mealNameEditText.setText("");
+                    caloriesEditText.setText("");
+                }
+            } catch (NumberFormatException e) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(InputMealScreen.this);
+                builder.setTitle("Invalid Input");
+                builder.setMessage("Calories must be a number");
+                builder.setPositiveButton("OK", null);
+                builder.show();
+            }
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(InputMealScreen.this);
+            builder.setTitle("Invalid Input");
+            builder.setMessage("Please enter calories");
+            builder.setPositiveButton("OK", null);
+            builder.show();
+        }
     }
 
 }
