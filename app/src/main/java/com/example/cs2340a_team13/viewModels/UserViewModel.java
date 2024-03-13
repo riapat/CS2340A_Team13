@@ -2,6 +2,11 @@ package com.example.cs2340a_team13.viewModels;
 import android.annotation.SuppressLint;
 import android.util.Log;
 
+
+import androidx.annotation.NonNull;
+
+import com.anychart.chart.common.dataentry.DataEntry;
+import com.anychart.chart.common.dataentry.ValueDataEntry;
 import com.example.cs2340a_team13.DatabaseAccess;
 import com.example.cs2340a_team13.model.Meal;
 import com.example.cs2340a_team13.model.User;
@@ -12,6 +17,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.database.core.DatabaseConfig;
 
+
+import java.util.ArrayList;
+import java.util.Locale;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -142,6 +150,27 @@ public class UserViewModel {
             }
         }
         return currentCal;
+    }
+
+    public List<DataEntry> calculateMonthlyCalories() {
+        int[] monthlyCalories = new int[12];
+
+        SimpleDateFormat monthFormat = new SimpleDateFormat("MM", Locale.getDefault());
+
+        for (Meal meal: user.getMeals()) {
+            String month = monthFormat.format(meal.getDate());
+            int monthIndex = Integer.parseInt(month) - 1;
+            monthlyCalories[monthIndex] += meal.getCalorieCount();
+        }
+
+        List<DataEntry> dataEntries = new ArrayList<>();
+        String[] monthNames = {"Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+        for (int i = 0; i < 12; i++) {
+            dataEntries.add(new ValueDataEntry(monthNames[i], monthlyCalories[i]));
+
+        }
+        return dataEntries;
     }
 
     //DO NOT USE - Testing Purposes Only

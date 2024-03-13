@@ -72,18 +72,25 @@ public class LoginViewModel {
                         if (task.isSuccessful()) {
                             DatabaseAccess.getInstance()
                                     .readFromUserDB(username, user -> {
-                                if (user != null) {
-                                    Log.d("LoginViewModel", "signInWithEmail:success Username: " + user.getUsername() + " Password: " + user.getPassword());
-                                    updateUser(user);
-                                    callback.onComplete(true, user);
-                                } else {
-                                    Log.w("LoginViewModel", "signInWithEmail:failure ", task.getException());
-                                    callback.onComplete(false, null);
-                                }
-                            });
+                                        if (user != null) {
+                                            Log.d("LoginViewModel",
+                                                    "signInWithEmail:success Username: "
+                                                            + user.getUsername() + " Password: "
+                                                            + user.getPassword());
+                                            updateUser(user);
+                                            callback.onComplete(true, user);
+                                        } else {
+                                            Log.w("LoginViewModel",
+                                                    "signInWithEmail:failure ",
+                                                    task.getException());
+                                            callback.onComplete(false, null);
+                                        }
+                                    });
 
                         } else {
-                            Log.w("LoginViewModel", "signInWithEmail:failure ", task.getException());
+                            Log.w("LoginViewModel",
+                                    "signInWithEmail:failure ",
+                                    task.getException());
                             callback.onComplete(false, null);
                         }
                     }
