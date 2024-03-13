@@ -3,19 +3,12 @@ import android.annotation.SuppressLint;
 import android.util.Log;
 
 
-import androidx.annotation.NonNull;
 
 import com.anychart.chart.common.dataentry.DataEntry;
 import com.anychart.chart.common.dataentry.ValueDataEntry;
 import com.example.cs2340a_team13.DatabaseAccess;
 import com.example.cs2340a_team13.model.Meal;
 import com.example.cs2340a_team13.model.User;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthUserCollisionException;
-import com.google.firebase.database.core.DatabaseConfig;
 
 
 import java.util.ArrayList;
@@ -165,7 +158,7 @@ public class UserViewModel {
 
         List<DataEntry> dataEntries = new ArrayList<>();
         String[] monthNames = {"Jan", "Feb", "Mar", "Apr", "May", "Jun",
-                "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+            "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
         for (int i = 0; i < 12; i++) {
             dataEntries.add(new ValueDataEntry(monthNames[i], monthlyCalories[i]));
 
