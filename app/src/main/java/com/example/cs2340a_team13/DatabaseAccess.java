@@ -1,11 +1,16 @@
 package com.example.cs2340a_team13;
 import android.util.Log;
 
+import com.example.cs2340a_team13.model.Ingredient;
+import com.example.cs2340a_team13.model.Recipe;
 import com.example.cs2340a_team13.model.User;
 import com.example.cs2340a_team13.model.Meal;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseAccess {
 
@@ -64,7 +69,7 @@ public class DatabaseAccess {
                                                 Log.i("DatabaseAccess",
                                                         "Meal found in user database "
                                                                 + mealSnapshot.getValue(Meal.class)
-                                                                .getMealName());
+                                                                .getCalorieCount());
                                             }
                                         }
                                         callback.onComplete(user);
@@ -140,11 +145,104 @@ public class DatabaseAccess {
                 });
     }
 
+    //Add an Ingredient to Pantry list of the User by sending in an Ingredient object
+    // and returns the User object with the updated pantry list to update the state of the User
+    public void addToPantry(User user, Ingredient ingredient, UserCallback callback) {
+        DatabaseReference pantryRef = fbInstance.getReference("Users")
+                .child(user.getUsername()).child("pantry");
+        // Append the ingredient to the pantry list
+        pantryRef.push().setValue(ingredient)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        System.out.println("Ingredient added to pantry");
+                        callback.onComplete(user);
+                    } else {
+                        System.out.println("Ingredient not added to pantry");
+                        callback.onComplete(null);
+                    }
+                });
+    }
+
+    //Load Pantry list of the User by sending in username
+    //and return Pantry List of the User
+    //Query the user and update the queried user
+    public void loadPantry(String username, PantryCallback callback) {
+        DatabaseReference pantryRef = fbInstance.getReference("Users")
+                .child(username).child("pantry");
+        pantryRef.get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        //Go through the pantry list and add each ingredient to the list
+                        List<Ingredient> ingredients = new ArrayList<>();
+                        for (DataSnapshot ingredientSnapshot : task.getResult().getChildren()) {
+                            Ingredient ingredient = ingredientSnapshot.getValue(Ingredient.class);
+                            if (ingredient != null) {
+                                ingredients.add(ingredient);
+                            }
+                        }
+                        System.out.println("Pantry loaded");
+                        callback.onComplete(ingredients);
+                    } else {
+                        System.out.println("Pantry not loaded");
+                        callback.onComplete(null);
+                    }
+                });
+    }
+
+    //Write to a global table: Cookbook that sends in a Recipe object
+    public void writeToCookbookDB(Recipe recipe, RecipeCallback callback) {
+        fbInstance.getReference("Cookbook").child(recipe.getRecipeName()).setValue(recipe)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        System.out.println("Recipe added to cookbook database");
+                        callback.onComplete(recipe);
+                    } else {
+                        System.out.println("Recipe not added to cookbook database");
+                        callback.onComplete(null);
+                    }
+                });
+    }
+
+    //Read all the recipes from the Cookbook table
+    public void readFromCookbookDB(RecipeListCallback callback) {
+        List<Recipe> recipes = new ArrayList<>();
+        fbInstance.getReference("Cookbook").get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (DataSnapshot recipeSnapshot : task.getResult().getChildren()) {
+                            Recipe recipe = recipeSnapshot.getValue(Recipe.class);
+                            if (recipe != null) {
+                                recipes.add(recipe);
+                            }
+                        }
+                        System.out.println("Recipes found in cookbook database");
+                        callback.onComplete(recipes);
+                    } else {
+                        System.out.println("Recipes not found in cookbook database");
+                        callback.onComplete(null);
+                    }
+                });
+    }
+
+
     public interface UserCallback {
         void onComplete(User user);
     }
 
     public interface MealCallback {
         void onComplete(Meal meal);
+    }
+
+    //Return a list of Ingredients
+    public interface PantryCallback {
+        void onComplete(List<Ingredient> ingredients);
+    }
+
+    public interface RecipeCallback {
+        void onComplete(Recipe recipe);
+    }
+
+    public interface RecipeListCallback {
+        void onComplete(List<Recipe> recipes);
     }
 }
