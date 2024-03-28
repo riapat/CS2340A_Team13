@@ -7,6 +7,7 @@
     android:background="@color/white"
     tools:context=".views.IngredientScreen">
 
+
     <TextView
         android:id="@+id/titleTextView"
         android:layout_width="wrap_content"
@@ -18,24 +19,95 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:padding="16dp"/>
 
-    <Button
-        android:id="@+id/PersonalInfo"
-        android:layout_width="113dp"
-        android:layout_height="57dp"
-        android:layout_marginStart="16dp"
-        android:layout_weight="1"
-        android:text="Personal Info"
-        android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="92dp"
-        tools:ignore="MissingConstraints" />
 
-    <FrameLayout
-        android:id="@+id/content_container"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        app:layout_constraintBottom_toTopOf="@+id/navigation_bar" />
+    <Button
+        android:id="@+id/InputIngredients"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Input Ingredients"
+        android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@id/titleTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"/>
+
+
+    <!-- Ingredient Name Field -->
+    <EditText
+        android:id="@+id/ingredientNameEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Ingredient Name"
+        android:inputType="text"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/InputIngredients"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"/>
+
+
+    <!-- Quantity Field -->
+    <EditText
+        android:id="@+id/quantityEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Quantity"
+        android:inputType="numberDecimal"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/ingredientNameEditText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp"/>
+
+
+    <!-- Calories Field -->
+    <EditText
+        android:id="@+id/caloriesEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Calories"
+        android:inputType="number"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/quantityEditText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp"/>
+
+
+    <!-- Expiration Date Field -->
+    <EditText
+        android:id="@+id/expirationDateEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Expiration Date"
+        android:inputType="date"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/caloriesEditText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp"/>
+
+
+    <!-- Submit Button -->
+    <Button
+        android:id="@+id/submitButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        android:textSize="14sp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/expirationDateEditText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"/>
+
 
     <!-- Navigation bar -->
     <LinearLayout
@@ -46,46 +118,68 @@
         android:background="#444444"
         app:layout_constraintBottom_toBottomOf="parent">
 
+
         <Button
             android:id="@+id/InputMeal"
-            android:layout_width="12dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Input Meal"
             android:textSize="14sp" />
 
+
         <Button
             android:id="@+id/Recipe"
-            android:layout_width="12dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Recipe"
             android:textSize="14sp" />
+
+
         <Button
             android:id="@+id/Home"
-            android:layout_width="12dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Home"
             android:textSize="14sp" />
 
 
+
+
         <Button
             android:id="@+id/Ingredients"
-            android:layout_width="12dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Ingredients"
             android:textSize="14sp" />
 
+
         <Button
             android:id="@+id/ShoppingList"
-            android:layout_width="12dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Shopping List"
             android:textSize="14sp" />
+
     </LinearLayout>
 
+
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
