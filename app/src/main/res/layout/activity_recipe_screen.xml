@@ -22,12 +22,13 @@
         android:id="@+id/titleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="16dp"
         android:text="Recipe Screen"
         android:textSize="24sp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:padding="16dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <FrameLayout
         android:id="@+id/content_container"
         android:layout_width="match_parent"
@@ -35,13 +36,14 @@
         android:layout_weight="1"
         app:layout_constraintBottom_toTopOf="@+id/navigation_bar" />
 
+
     <!-- Navigation bar -->
     <LinearLayout
         android:id="@+id/navigation_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:background="#444444"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <Button
@@ -84,6 +86,25 @@
             android:text="Shopping List"
             android:textSize="14sp" />
     </LinearLayout>
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingAddRecipeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:clickable="true"
+        android:src="@android:drawable/ic_input_add"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:layout_editor_absoluteY="559dp" />
+
+    <ListView
+        android:id="@+id/RecipeList"
+        android:layout_width="260dp"
+        android:layout_height="355dp"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="75dp"
+        tools:layout_editor_absoluteY="171dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

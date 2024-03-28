@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/addIngredientLayout"
+    android:layout_width="300dp"
+    android:layout_height="500dp"
+    android:layout_gravity="center">
+    <!--New Recipe  Text  View -->
+        <TextView
+            android:id="@+id/NewRecipeTextField"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10sp"
+            android:text="New Recipe"
+            android:textColor="#067F0B"
+            android:textSize="34sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    <!--Enter Name ID - recipeNameEditText -->
+        <EditText
+            android:id="@+id/recipeNameEditText"
+            android:layout_width="135dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:hint="Recipe Name"
+            android:inputType="text"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/NewRecipeTextField"
+            tools:ignore="Autofill,HardcodedText" />
+
+    <!--New Recipe Items Listview ID: addRecipeItemListView -->
+        <ListView
+            android:id="@+id/addRecipeItemListView"
+            android:layout_width="259dp"
+            android:layout_height="243dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:clickable="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.39"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/recipeNameEditText"
+            app:layout_constraintVertical_bias="0.054" />
+
+    <!--add Ingredient Name - addIngredientEditText -->
+        <EditText
+            android:id="@+id/addIngredientEditText"
+            android:layout_width="175dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="376dp"
+            android:hint="Ingredient"
+            android:inputType="text"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="HardcodedText" />
+    <!--add Ingredient Name - addIngredientEditText -->
+        <EditText
+            android:id="@+id/quantityEditText"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:hint="oz"
+            android:inputType="text"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/addIngredientEditText"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.826"
+            tools:ignore="HardcodedText" />
+
+        <Button
+            android:id="@+id/submitRecipeButton"
+            android:layout_width="117dp"
+            android:layout_height="62dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="4dp"
+            android:backgroundTint="#94B36F"
+            android:onClick="submitRecipeButton"
+            android:paddingTop="10sp"
+            android:paddingBottom="10sp"
+            android:text="Submit \n Recipe"
+            android:textColor="#FFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <Button
+            android:id="@+id/addIngedientNameButton"
+            android:layout_width="117dp"
+            android:layout_height="62dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="4dp"
+            android:backgroundTint="#115B14"
+            android:onClick="addIngedientNameButton"
+            android:paddingTop="10sp"
+            android:paddingBottom="10sp"
+            android:text="Add \n Ingredient"
+            android:textColor="#FFFFFF"
+            android:textColorHighlight="#0F5312"
+            android:textColorLink="#0A680D"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
