@@ -16,16 +16,20 @@ public class User {
 
     private String gender;
 
+    private List<String> pantryIngredients;
+
     public User() {
         this.username = "";
         this.password = "";
         loggedMeals = new ArrayList<>();
+        pantryIngredients = new ArrayList<>();
     }
 
     public User(String username, String password) {
         this.username = username;
         this.password = password;
         loggedMeals = new ArrayList<>();
+        pantryIngredients = new ArrayList<>();
         this.height = 0;
         this.weight = 0;
         this.age = 0;
@@ -66,6 +70,14 @@ public class User {
 
     public List<Meal> getMeals() {
         return loggedMeals;
+    }
+
+    public List<String> getPantryIngredients() {
+        return pantryIngredients;
+    }
+
+    public void addPantryIngredient(String ingredient) {
+        pantryIngredients.add(ingredient);
     }
 
     public void addMeal(Meal meal) {

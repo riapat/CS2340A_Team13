@@ -166,6 +166,13 @@ public class UserViewModel {
         return dataEntries;
     }
 
+    public List<String> getPantryIngredientsList() {
+        if (user != null) {
+            return user.getPantryIngredients();
+        }
+        return null;
+    }
+
     //DO NOT USE - Testing Purposes Only
     public void setTestUser(User testUser) {
         this.user = testUser;
