@@ -1,9 +1,6 @@
 package com.example.cs2340a_team13.viewModels;
 import android.annotation.SuppressLint;
 import android.util.Log;
-
-
-
 import com.anychart.chart.common.dataentry.DataEntry;
 import com.anychart.chart.common.dataentry.ValueDataEntry;
 import com.example.cs2340a_team13.DatabaseAccess;
@@ -17,6 +14,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import com.example.cs2340a_team13.model.Ingredient;
 
 public class UserViewModel {
     private static User user;
@@ -166,7 +164,7 @@ public class UserViewModel {
         return dataEntries;
     }
 
-    public List<String> getPantryIngredientsList() {
+    public List<Ingredient> getPantryIngredientsList() {
         if (user != null) {
             return user.getPantryIngredients();
         }

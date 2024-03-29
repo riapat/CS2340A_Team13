@@ -16,7 +16,7 @@ public class User {
 
     private String gender;
 
-    private List<String> pantryIngredients;
+    private List<Ingredient> pantryIngredients;
 
     public User() {
         this.username = "";
@@ -72,13 +72,18 @@ public class User {
         return loggedMeals;
     }
 
-    public List<String> getPantryIngredients() {
+    public List<Ingredient> getPantryIngredients() {
         return pantryIngredients;
     }
 
-    public void addPantryIngredient(String ingredient) {
+    public void setPantryIngredients(List<Ingredient> pantryIngredient) {
+        this.pantryIngredients = pantryIngredients;
+    }
+
+    public void addPantryIngredient(Ingredient ingredient) {
         pantryIngredients.add(ingredient);
     }
+
 
     public void addMeal(Meal meal) {
         loggedMeals.add(meal);
