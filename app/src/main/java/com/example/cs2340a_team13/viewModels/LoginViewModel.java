@@ -71,14 +71,15 @@ public class LoginViewModel {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             DatabaseAccess.getInstance()
-                                    .readFromUserDB(username, user -> {
-                                        if (user != null) {
-
+                                    .readFromUserDB(username, userC -> {
+                                        if (userC != null) {
                                             DatabaseAccess.getInstance().loadPantry(username, ingredients -> {
                                                 if (ingredients != null) {
+                                                    Log.d("Ingredients", String.valueOf(ingredients.size()));
                                                     // If pantry loaded successfully, update user's pantry and complete sign-in
-                                                    user.setPantryIngredients(ingredients); // Ensure User model has a method to set pantry
-                                                    updateUser(user);
+                                                    userC.setPantryIngredients(ingredients); // Ensure User model has a method to set pantry
+                                                    updateUser(userC);
+                                                    Log.d("LoginViewModel", String.valueOf(user.getPantryIngredients().size()));
                                                     Log.d("LoginViewModel",
                                                             "signInWithEmail:success Username: "
                                                                     + user.getUsername() + " Password: "

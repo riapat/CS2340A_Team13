@@ -19,8 +19,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:padding="16dp"/>
 
+    <!-- Input Ingredients Form -->
 
-    <!-- Ingredient Name Field -->
     <Button
         android:id="@+id/PersonalInfo"
         android:layout_width="113dp"
@@ -40,15 +40,14 @@
         android:id="@+id/InputIngredients"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
         android:text="Input Ingredients"
         android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/adjustIngredientsButton"
+        app:layout_constraintHorizontal_bias="0.448"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/titleTextView" />
-
-
-    <!-- Quantity Field -->
 
     <EditText
         android:id="@+id/ingredientNameEditText"
@@ -78,18 +77,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ingredientNameEditText" />
-
-
-    <!-- Calories Field -->
-
-
-    <!-- Expiration Date Field -->
-
-
-    <!-- Submit Button -->
-
-
-    <!-- Navigation bar -->
 
     <EditText
         android:id="@+id/caloriesEditText"
@@ -134,6 +121,42 @@
         app:layout_constraintTop_toBottomOf="@+id/expirationDateEditText"
         app:layout_constraintVertical_bias="0.132" />
 
+
+    <!-- Adjust Ingredients Form -->
+    <Button
+        android:id="@+id/adjustIngredientsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="5dp"
+        android:text="Adjust Ingredients"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.873"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/titleTextView" />
+
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="416dp"
+        android:layout_height="394dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/navigation_bar"
+        app:layout_constraintTop_toBottomOf="@+id/submitButton"
+        tools:layout_editor_absoluteX="-5dp">
+
+        <LinearLayout
+            android:id="@+id/pantryLinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"></LinearLayout>
+
+    </ScrollView>
+
+    <!-- Navigation bar -->
     <LinearLayout
         android:id="@+id/navigation_bar"
         android:layout_width="match_parent"
@@ -141,7 +164,6 @@
         android:orientation="horizontal"
         android:background="#444444"
         app:layout_constraintBottom_toBottomOf="parent">
-
 
         <Button
             android:id="@+id/InputMeal"

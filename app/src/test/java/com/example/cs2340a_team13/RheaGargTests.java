@@ -2,13 +2,19 @@ package com.example.cs2340a_team13;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
+
+import com.example.cs2340a_team13.model.Ingredient;
 import com.example.cs2340a_team13.model.Meal;
 import com.example.cs2340a_team13.model.User;
+import com.example.cs2340a_team13.viewModels.IngredientViewModel;
 import com.example.cs2340a_team13.viewModels.MealViewModel;
 import com.example.cs2340a_team13.viewModels.UserViewModel;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 public class RheaGargTests {
     @Test
     public void testFemaleUser() {
@@ -31,5 +37,42 @@ public class RheaGargTests {
         UserViewModel.getInstance().setTestUser(man);
         double testD = UserViewModel.getInstance().calculateCalories();
         assertEquals(1694.0, testD, 0.1);
+    }
+
+    IngredientViewModel ingredientViewModel = IngredientViewModel.getInstance();
+    UserViewModel userViewModel = UserViewModel.getInstance();
+    @Test
+    public void testDuplicate() {
+
+        User testUser = new User("Test User", "testUser1");
+
+        IngredientViewModel.getInstance().setCurrentUser(testUser);
+        UserViewModel.getInstance().setTestUser(testUser);
+        List<Ingredient> pantry = new ArrayList<>();
+
+        Ingredient ingredient1 = new Ingredient("Ingredient1", 10, 100);
+        Ingredient ingredient2 = new Ingredient("Ingredient2", 20, 200);
+        pantry.add(ingredient1);
+        pantry.add(ingredient2);
+        testUser.setPantryIngredients(pantry);
+
+        Ingredient duplicateIngredient = new Ingredient("Ingredient1", 10, 100);
+        assertTrue(ingredientViewModel.checkDuplicate(duplicateIngredient));
+    }
+
+    @Test
+    public void testNonDuplicate() {
+        User testUser = new User();
+        List<Ingredient> pantry = new ArrayList<>();
+
+        Ingredient ingredient1 = new Ingredient("Ingredient1", 10, 100);
+        Ingredient ingredient2 = new Ingredient("Ingredient2", 20, 200);
+        pantry.add(ingredient1);
+        pantry.add(ingredient2);
+        testUser.setPantryIngredients(pantry);
+        userViewModel.setTestUser(testUser);
+
+        Ingredient nonDuplicateIngredient = new Ingredient("Ingredient3", 15, 150);
+        assertFalse(ingredientViewModel.checkDuplicate(nonDuplicateIngredient));
     }
 }
