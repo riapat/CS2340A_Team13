@@ -87,6 +87,7 @@
         android:paddingTop="10sp"
         android:paddingBottom="10sp"
         android:text="Submit \n Recipe"
+        android:onClick="submitNewRecipe"
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
