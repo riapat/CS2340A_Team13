@@ -3,10 +3,12 @@ package com.example.cs2340a_team13.model;
 import java.util.List;
 
 public class Recipe {
-private String recipeName;
+    private String recipeName;
     private String recipeDescription;
     private List<Ingredient> recipeIngredients;
     private String recipeInstructions;
+    private int caloriesPerServing;
+    private int cookingTime;
 
     public Recipe() {
         this.recipeName = "";
@@ -20,6 +22,8 @@ private String recipeName;
         this.recipeDescription = recipeDescription;
         this.recipeIngredients = recipeIngredients;
         this.recipeInstructions = recipeInstructions;
+        this.caloriesPerServing = calculateCaloriesPerServing();
+        this.cookingTime = 0;
     }
 
     public String getRecipeName() {
@@ -59,5 +63,29 @@ private String recipeName;
         this.recipeDescription = recipe.getRecipeDescription();
         this.recipeIngredients = recipe.getRecipeIngredients();
         this.recipeInstructions = recipe.getRecipeInstructions();
+    }
+
+    public int calculateCaloriesPerServing() {
+        int caloriesPerServing = 0;
+        for(Ingredient item:recipeIngredients){
+            caloriesPerServing += item.getCalories() * item.getQuantity();
+        }
+        return caloriesPerServing;
+    }
+
+    public int getCaloriesPerServing() {
+        return caloriesPerServing;
+    }
+  
+    public void setCaloriesPerServing(int caloriesPerServing) {
+        this.caloriesPerServing = caloriesPerServing;
+    }
+
+    public int getCookingTime() {
+        return cookingTime;
+    }
+
+    public void setCookingTime(int cookingTime) {
+        this.cookingTime = cookingTime;
     }
 }

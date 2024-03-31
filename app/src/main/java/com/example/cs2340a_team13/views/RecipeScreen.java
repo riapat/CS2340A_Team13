@@ -1,4 +1,6 @@
 package com.example.cs2340a_team13.views;
+import static com.example.cs2340a_team13.viewModels.UserViewModel.user;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -25,7 +27,10 @@ import com.example.cs2340a_team13.viewModels.UserViewModel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import com.example.cs2340a_team13.model.Ingredient;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import java.util.HashMap;
+import java.util.List;
 
 public class RecipeScreen extends AppCompatActivity {
     FloatingActionButton btnNewRecipe;
@@ -34,6 +39,7 @@ public class RecipeScreen extends AppCompatActivity {
     EditText recipeName;
     EditText ingredientName;
     EditText ingredientAmount;
+
     private DatabaseAccess databaseAccess = DatabaseAccess.getInstance();
 
     private UserViewModel userViewModel = UserViewModel.getInstance();
@@ -133,18 +139,79 @@ public class RecipeScreen extends AppCompatActivity {
 
     //input recipe screen here + place text header
     public void addNewRecipeButton(View v){
+        currentRecipe = new HashMap<Ingredient, Integer>();
         // Handle New Recipe button click (create a new Alert)
         AlertDialog.Builder builder = new AlertDialog.Builder(RecipeScreen.this);
         //Makes tapping outside the dialog cancel the alert
         builder.setCancelable(true);
         LayoutInflater inflater = RecipeScreen.this.getLayoutInflater();
+
         builder.setView(inflater.inflate(R.layout.activity_add_ingredient, null));
         AlertDialog dialog = builder.create();
         dialog.show();
     }
 
-    public void addNewIngredient(View V){
+    public void submitNewRecipe(View v){
+        if (recipeName.getText() == null) {
+            recipeName.setError("Recipe Name cannot be null");
+            recipeName.requestFocus();
+        }else if(ingredientName.getText() != null) {
+            ingredientName.setError("Field must be empty before submitting");
+            ingredientName.requestFocus();
+        }else if (ingredientAmount.getText() == null) {
+            ingredientAmount.setError("Field must be empty before submitting");
+            ingredientAmount.requestFocus();
+        }else{
+            String recipe = recipeName.getText().toString().trim();
+            Recipe newRecipe = new Recipe(recipe,currentRecipe);
+            DatabaseAccess.writeToCookbookDB(newRecipe,RecipeCallback->{
+                if(RecipeCallback){
+                    recipeName.setText("");
+                    ingredientName.setText("");
+                    ingredientAmount.setText("");
+                    dialog.dismiss();
+                    currentRecipe = null;
+                }else{
+                    recipeName.setError("Error adding recipe. Try Again");
+                    recipeName.requestFocus();
+                }
+            });
+
+        }
     }
+    public void addNewIngredient(View v){
+        if (ingredientName.getText() == null) {
+            ingredientName.setError("Ingredient Name cannot be null");
+            ingredientName.requestFocus();
+            return;
+        }
+        if (ingredientAmount.getText() == null) {
+            ingredientAmount.setError("Ingredient Amount cannot be null");
+            ingredientAmount.requestFocus();
+            return;
+        }
+
+        String ingredient = ingredientName.getText().toString().trim();
+        int amount = Integer.parseInt(ingredientAmount.getText().toString().trim());
+        List<Ingredient> pantry = UserViewModel.getInstance().getPantryIngredientsList();
+        pantry.get(pantry.size()-1);
+        for(Ingredient item:pantry){
+            if(ingredient.equals(item.getIngredientName()) {
+                if(currentRecipe.get(item) == null){
+                    currentRecipe.put(item, amount);
+                    ingredientName.setText("");
+                    ingredientAmount.setText("");
+                }else{
+                    ingredientName.setError("Duplicates not allowed");
+                    ingredientName.requestFocus();
+                }
+                return;
+            }
+        }
+        ingredientName.setError("Ingredient Doesn't Exist");
+        ingredientName.requestFocus();
+    }
+
 
      //input recipe screen here + place text header
 }
