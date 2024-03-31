@@ -10,10 +10,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.cs2340a_team13.R;
 import com.example.cs2340a_team13.model.Ingredient;
 import com.example.cs2340a_team13.viewModels.IngredientViewModel;
+import com.example.cs2340a_team13.viewModels.UserViewModel;
+
+import java.util.List;
 
 
 public class IngredientScreen extends AppCompatActivity {
@@ -24,6 +28,7 @@ public class IngredientScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ingredient_screen);
 
+        displayPantryIngredients();
 
         Button btnInputMeal = findViewById(R.id.InputMeal);
         Button btnRecipe = findViewById(R.id.Recipe);
@@ -270,5 +275,22 @@ public class IngredientScreen extends AppCompatActivity {
         alert.show();
     }
 
+    private void displayPantryIngredients() {
+        LinearLayout pantryLinearLayout = findViewById(R.id.pantryLinearLayout);
+        pantryLinearLayout.removeAllViews(); // Clear previous views
+
+        List<Ingredient> pantryIngredients = UserViewModel.getInstance().getUser().getPantryIngredients();
+        if (pantryIngredients != null) {
+            for (Ingredient ingredient : pantryIngredients) {
+                //textView for each ingredient
+                TextView textView = new TextView(this);
+                textView.setText(ingredient.getIngredientName() + ": " + ingredient.getQuantity());
+                textView.setLayoutParams(new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT));
+                pantryLinearLayout.addView(textView);
+            }
+        }
     }
+}
 
