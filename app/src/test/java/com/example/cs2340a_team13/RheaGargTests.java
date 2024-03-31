@@ -43,15 +43,18 @@ public class RheaGargTests {
     UserViewModel userViewModel = UserViewModel.getInstance();
     @Test
     public void testDuplicate() {
-        User testUser = new User();
+
+        User testUser = new User("Test User", "testUser1");
+
+        IngredientViewModel.getInstance().setCurrentUser(testUser);
+        UserViewModel.getInstance().setTestUser(testUser);
         List<Ingredient> pantry = new ArrayList<>();
 
         Ingredient ingredient1 = new Ingredient("Ingredient1", 10, 100);
         Ingredient ingredient2 = new Ingredient("Ingredient2", 20, 200);
         pantry.add(ingredient1);
         pantry.add(ingredient2);
-        testUser.setPantry(pantry);
-        userViewModel.setTestUser(testUser);
+        testUser.setPantryIngredients(pantry);
 
         Ingredient duplicateIngredient = new Ingredient("Ingredient1", 10, 100);
         assertTrue(ingredientViewModel.checkDuplicate(duplicateIngredient));
@@ -66,7 +69,7 @@ public class RheaGargTests {
         Ingredient ingredient2 = new Ingredient("Ingredient2", 20, 200);
         pantry.add(ingredient1);
         pantry.add(ingredient2);
-        testUser.setPantry(pantry);
+        testUser.setPantryIngredients(pantry);
         userViewModel.setTestUser(testUser);
 
         Ingredient nonDuplicateIngredient = new Ingredient("Ingredient3", 15, 150);
