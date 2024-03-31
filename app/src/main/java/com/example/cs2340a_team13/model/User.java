@@ -77,7 +77,7 @@ public class User {
     }
 
     public void setPantryIngredients(List<Ingredient> pantryIngredient) {
-        this.pantryIngredients = pantryIngredients;
+        this.pantryIngredients = pantryIngredient;
     }
 
     public void addPantryIngredient(Ingredient ingredient) {
