@@ -14,7 +14,6 @@ public class IngredientViewModel {
 
     private UserViewModel userViewModel = UserViewModel.getInstance();
     private User currentUser = userViewModel.getUser(); // Reference to current user
-    private DatabaseAccess databaseAccess = DatabaseAccess.getInstance();
 
     // Private constructor to prevent instantiation outside of this class
     private IngredientViewModel() {}
@@ -45,7 +44,7 @@ public class IngredientViewModel {
             }
         }
 
-        databaseAccess.addToPantry(currentUser, ingredient, userCallback -> {
+        DatabaseAccess.getInstance().addToPantry(currentUser, ingredient, userCallback -> {
             if (userCallback != null) {
                 System.out.println("Ingredient added to pantry");
             } else {
@@ -59,6 +58,7 @@ public class IngredientViewModel {
     public boolean checkDuplicate(Ingredient ingredient) {
         if (currentUser != null && currentUser.getPantryIngredients() != null) {
             for (Ingredient pantryIngredient : currentUser.getPantryIngredients()) {
+                System.out.println("Pantry ingredient: " + pantryIngredient.getIngredientName() + " " + pantryIngredient.getQuantity());
                 if (pantryIngredient.getIngredientName().equals(ingredient.getIngredientName()) &&
                         pantryIngredient.getQuantity() > 0) {
                     return true;
@@ -121,6 +121,13 @@ public class IngredientViewModel {
             databaseAccess.getInstance().updateToUserDB(currentUser, userCallback -> {
             });
         }
+
+    public void setCurrentUser(User user) {
+        this.currentUser = user;
+    }
+    public User getCurrentUser() {
+        return currentUser;
+
     }
 }
 
