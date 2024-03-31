@@ -5,12 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -49,39 +51,48 @@ public class RecipeScreen extends AppCompatActivity {
         Button btnShoppingList = findViewById(R.id.ShoppingList);
         Button btnHome = findViewById(R.id.Home);
         Button btnPersonalInfo = findViewById(R.id.PersonalInfo);
+
         layout = findViewById(R.id.addRecipeItemLayout);
-        ListView listView = findViewById(R.id.RecipeList);
+        LinearLayout recipeListLayout = findViewById(R.id.recipeListLayout);
         Spinner sortSpinner = findViewById(R.id.sortSpinner);
-        ArrayList<String> recipeNames = new ArrayList<>();
+        ArrayList<Recipe> recipesFromDB = new ArrayList<Recipe>();
+
         // Add data to dataList
         databaseAccess.readFromCookbookDB((queriedRecipes) -> {
             for (Recipe recipe : queriedRecipes) {
-                recipeNames.add(recipe.getRecipeName());
+                recipesFromDB.add(recipe);
             }
         });
+
         Recipe addNewRecipe = new Recipe();
         createNewRecipe(addNewRecipe);
-        MyAdapterRecipe adapter = new MyAdapterRecipe(recipeNames,
-                userViewModel.getUser().getPantryIngredients());
-        listView.setAdapter(adapter);
 
-        // Set click listener for ListView items
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // Get the clicked item
-                String selectedItem = recipeNames.get(position);
-                // Show popup
-                showPopup(selectedItem);
-            }
-        });
+        // Example available ingredients, replace with actual available ingredients
+        List<Ingredient> pantry = UserViewModel.getInstance().getUser().getPantryIngredients();
+
+        for (Recipe recipe : recipesFromDB) {
+            TextView recipeNameTextView = new TextView(this);
+            recipeNameTextView.setText(recipe.getRecipeName());
+            recipeNameTextView.setTextSize(20);
+            recipeNameTextView.setPadding(0, 10, 0, 10);
+            recipeListLayout.addView(recipeNameTextView); // Add the recipe name TextView
+
+            // Create and add the "Enough" or "Not Enough" TextView
+            TextView ingredientsStatusTextView = new TextView(this);
+            boolean isEnough = recipe.isIngredientsEnough(pantry, recipe.getRecipeIngredients());
+            ingredientsStatusTextView.setText(isEnough ? "Enough" : "Not Enough");
+            ingredientsStatusTextView.setTextSize(16);
+            ingredientsStatusTextView.setTextColor(isEnough ? Color.GREEN : Color.RED);
+            ingredientsStatusTextView.setPadding(0, 0, 0, 20); // Adjust padding as needed
+            recipeListLayout.addView(ingredientsStatusTextView); // Add the status TextView
+        }
         btnInputMeal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Handle input meal button click (navigate to input meal screen)
-                Intent intent = new Intent(RecipeScreen.this, InputMealScreen.class);
-                startActivity(intent);
-            }
+        @Override
+        public void onClick(View v) {
+            // Handle input meal button click (navigate to input meal screen)
+            Intent intent = new Intent(RecipeScreen.this, InputMealScreen.class);
+            startActivity(intent);
+        }
         });
         btnHome.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -6,76 +6,24 @@
     android:layout_height="match_parent"
     tools:context=".views.RecipeScreen">
 
-    <TextView
-        android:id="@+id/textViewRecipe"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="43dp"
-        android:padding="10sp"
-        android:text="Recipe"
-        android:textSize="17sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="149dp" />
+        android:layout_height="match_parent"
+        android:layout_marginTop="200dp"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/textViewIngredients"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10sp"
-        android:text="Ingredients"
-        android:textSize="17sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="231dp" />
+        <LinearLayout
+            android:id="@+id/recipeListLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
 
-    <TextView
-        android:id="@+id/textViewQuantities"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10sp"
-        android:text="Quantities"
-        android:textSize="17sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="313dp" />
+            <!-- Dynamic TextViews for recipe names will be added here -->
 
-    <EditText
-        android:id="@+id/usernameFieldRecipe"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Recipe Name"
-        android:inputType="text"
-        android:padding="10sp"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/textViewIngredients"
-        app:layout_constraintTop_toBottomOf="@+id/textViewRecipe"
-        tools:layout_editor_absoluteX="0dp" />
+        </LinearLayout>
 
-    <EditText
-        android:id="@+id/usernameFieldIngredients"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Seperate with commas"
-        android:inputType="text"
-        android:padding="10sp"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/textViewQuantities"
-        app:layout_constraintTop_toBottomOf="@+id/textViewIngredients"
-        tools:layout_editor_absoluteX="0dp" />
-
-    <EditText
-        android:id="@+id/usernameFieldQuantities"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Seperate with commas with same order as ingredients list"
-        android:inputType="text"
-        android:padding="10sp"
-        android:textSize="14sp"
-        app:layout_constraintTop_toBottomOf="@+id/textViewQuantities"
-        tools:layout_editor_absoluteX="16dp" />
+    </ScrollView>
 
     <Button
         android:id="@+id/PersonalInfo"
@@ -164,11 +112,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
+        android:layout_marginBottom="44dp"
         android:clickable="true"
         android:onClick="addNewRecipeButton"
         android:src="@android:drawable/ic_input_add"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:layout_editor_absoluteY="559dp" />
+        app:layout_constraintBottom_toTopOf="@+id/navigation_bar"
+        app:layout_constraintEnd_toEndOf="parent" />
     <!-- Dropdown for sorting/filtering -->
 
     <Spinner
@@ -182,14 +131,6 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@id/titleTextView"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <ListView
-        android:id="@+id/RecipeList"
-        android:layout_width="260dp"
-        android:layout_height="355dp"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="75dp"
-        tools:layout_editor_absoluteY="172dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
