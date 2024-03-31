@@ -12,9 +12,10 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 
 import com.example.cs2340a_team13.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class RecipeScreen extends AppCompatActivity {
-    Button btnNewRecipe;
+    FloatingActionButton btnNewRecipe;
     Button btnAddIngredient;
     Button submitNewRecipe;
     EditText recipeName;
@@ -26,7 +27,7 @@ public class RecipeScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_screen);
         Button btnRecipe = findViewById(R.id.Recipe);
-        btnNewRecipe = findViewById(R.id.floatingAddRecipeButton);
+        btnNewRecipe = (FloatingActionButton) findViewById(R.id.floatingAddRecipeButton);
         Button btnIngredient = findViewById(R.id.Ingredients);
         Button btnShoppingList = findViewById(R.id.ShoppingList);
         Button btnHome = findViewById(R.id.Home);
