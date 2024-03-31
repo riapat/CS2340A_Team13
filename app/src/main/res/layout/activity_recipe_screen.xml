@@ -165,6 +165,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
         android:clickable="true"
+        android:onClick="addNewRecipeButton"
         android:src="@android:drawable/ic_input_add"
         app:layout_constraintEnd_toEndOf="parent"
         tools:layout_editor_absoluteY="559dp" />

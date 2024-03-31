@@ -1,54 +1,47 @@
 package com.example.cs2340a_team13.views;
-import static com.example.cs2340a_team13.viewModels.UserViewModel.user;
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.DialogInterface;
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
-
+import android.widget.TextView;
 import com.example.cs2340a_team13.DatabaseAccess;
 import com.example.cs2340a_team13.R;
 import com.example.cs2340a_team13.model.Recipe;
 import com.example.cs2340a_team13.viewModels.UserViewModel;
-
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import com.example.cs2340a_team13.model.Ingredient;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import java.util.HashMap;
 import java.util.List;
 
 public class RecipeScreen extends AppCompatActivity {
-    FloatingActionButton btnNewRecipe;
-    Button btnAddIngredient;
-    Button submitNewRecipe;
-    EditText recipeName;
-    EditText ingredientName;
-    EditText ingredientAmount;
-
+    private FloatingActionButton btnNewRecipe;
+    private Button btnAddIngredient;
+    private Button submitNewRecipe;
+    private EditText recipeName;
+    private EditText ingredientName;
+    private EditText ingredientAmount;
+    private AlertDialog dialog;
+    private LinearLayout layout;
     private DatabaseAccess databaseAccess = DatabaseAccess.getInstance();
 
     private UserViewModel userViewModel = UserViewModel.getInstance();
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_screen);
-
         Button btnInputMeal = findViewById(R.id.InputMeal);
         Button btnRecipe = findViewById(R.id.Recipe);
         btnNewRecipe = (FloatingActionButton) findViewById(R.id.floatingAddRecipeButton);
@@ -56,9 +49,9 @@ public class RecipeScreen extends AppCompatActivity {
         Button btnShoppingList = findViewById(R.id.ShoppingList);
         Button btnHome = findViewById(R.id.Home);
         Button btnPersonalInfo = findViewById(R.id.PersonalInfo);
+        layout = findViewById(R.id.addRecipeItemLayout);
         ListView listView = findViewById(R.id.RecipeList);
         Spinner sortSpinner = findViewById(R.id.sortSpinner);
-
         ArrayList<String> recipeNames = new ArrayList<>();
         // Add data to dataList
         databaseAccess.readFromCookbookDB((queriedRecipes) -> {
@@ -66,8 +59,10 @@ public class RecipeScreen extends AppCompatActivity {
                 recipeNames.add(recipe.getRecipeName());
             }
         });
-
-        MyAdapterRecipe adapter = new MyAdapterRecipe(recipeNames, userViewModel.getUser().getPantryIngredients());
+        Recipe addNewRecipe = new Recipe();
+        createNewRecipe(addNewRecipe);
+        MyAdapterRecipe adapter = new MyAdapterRecipe(recipeNames,
+                userViewModel.getUser().getPantryIngredients());
         listView.setAdapter(adapter);
 
         // Set click listener for ListView items
@@ -95,7 +90,6 @@ public class RecipeScreen extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
         btnIngredient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,7 +105,6 @@ public class RecipeScreen extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
         btnPersonalInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -133,85 +126,110 @@ public class RecipeScreen extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
-        AlertDialog dialog = builder.create();
+        dialog = builder.create();
         dialog.show();
     }
 
     //input recipe screen here + place text header
-    public void addNewRecipeButton(View v){
-        currentRecipe = new HashMap<Ingredient, Integer>();
+    public void addNewRecipeButton(View v) {
         // Handle New Recipe button click (create a new Alert)
         AlertDialog.Builder builder = new AlertDialog.Builder(RecipeScreen.this);
         //Makes tapping outside the dialog cancel the alert
         builder.setCancelable(true);
         LayoutInflater inflater = RecipeScreen.this.getLayoutInflater();
-
         builder.setView(inflater.inflate(R.layout.activity_add_ingredient, null));
-        AlertDialog dialog = builder.create();
+        dialog = builder.create();
         dialog.show();
     }
 
-    public void submitNewRecipe(View v){
-        if (recipeName.getText() == null) {
-            recipeName.setError("Recipe Name cannot be null");
-            recipeName.requestFocus();
-        }else if(ingredientName.getText() != null) {
-            ingredientName.setError("Field must be empty before submitting");
-            ingredientName.requestFocus();
-        }else if (ingredientAmount.getText() == null) {
-            ingredientAmount.setError("Field must be empty before submitting");
-            ingredientAmount.requestFocus();
-        }else{
-            String recipe = recipeName.getText().toString().trim();
-            Recipe newRecipe = new Recipe(recipe,currentRecipe);
-            DatabaseAccess.writeToCookbookDB(newRecipe,RecipeCallback->{
-                if(RecipeCallback){
-                    recipeName.setText("");
-                    ingredientName.setText("");
-                    ingredientAmount.setText("");
-                    dialog.dismiss();
-                    currentRecipe = null;
-                }else{
-                    recipeName.setError("Error adding recipe. Try Again");
-                    recipeName.requestFocus();
+    private void createNewRecipe(Recipe newRecipe) {
+
+        btnAddIngredient.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ingredientName.getText() == null) {
+                    ingredientName.setError("Ingredient Name cannot be null");
+                    ingredientName.requestFocus();
                 }
-            });
-
-        }
-    }
-    public void addNewIngredient(View v){
-        if (ingredientName.getText() == null) {
-            ingredientName.setError("Ingredient Name cannot be null");
-            ingredientName.requestFocus();
-            return;
-        }
-        if (ingredientAmount.getText() == null) {
-            ingredientAmount.setError("Ingredient Amount cannot be null");
-            ingredientAmount.requestFocus();
-            return;
-        }
-
-        String ingredient = ingredientName.getText().toString().trim();
-        int amount = Integer.parseInt(ingredientAmount.getText().toString().trim());
-        List<Ingredient> pantry = UserViewModel.getInstance().getPantryIngredientsList();
-        pantry.get(pantry.size()-1);
-        for(Ingredient item:pantry){
-            if(ingredient.equals(item.getIngredientName()) {
-                if(currentRecipe.get(item) == null){
-                    currentRecipe.put(item, amount);
-                    ingredientName.setText("");
-                    ingredientAmount.setText("");
-                }else{
+                if (ingredientAmount.getText() == null) {
+                    ingredientAmount.setError("Ingredient Amount cannot be null");
+                    ingredientAmount.requestFocus();
+                }
+                String ingredient = ingredientName.getText().toString().trim().toLowerCase();
+                int amount = Integer.parseInt(ingredientAmount.getText().toString().trim());
+                List<Ingredient> pantry = UserViewModel.getInstance().getPantryIngredientsList();
+                boolean originalRecipe = true;
+                for (Ingredient item: newRecipe.getRecipeIngredients()) {
+                    if (ingredient.equals(item.getIngredientName().toLowerCase())) {
+                        originalRecipe = false;
+                    }
+                }
+                if (originalRecipe) {
+                    boolean ingredientExists = false;
+                    for (Ingredient item:pantry) {
+                        if (ingredient.equals(item.getIngredientName())) {
+                                newRecipe.addIngredient(new Ingredient(item.getIngredientName(),
+                                        amount, item.getCalories(), item.getExpirationDate()));
+                                ingredientName.setText("");
+                                ingredientAmount.setText("");
+                                ingredientExists = true;
+                                displayIngredients(layout, newRecipe.getRecipeIngredients());
+                        }
+                    }
+                    if (ingredientExists) {
+                        ingredientName.setError("Ingredient Doesn't Exist");
+                        ingredientName.requestFocus();
+                    }
+                } else {
                     ingredientName.setError("Duplicates not allowed");
                     ingredientName.requestFocus();
                 }
-                return;
             }
-        }
-        ingredientName.setError("Ingredient Doesn't Exist");
-        ingredientName.requestFocus();
+        });
+        submitNewRecipe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (recipeName.getText() == null) {
+                    recipeName.setError("Recipe Name cannot be null");
+                    recipeName.requestFocus();
+                } else if (ingredientName.getText() != null) {
+                    ingredientName.setError("Field must be empty before submitting");
+                    ingredientName.requestFocus();
+                } else if (ingredientAmount.getText() == null) {
+                    ingredientAmount.setError("Field must be empty before submitting");
+                    ingredientAmount.requestFocus();
+                } else {
+                    String recipe = recipeName.getText().toString().trim();
+                    Recipe newRecipe = new Recipe();
+                    newRecipe.setRecipeName(recipe);
+                    newRecipe.setRecipeIngredients(newRecipe.getRecipeIngredients());
+                    DatabaseAccess.writeToCookbookDB(newRecipe, RecipeCallback -> {
+                        if (RecipeCallback) {
+                            recipeName.setText("");
+                            ingredientName.setText("");
+                            ingredientAmount.setText("");
+                            dialog.dismiss();
+                        } else {
+                            recipeName.setError("Error adding recipe. Try Again");
+                            recipeName.requestFocus();
+                        }
+                    });
+
+                }
+            }
+        });
     }
 
-
-     //input recipe screen here + place text header
+    private void displayIngredients(LinearLayout layout, List<Ingredient> items) {
+        layout.removeAllViews();
+        for (Ingredient item:items) {
+            String message = item.getIngredientName() + "\nQty:" + item.getQuantity();
+            TextView textView = new TextView(this);
+            textView.setText(message);
+            textView.setTextSize(20);
+            textView.setPadding(0, 10, 0, 10);
+            layout.addView(textView);
+        }
+    }
+    //input recipe screen here + place text header
 }
