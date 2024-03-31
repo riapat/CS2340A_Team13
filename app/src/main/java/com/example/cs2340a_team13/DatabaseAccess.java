@@ -224,6 +224,22 @@ public class DatabaseAccess {
                 });
     }
 
+    //Queries Cookbook database through a recipe name
+    public void getRecipeByName(String recipeName, RecipeCallback callback) {
+        Recipe recipe = new Recipe();
+        fbInstance.getReference("Cookbook").child(recipeName).get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        recipe.setRecipe(task.getResult().getValue(Recipe.class));
+                        System.out.println("Recipe found in cookbook database");
+                        callback.onComplete(recipe);
+                    } else {
+                        System.out.println("Recipe not found in cookbook database");
+                        callback.onComplete(null);
+                    }
+                });
+    }
+
 
     public interface UserCallback {
         void onComplete(User user);
