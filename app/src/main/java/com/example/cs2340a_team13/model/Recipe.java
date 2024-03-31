@@ -1,5 +1,4 @@
 package com.example.cs2340a_team13.model;
-
 import java.util.List;
 
 public class Recipe {
@@ -17,7 +16,8 @@ public class Recipe {
         this.recipeInstructions = "";
     }
 
-    public Recipe(String recipeName, String recipeDescription, List<Ingredient> recipeIngredients, String recipeInstructions) {
+    public Recipe(String recipeName, String recipeDescription,
+                  List<Ingredient> recipeIngredients, String recipeInstructions) {
         this.recipeName = recipeName;
         this.recipeDescription = recipeDescription;
         this.recipeIngredients = recipeIngredients;
@@ -65,9 +65,14 @@ public class Recipe {
         this.recipeInstructions = recipe.getRecipeInstructions();
     }
 
+    public void addIngredient(Ingredient ingredient) {
+        if (recipeIngredients != null) {
+            recipeIngredients.add(ingredient);
+        }
+    }
     public int calculateCaloriesPerServing() {
         int caloriesPerServing = 0;
-        for(Ingredient item:recipeIngredients){
+        for (Ingredient item:recipeIngredients) {
             caloriesPerServing += item.getCalories() * item.getQuantity();
         }
         return caloriesPerServing;
@@ -88,7 +93,6 @@ public class Recipe {
     public void setCookingTime(int cookingTime) {
         this.cookingTime = cookingTime;
     }
-
     public boolean isIngredientsEnough(List<Ingredient> pantry, List<Ingredient> recipeIngredients) {
         for (Ingredient requiredIngredient : recipeIngredients) {
             boolean found = false; // Flag to check if the required ingredient is found in the pantry

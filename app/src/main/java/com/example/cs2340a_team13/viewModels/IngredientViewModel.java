@@ -16,7 +16,7 @@ public class IngredientViewModel {
     private User currentUser = userViewModel.getUser(); // Reference to current user
 
     // Private constructor to prevent instantiation outside of this class
-    private IngredientViewModel() {}
+    private IngredientViewModel() { }
 
     // Singleton instance getter
     public static IngredientViewModel getInstance() {
@@ -26,7 +26,8 @@ public class IngredientViewModel {
         return IngredientInstance;
     }
 
-    public Ingredient createIngredient(String ingredientName, int quantity, int calories, String expirationDate) {
+    public Ingredient createIngredient(String ingredientName, int quantity,
+                                       int calories, String expirationDate) {
         Ingredient ingredient = new Ingredient();
         ingredient.setIngredientName(ingredientName);
         ingredient.setCalories(calories);
@@ -67,7 +68,6 @@ public class IngredientViewModel {
         }
         return false;
     }
-
     public boolean existingIngredient(String ingredientName) {
         Log.e("IngredientViewModel", currentUser == null ? "User is not loaded" : "User is loaded");
         Log.d("IngredientViewModel", "Pantry size: " + currentUser.getPantryIngredients().size());
@@ -130,4 +130,5 @@ public class IngredientViewModel {
 
     }
 }
+
 

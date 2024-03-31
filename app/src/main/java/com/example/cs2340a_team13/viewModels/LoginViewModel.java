@@ -73,7 +73,6 @@ public class LoginViewModel {
                             DatabaseAccess.getInstance()
                                     .readFromUserDB(username, userC -> {
                                         if (userC != null) {
-
                                             DatabaseAccess.getInstance().loadPantry(username, ingredients -> {
                                                 if (ingredients != null) {
                                                     Log.d("Ingredients", String.valueOf(ingredients.size()));
