@@ -92,7 +92,7 @@ public class IngredientViewModel {
                     int newQuantity = currentQuantity + quantityAdded;
                     pantryIngredient.setQuantity(newQuantity);
 
-                    databaseAccess.getInstance().updateToUserDB(currentUser, userCallback -> {
+                    DatabaseAccess.getInstance().updateToUserDB(currentUser, userCallback -> {
                     });
                     return;
                 }
@@ -118,9 +118,10 @@ public class IngredientViewModel {
                     }
                 }
             }
-            databaseAccess.getInstance().updateToUserDB(currentUser, userCallback -> {
+            DatabaseAccess.getInstance().updateToUserDB(currentUser, userCallback -> {
             });
         }
+    }
 
     public void setCurrentUser(User user) {
         this.currentUser = user;
