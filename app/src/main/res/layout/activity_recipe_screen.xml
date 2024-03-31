@@ -13,7 +13,6 @@
         android:layout_marginStart="16dp"
         android:layout_weight="1"
         android:text="Personal Info"
-        android:onClick="addNewRecipeButton"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         tools:layout_editor_absoluteY="92dp" />
@@ -94,6 +93,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="44dp"
+        android:onClick="addNewRecipeButton"
         android:clickable="true"
         android:focusable="true"
         android:src="@android:drawable/ic_input_add"

@@ -83,7 +83,8 @@ public class RecipeScreen extends AppCompatActivity {
         builder.setCancelable(true);
         LayoutInflater inflater = RecipeScreen.this.getLayoutInflater();
         builder.setView(inflater.inflate(R.layout.activity_add_ingredient, null);
-        builder.create();
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     public void addNewIngredient(View V){
