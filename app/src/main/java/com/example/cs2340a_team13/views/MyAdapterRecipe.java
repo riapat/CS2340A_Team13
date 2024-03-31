@@ -1,5 +1,4 @@
 package com.example.cs2340a_team13.views;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +14,8 @@ import com.example.cs2340a_team13.model.Ingredient;
 import com.example.cs2340a_team13.model.Recipe;
 
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MyAdapterRecipe extends BaseAdapter {
 
@@ -26,8 +25,11 @@ public class MyAdapterRecipe extends BaseAdapter {
 
     private DatabaseAccess databaseAccess = DatabaseAccess.getInstance();
 
+    private List<String> recipeDummy = List.of("amma", "dada", "cookie");
+    private List<Ingredient> pantryDummy = List.of(new Ingredient("sugar", 10, 300), new Ingredient("flour", 5, 200), new Ingredient("butter", 2, 600));
+
     public MyAdapterRecipe(List<String> recipeList, List<Ingredient> pantryList) {
-        super(0, recipeList);
+//        super(0, recipeList);
         mRecipeList = recipeList;
         pantry = pantryList;
     }
@@ -52,7 +54,7 @@ public class MyAdapterRecipe extends BaseAdapter {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View listItem = convertView;
         if(listItem == null) {
-            listItem = LayoutInflater.from(mContext).inflate(R.layout.recipe_list_item, parent, false);
+            listItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.recipe_list_item, parent, false);
         }
 
         String currentRecipe = mRecipeList.get(position);
@@ -70,34 +72,42 @@ public class MyAdapterRecipe extends BaseAdapter {
     }
 
     private boolean areIngredientsEnough(String recipeName) {
+
+        AtomicBoolean allIngredientsEnough = new AtomicBoolean(false);
         // Retrieve the recipe from your data source based on the recipeName
-        Recipe recipe = databaseAccess.getRecipeByName(recipeName); // Example method to get recipe by name from a database
+        databaseAccess.getRecipeByName(recipeName, (queriedRecipe) -> {
+            Recipe recipe =  queriedRecipe;
 
-        // If recipe is null, return false
-        if (recipe == null) {
-            return false;
-        }
+            if (recipe == null) {
+                allIngredientsEnough.set(false);
+                return;
+            }
 
-        // Iterate through the ingredients of the recipe
-        for (Ingredient recipeIngredient : recipe.getRecipeIngredients()) {
-            // Check if the ingredient is available in the user's pantry
-            boolean foundInPantry = false;
-            for (Ingredient pantryIngredient : pantry) {
-                if (pantryIngredient.getIngredientName().equalsIgnoreCase(recipeIngredient.getIngredientName())) {
-                    // If ingredient found in pantry, check if quantity is enough
-                    if (pantryIngredient.getQuantity() >= recipeIngredient.getQuantity()) {
-                        foundInPantry = true;
-                        break; // Move to the next recipe ingredient
+            // Iterate through the ingredients of the recipe
+            for (Ingredient recipeIngredient : recipe.getRecipeIngredients()) {
+                // Check if the ingredient is available in the user's pantry
+                boolean foundInPantry = false;
+                for (Ingredient pantryIngredient : pantry) {
+                    if (pantryIngredient.getIngredientName().equalsIgnoreCase(recipeIngredient.getIngredientName())) {
+                        // If ingredient found in pantry, check if quantity is enough
+                        if (pantryIngredient.getQuantity() >= recipeIngredient.getQuantity()) {
+                            foundInPantry = true;
+                            break; // Move to the next recipe ingredient
+                        }
                     }
                 }
+                // If ingredient not found in pantry or quantity not enough, return false
+                if (!foundInPantry) {
+                    allIngredientsEnough.set(false);
+                    return;
+                }
             }
-            // If ingredient not found in pantry or quantity not enough, return false
-            if (!foundInPantry) {
-                return false;
-            }
-        }
-        // If all ingredients are available in sufficient quantity, return true
-        return true;
+            // If all ingredients are available in sufficient quantity, return true
+            allIngredientsEnough.set(true);
+            return;
+        }); // Example method to get recipe by name from a database
+
+        return allIngredientsEnough.get();
     }
 
 }

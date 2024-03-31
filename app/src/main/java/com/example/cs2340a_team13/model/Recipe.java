@@ -53,4 +53,11 @@ private String recipeName;
     public void setRecipeInstructions(String recipeInstructions) {
         this.recipeInstructions = recipeInstructions;
     }
+
+    public void setRecipe(Recipe recipe) {
+        this.recipeName = recipe.getRecipeName();
+        this.recipeDescription = recipe.getRecipeDescription();
+        this.recipeIngredients = recipe.getRecipeIngredients();
+        this.recipeInstructions = recipe.getRecipeInstructions();
+    }
 }

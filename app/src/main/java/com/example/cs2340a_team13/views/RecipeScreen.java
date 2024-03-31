@@ -16,6 +16,7 @@ import android.widget.Spinner;
 import com.example.cs2340a_team13.DatabaseAccess;
 import com.example.cs2340a_team13.R;
 import com.example.cs2340a_team13.model.Recipe;
+import com.example.cs2340a_team13.viewModels.UserViewModel;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,6 +24,8 @@ import java.util.Comparator;
 
 public class RecipeScreen extends AppCompatActivity {
     private DatabaseAccess databaseAccess = DatabaseAccess.getInstance();
+
+    private UserViewModel userViewModel = UserViewModel.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,15 +40,16 @@ public class RecipeScreen extends AppCompatActivity {
         Button btnPersonalInfo = findViewById(R.id.PersonalInfo);
         ListView listView = findViewById(R.id.RecipeList);
         Spinner sortSpinner = findViewById(R.id.sortSpinner);
-        ArrayList<String> dataList = new ArrayList<>();
+
+        ArrayList<String> recipeNames = new ArrayList<>();
         // Add data to dataList
-        ArrayList<String> dataFromDB = databaseAccess.readFromRecipeDB((recipes) -> {
-            for (Recipe recipe : recipes) {
-                dataList.add(recipe.getRecipeName());
+        databaseAccess.readFromCookbookDB((queriedRecipes) -> {
+            for (Recipe recipe : queriedRecipes) {
+                recipeNames.add(recipe.getRecipeName());
             }
         });
 
-        MyAdapterRecipe adapter = new MyAdapterRecipe( this, dataList);
+        MyAdapterRecipe adapter = new MyAdapterRecipe(recipeNames, userViewModel.getUser().getPantryIngredients());
         listView.setAdapter(adapter);
 
         // Set click listener for ListView items
@@ -53,7 +57,7 @@ public class RecipeScreen extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // Get the clicked item
-                String selectedItem = dataList.get(position);
+                String selectedItem = recipeNames.get(position);
                 // Show popup
                 showPopup(selectedItem);
             }
