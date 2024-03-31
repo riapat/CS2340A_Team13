@@ -89,7 +89,7 @@ public class IngredientScreen extends AppCompatActivity {
         // Find the input ingredients button
         Button btnInputIngredients = findViewById(R.id.InputIngredients);
 
-        IngredientViewModel ingredientViewModel = new IngredientViewModel();
+        IngredientViewModel ingredientViewModel = IngredientViewModel.getInstance();
 
         // Set onClick listener for input ingredients button
         btnInputIngredients.setOnClickListener(new View.OnClickListener() {
@@ -119,6 +119,9 @@ public class IngredientScreen extends AppCompatActivity {
                 if (ingredientName.isEmpty() || quantityText.isEmpty() || caloriesText.isEmpty()) {
                     showAlert("Please fill in all fields.");
                     return;
+                }
+                if (expirationDate.isEmpty()){
+                    expirationDate = "";
                 }
 
                 int quantity, calories;
