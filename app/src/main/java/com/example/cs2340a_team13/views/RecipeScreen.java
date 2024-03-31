@@ -1,6 +1,7 @@
 package com.example.cs2340a_team13.views;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
@@ -27,14 +28,13 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.List;
 
 public class RecipeScreen extends AppCompatActivity {
-    private FloatingActionButton btnNewRecipe;
     private Button btnAddIngredient;
     private Button submitNewRecipe;
     private EditText recipeName;
     private EditText ingredientName;
     private EditText ingredientAmount;
     private AlertDialog dialog;
-    private LinearLayout layout;
+    private LinearLayout ingredientLayout;
     private DatabaseAccess databaseAccess = DatabaseAccess.getInstance();
 
     private UserViewModel userViewModel = UserViewModel.getInstance();
@@ -46,15 +46,13 @@ public class RecipeScreen extends AppCompatActivity {
         setContentView(R.layout.activity_recipe_screen);
         Button btnInputMeal = findViewById(R.id.InputMeal);
         Button btnRecipe = findViewById(R.id.Recipe);
-        btnNewRecipe = (FloatingActionButton) findViewById(R.id.floatingAddRecipeButton);
-        btnAddIngredient = findViewById(R.id.addIngredientButton);
-        submitNewRecipe = findViewById(R.id.submitRecipeButton);
+        FloatingActionButton btnNewRecipe = (FloatingActionButton) findViewById(R.id.floatingAddRecipeButton);
+
         Button btnIngredient = findViewById(R.id.Ingredients);
         Button btnShoppingList = findViewById(R.id.ShoppingList);
         Button btnHome = findViewById(R.id.Home);
         Button btnPersonalInfo = findViewById(R.id.PersonalInfo);
 
-        layout = findViewById(R.id.addRecipeItemLayout);
         LinearLayout recipeListLayout = findViewById(R.id.recipeListLayout);
         Spinner sortSpinner = findViewById(R.id.sortSpinner);
         ArrayList<Recipe> recipesFromDB = new ArrayList<Recipe>();
@@ -66,8 +64,7 @@ public class RecipeScreen extends AppCompatActivity {
             }
         });
 
-        Recipe addNewRecipe = new Recipe();
-        createNewRecipe(addNewRecipe);
+
 
         // Example available ingredients, replace with actual available ingredients
         List<Ingredient> pantry = UserViewModel.getInstance().getUser().getPantryIngredients();
@@ -145,75 +142,91 @@ public class RecipeScreen extends AppCompatActivity {
 
     //input recipe screen here + place text header
     public void addNewRecipeButton(View v) {
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.activity_add_ingredient, null);
+
+        ConstraintLayout layout = (ConstraintLayout) findViewById(R.id.addIngredientLayout);
+
+        ingredientLayout = dialogView.findViewById(R.id.addRecipeItemLayout);
+        btnAddIngredient = dialogView.findViewById(R.id.addIngredientButton);
+        submitNewRecipe = dialogView.findViewById(R.id.submitRecipeButton);
+        ingredientName = dialogView.findViewById(R.id.addIngredientEditText);
+        ingredientAmount = dialogView.findViewById(R.id.quantityEditText);
+        recipeName = dialogView.findViewById(R.id.recipeNameEditText);
+
+
         // Handle New Recipe button click (create a new Alert)
-        AlertDialog.Builder builder = new AlertDialog.Builder(RecipeScreen.this);
         //Makes tapping outside the dialog cancel the alert
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(dialogView);
         builder.setCancelable(true);
-        LayoutInflater inflater = RecipeScreen.this.getLayoutInflater();
-        builder.setView(inflater.inflate(R.layout.activity_add_ingredient, null));
         dialog = builder.create();
+        Recipe addNewRecipe = new Recipe();
+
+        createNewRecipe(addNewRecipe, dialogView);
+
         dialog.show();
     }
 
-    private void createNewRecipe(Recipe newRecipe) {
+    private void createNewRecipe(Recipe newRecipe, View dialogView) {
 
         btnAddIngredient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ingredientName.getText() == null) {
+                if (ingredientName.getText().toString().equals("")) {
                     ingredientName.setError("Ingredient Name cannot be null");
                     ingredientName.requestFocus();
                 }
-                if (ingredientAmount.getText() == null) {
+                else if (ingredientAmount.getText().toString().equals("")) {
                     ingredientAmount.setError("Ingredient Amount cannot be null");
                     ingredientAmount.requestFocus();
-                }
-                String ingredient = ingredientName.getText().toString().trim().toLowerCase();
-                int amount = Integer.parseInt(ingredientAmount.getText().toString().trim());
-                List<Ingredient> pantry = UserViewModel.getInstance().getPantryIngredientsList();
-                boolean originalRecipe = true;
-                for (Ingredient item: newRecipe.getRecipeIngredients()) {
-                    if (ingredient.equals(item.getIngredientName().toLowerCase())) {
-                        originalRecipe = false;
-                    }
-                }
-                if (originalRecipe) {
-                    boolean ingredientExists = false;
-                    for (Ingredient item:pantry) {
-                        if (ingredient.equals(item.getIngredientName())) {
-                                newRecipe.addIngredient(new Ingredient(item.getIngredientName(),
-                                        amount, item.getCalories(), item.getExpirationDate()));
-                                ingredientName.setText("");
-                                ingredientAmount.setText("");
-                                ingredientExists = true;
-                                displayIngredients(layout, newRecipe.getRecipeIngredients());
+                } else {
+                    String ingredient = ingredientName.getText().toString().trim().toLowerCase();
+                    int amount = Integer.parseInt(ingredientAmount.getText().toString().trim());
+                    List<Ingredient> pantry = UserViewModel.getInstance().getPantryIngredientsList();
+                    boolean originalRecipe = true;
+                    List<Ingredient> newRecipeIngredients = newRecipe.getRecipeIngredients();
+                    if (newRecipeIngredients != null) {
+                        for (Ingredient item: newRecipe.getRecipeIngredients()) {
+                            if (ingredient.equals(item.getIngredientName().toLowerCase())) {
+                                originalRecipe = false;
+                            }
                         }
                     }
-                    if (ingredientExists) {
-                        ingredientName.setError("Ingredient Doesn't Exist");
+                    if (originalRecipe) {
+
+                        newRecipe.addIngredient(new Ingredient(ingredient,
+                                amount, 0));
+                        ingredientName.setText("");
+                        ingredientAmount.setText("");
+                        displayIngredients(ingredientLayout, newRecipe.getRecipeIngredients());
+
+                    } else {
+                        ingredientName.setError("Duplicates not allowed");
                         ingredientName.requestFocus();
                     }
-                } else {
-                    ingredientName.setError("Duplicates not allowed");
-                    ingredientName.requestFocus();
                 }
+
             }
         });
         submitNewRecipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (recipeName.getText() == null) {
+                if (recipeName.getText().toString().equals("")) {
                     recipeName.setError("Recipe Name cannot be null");
                     recipeName.requestFocus();
-                } else if (ingredientName.getText() != null) {
+                } else if (!(ingredientName.getText().toString().trim().equals(""))) {
                     ingredientName.setError("Field must be empty before submitting");
                     ingredientName.requestFocus();
-                } else if (ingredientAmount.getText() == null) {
+                } else if (!(ingredientAmount.getText().toString().trim().equals(""))) {
                     ingredientAmount.setError("Field must be empty before submitting");
                     ingredientAmount.requestFocus();
+                } else if (newRecipe.getRecipeIngredients() == null || newRecipe.getRecipeIngredients().size() == 0) {
+                    ingredientName.setError("Recipe must have at least one ingredient");
+                    ingredientName.requestFocus();
                 } else {
                     String recipe = recipeName.getText().toString().trim();
-                    Recipe newRecipe = new Recipe();
                     newRecipe.setRecipeName(recipe);
                     newRecipe.setRecipeIngredients(newRecipe.getRecipeIngredients());
                     DatabaseAccess.getInstance().writeToCookbookDB(newRecipe, RecipeCallback -> {
