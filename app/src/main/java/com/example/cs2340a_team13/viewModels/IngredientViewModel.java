@@ -1,5 +1,7 @@
 package com.example.cs2340a_team13.viewModels;
 
+import android.util.Log;
+
 import com.example.cs2340a_team13.DatabaseAccess;
 import com.example.cs2340a_team13.model.Ingredient;
 import com.example.cs2340a_team13.model.User;
@@ -33,13 +35,13 @@ public class IngredientViewModel {
         ingredient.setExpirationDate(expirationDate);
 
         if (currentUser != null) {
-            List<Ingredient> pantry = currentUser.getPantry();
+            List<Ingredient> pantry = currentUser.getPantryIngredients();
             if (pantry != null) {
                 pantry.add(ingredient);
             } else {
                 pantry = new ArrayList<>();
                 pantry.add(ingredient);
-                currentUser.setPantry(pantry);
+                currentUser.setPantryIngredients(pantry);
             }
         }
 
@@ -55,8 +57,8 @@ public class IngredientViewModel {
     }
 
     public boolean checkDuplicate(Ingredient ingredient) {
-        if (currentUser != null && currentUser.getPantry() != null) {
-            for (Ingredient pantryIngredient : currentUser.getPantry()) {
+        if (currentUser != null && currentUser.getPantryIngredients() != null) {
+            for (Ingredient pantryIngredient : currentUser.getPantryIngredients()) {
                 if (pantryIngredient.getIngredientName().equals(ingredient.getIngredientName()) &&
                         pantryIngredient.getQuantity() > 0) {
                     return true;
@@ -67,9 +69,12 @@ public class IngredientViewModel {
     }
 
     public boolean existingIngredient(String ingredientName) {
-        if (currentUser != null && currentUser.getPantry() != null) {
-            for (Ingredient pantryIngredient : currentUser.getPantry()) {
-                if (pantryIngredient.getIngredientName().equalsIgnoreCase(ingredientName)) {
+        Log.e("IngredientViewModel", currentUser == null ? "User is not loaded" : "User is loaded");
+        Log.d("IngredientViewModel", "Pantry size: " + currentUser.getPantryIngredients().size());
+        if (currentUser != null && currentUser.getPantryIngredients() != null) {
+            for (Ingredient pantryIngredient : currentUser.getPantryIngredients()) {
+                Log.e("IngredientViewModel", pantryIngredient.getIngredientName() + " " + ingredientName);
+                if (pantryIngredient.getIngredientName().equals(ingredientName)) {
                     return true;
                 }
             }
@@ -78,8 +83,10 @@ public class IngredientViewModel {
     }
 
     public void increaseIngredient(String ingredientName, int quantityAdded) {
-        if (currentUser != null && currentUser.getPantry() != null) {
-            for (Ingredient pantryIngredient : currentUser.getPantry()) {
+        Log.e("IngredientViewModel", currentUser == null ? "User is not loaded" : "User is loaded");
+        if (currentUser != null && currentUser.getPantryIngredients() != null) {
+            for (Ingredient pantryIngredient : currentUser.getPantryIngredients()) {
+                System.out.println(pantryIngredient.getIngredientName() + " " + ingredientName);
                 if (pantryIngredient.getIngredientName().equalsIgnoreCase(ingredientName)) {
                     int currentQuantity = pantryIngredient.getQuantity();
                     int newQuantity = currentQuantity + quantityAdded;
@@ -94,15 +101,20 @@ public class IngredientViewModel {
     }
 
     public void decreaseIngredient(String ingredientName, int quantityAdded) {
-        if (currentUser != null && currentUser.getPantry() != null) {
-            for (Ingredient pantryIngredient : currentUser.getPantry()) {
-                if (pantryIngredient.getIngredientName().equalsIgnoreCase(ingredientName)) {
+        if (currentUser != null && currentUser.getPantryIngredients() != null) {
+            for (Ingredient pantryIngredient : currentUser.getPantryIngredients()) {
+                System.out.println(pantryIngredient.getIngredientName() + " " + ingredientName);
+                if (pantryIngredient.getIngredientName().equals(ingredientName)) {
                     int currentQuantity = pantryIngredient.getQuantity();
                     if (quantityAdded >= currentQuantity) { //remove whole ingredient
-                        currentUser.getPantryIngredients().remove(pantryIngredient);
+                        List<Ingredient> updatedIngredients = currentUser.getPantryIngredients();
+                        updatedIngredients.remove(pantryIngredient);
+                        currentUser.setPantryIngredients(updatedIngredients);
+                        break;
                     } else {
                         int newQuantity = currentQuantity - quantityAdded;
                         pantryIngredient.setQuantity(newQuantity);
+                        break;
                     }
                 }
             }
