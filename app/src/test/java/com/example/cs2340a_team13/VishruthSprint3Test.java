@@ -40,6 +40,9 @@ public class VishruthSprint3Test {
 
         Ingredient existingIngredient = new Ingredient("Existing Ingredient 1", 1, 100, "2024-04-01");
 
+        List<Ingredient> pantryIngredients = new ArrayList<>();
+        pantryIngredients.add(existingIngredient);
+        viewModel.getCurrentUser().setPantryIngredients(pantryIngredients);
 
         boolean result = viewModel.checkDuplicate(existingIngredient);
 
