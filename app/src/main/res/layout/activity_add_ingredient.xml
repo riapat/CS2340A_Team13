@@ -79,7 +79,6 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="4dp"
             android:backgroundTint="#94B36F"
-            android:onClick="submitRecipeButton"
             android:paddingTop="10sp"
             android:paddingBottom="10sp"
             android:text="Submit \n Recipe"
@@ -88,13 +87,13 @@
             app:layout_constraintEnd_toEndOf="parent" />
 
         <Button
-            android:id="@+id/addIngedientNameButton"
+            android:id="@+id/addIngredientNameButton"
             android:layout_width="117dp"
             android:layout_height="62dp"
             android:layout_marginStart="16dp"
             android:layout_marginBottom="4dp"
             android:backgroundTint="#115B14"
-            android:onClick="addIngedientNameButton"
+            android:onClick="addNewIngredient"
             android:paddingTop="10sp"
             android:paddingBottom="10sp"
             android:text="Add \n Ingredient"
