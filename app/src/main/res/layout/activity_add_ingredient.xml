@@ -104,13 +104,12 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
-        android:id="@+id/addIngredientNameButton"
+        android:id="@+id/addIngredientButton"
         android:layout_width="117dp"
         android:layout_height="62dp"
         android:layout_marginStart="56dp"
         android:layout_marginBottom="4dp"
         android:backgroundTint="#115B14"
-        android:onClick="addNewIngredient"
         android:paddingTop="10sp"
         android:paddingBottom="10sp"
         android:text="Add Ingredient"

@@ -1,4 +1,5 @@
 package com.example.cs2340a_team13.model;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Recipe {
@@ -66,14 +67,21 @@ public class Recipe {
     }
 
     public void addIngredient(Ingredient ingredient) {
-        if (recipeIngredients != null) {
-            recipeIngredients.add(ingredient);
+
+        if (recipeIngredients == null) {
+            recipeIngredients = new ArrayList<Ingredient>();
         }
+        recipeIngredients.add(ingredient);
     }
     public int calculateCaloriesPerServing() {
         int caloriesPerServing = 0;
+        if(recipeIngredients==null){
+            return 0;
+        } else if(recipeIngredients.isEmpty()){
+            return 0;
+        }
         for (Ingredient item:recipeIngredients) {
-            caloriesPerServing += item.getCalories() * item.getQuantity();
+                caloriesPerServing += item.getCalories() * item.getQuantity();
         }
         return caloriesPerServing;
     }

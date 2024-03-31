@@ -47,6 +47,8 @@ public class RecipeScreen extends AppCompatActivity {
         Button btnInputMeal = findViewById(R.id.InputMeal);
         Button btnRecipe = findViewById(R.id.Recipe);
         btnNewRecipe = (FloatingActionButton) findViewById(R.id.floatingAddRecipeButton);
+        btnAddIngredient = findViewById(R.id.addIngredientButton);
+        submitNewRecipe = findViewById(R.id.submitRecipeButton);
         Button btnIngredient = findViewById(R.id.Ingredients);
         Button btnShoppingList = findViewById(R.id.ShoppingList);
         Button btnHome = findViewById(R.id.Home);
@@ -214,8 +216,8 @@ public class RecipeScreen extends AppCompatActivity {
                     Recipe newRecipe = new Recipe();
                     newRecipe.setRecipeName(recipe);
                     newRecipe.setRecipeIngredients(newRecipe.getRecipeIngredients());
-                    DatabaseAccess.writeToCookbookDB(newRecipe, RecipeCallback -> {
-                        if (RecipeCallback) {
+                    DatabaseAccess.getInstance().writeToCookbookDB(newRecipe, RecipeCallback -> {
+                        if (RecipeCallback != null) {
                             recipeName.setText("");
                             ingredientName.setText("");
                             ingredientAmount.setText("");
