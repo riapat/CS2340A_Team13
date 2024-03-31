@@ -8,15 +8,13 @@ import java.util.List;
 
 public class IngredientViewModel {
     private UserViewModel userViewModel = UserViewModel.getInstance();
-    private Ingredient ingredient = null;
+
     private User currentUser = userViewModel.getUser(); // Reference to current user
 
     private DatabaseAccess databaseAccess = DatabaseAccess.getInstance();
 
     public Ingredient createIngredient(String ingredientName, int quantity, int calories, String expirationDate){
-        if (ingredient == null){
-            ingredient = new Ingredient();
-        }
+        Ingredient ingredient = new Ingredient();
         ingredient.setIngredientName(ingredientName);
         ingredient.setCalories(calories);
         ingredient.setQuantity(quantity);
