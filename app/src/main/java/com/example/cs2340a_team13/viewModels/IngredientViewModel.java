@@ -33,13 +33,13 @@ public class IngredientViewModel {
         ingredient.setExpirationDate(expirationDate);
 
         if (currentUser != null) {
-            List<Ingredient> pantry = currentUser.getPantry();
+            List<Ingredient> pantry = currentUser.getPantryIngredients();
             if (pantry != null) {
                 pantry.add(ingredient);
             } else {
                 pantry = new ArrayList<>();
                 pantry.add(ingredient);
-                currentUser.setPantry(pantry);
+                currentUser.setPantryIngredients(pantry);
             }
         }
 
@@ -55,8 +55,8 @@ public class IngredientViewModel {
     }
 
     public boolean checkDuplicate(Ingredient ingredient) {
-        if (currentUser != null && currentUser.getPantry() != null) {
-            for (Ingredient pantryIngredient : currentUser.getPantry()) {
+        if (currentUser != null && currentUser.getPantryIngredients() != null) {
+            for (Ingredient pantryIngredient : currentUser.getPantryIngredients()) {
                 if (pantryIngredient.getIngredientName().equals(ingredient.getIngredientName()) &&
                         pantryIngredient.getQuantity() > 0) {
                     return true;
