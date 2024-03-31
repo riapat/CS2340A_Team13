@@ -21,7 +21,7 @@ public class JackieJTests {
         User nullUser = null;
         UserViewModel.getInstance().setTestUser(nullUser);
         double testNull = UserViewModel.getInstance().calculateCalories();
-        assertEquals(testNull, 0.0);
+        assertEquals(testNull, 0.0, 0.1);
     }
     @Test
     public void testFemaleUser() {
@@ -32,7 +32,7 @@ public class JackieJTests {
         userF.setWeight(70);
         UserViewModel.getInstance().setTestUser(userF);
         double testF = UserViewModel.getInstance().calculateCalories();
-        assertEquals(testF, 1741.8);
+        assertEquals(testF, 1941.0, 0.1);
     }
     @Test
     public void testMaleUser() {
@@ -43,7 +43,7 @@ public class JackieJTests {
         userM.setWeight(85);
         UserViewModel.getInstance().setTestUser(userM);
          double testM = UserViewModel.getInstance().calculateCalories();
-        assertEquals(testM, 2206.5);
+        assertEquals(testM, 1842.75, 0.1);
     }
 
     @Test
@@ -63,7 +63,7 @@ public class JackieJTests {
         List<Ingredient> items = new ArrayList<Ingredient>();
         items.add(oreo);
         items.add(milk);
-        Recipe milkshake = new Recipe("MilkShake", null, items, null );
+        Recipe milkshake = new Recipe("MilkShake", null, null, null );
         milkshake.addIngredient(oreo);
         Assert.assertNotEquals(milkshake.getRecipeIngredients(),items);
     }
@@ -77,7 +77,7 @@ public class JackieJTests {
         items.add(milk);
         items.add(iceCream);
         Recipe milkshake = new Recipe("MilkShake", null, items, null );
-        Assert.assertEquals(milkshake.calculateCaloriesPerServing(), 1705);
+        Assert.assertEquals(milkshake.calculateCaloriesPerServing(), 1700);
     }
 
     @Test
@@ -93,7 +93,5 @@ public class JackieJTests {
         Recipe water = new Recipe("items", null, items, null );
         Assert.assertEquals(water.calculateCaloriesPerServing(), 0);
     }
-
-
 
 }

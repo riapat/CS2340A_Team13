@@ -216,8 +216,8 @@ public class RecipeScreen extends AppCompatActivity {
                     Recipe newRecipe = new Recipe();
                     newRecipe.setRecipeName(recipe);
                     newRecipe.setRecipeIngredients(newRecipe.getRecipeIngredients());
-                    DatabaseAccess.writeToCookbookDB(newRecipe, RecipeCallback -> {
-                        if (RecipeCallback) {
+                    DatabaseAccess.getInstance().writeToCookbookDB(newRecipe, RecipeCallback -> {
+                        if (RecipeCallback != null) {
                             recipeName.setText("");
                             ingredientName.setText("");
                             ingredientAmount.setText("");
