@@ -153,7 +153,7 @@ public class DatabaseAccess {
     // and returns the User object with the updated pantry list to update the state of the User
     public void addToPantry(User user, Ingredient ingredient, UserCallback callback) {
         DatabaseReference pantryRef = fbInstance.getReference("Users")
-                .child(user.getUsername()).child("pantry");
+                .child(user.getUsername()).child("pantryIngredients");
 
         pantryRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -205,7 +205,7 @@ public class DatabaseAccess {
     //Query the user and update the queried user
     public void loadPantry(String username, PantryCallback callback) {
         DatabaseReference pantryRef = fbInstance.getReference("Users")
-                .child(username).child("pantry");
+                .child(username).child("pantryIngredients");
         pantryRef.get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -217,7 +217,7 @@ public class DatabaseAccess {
                                 ingredients.add(ingredient);
                             }
                         }
-                        System.out.println("Pantry loaded");
+                        System.out.println("Pantry loaded" + ingredients.size());
                         callback.onComplete(ingredients);
                     } else {
                         System.out.println("Pantry not loaded");

@@ -1,5 +1,7 @@
 package com.example.cs2340a_team13.viewModels;
 
+import android.util.Log;
+
 import com.example.cs2340a_team13.DatabaseAccess;
 import com.example.cs2340a_team13.model.Ingredient;
 import com.example.cs2340a_team13.model.User;
@@ -65,11 +67,67 @@ public class IngredientViewModel {
         }
         return false;
     }
+
+    public boolean existingIngredient(String ingredientName) {
+        Log.e("IngredientViewModel", currentUser == null ? "User is not loaded" : "User is loaded");
+        Log.d("IngredientViewModel", "Pantry size: " + currentUser.getPantryIngredients().size());
+        if (currentUser != null && currentUser.getPantryIngredients() != null) {
+            for (Ingredient pantryIngredient : currentUser.getPantryIngredients()) {
+                Log.e("IngredientViewModel", pantryIngredient.getIngredientName() + " " + ingredientName);
+                if (pantryIngredient.getIngredientName().equals(ingredientName)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public void increaseIngredient(String ingredientName, int quantityAdded) {
+        Log.e("IngredientViewModel", currentUser == null ? "User is not loaded" : "User is loaded");
+        if (currentUser != null && currentUser.getPantryIngredients() != null) {
+            for (Ingredient pantryIngredient : currentUser.getPantryIngredients()) {
+                System.out.println(pantryIngredient.getIngredientName() + " " + ingredientName);
+                if (pantryIngredient.getIngredientName().equalsIgnoreCase(ingredientName)) {
+                    int currentQuantity = pantryIngredient.getQuantity();
+                    int newQuantity = currentQuantity + quantityAdded;
+                    pantryIngredient.setQuantity(newQuantity);
+
+                    databaseAccess.getInstance().updateToUserDB(currentUser, userCallback -> {
+                    });
+                    return;
+                }
+            }
+        }
+    }
+
+    public void decreaseIngredient(String ingredientName, int quantityAdded) {
+        if (currentUser != null && currentUser.getPantryIngredients() != null) {
+            for (Ingredient pantryIngredient : currentUser.getPantryIngredients()) {
+                System.out.println(pantryIngredient.getIngredientName() + " " + ingredientName);
+                if (pantryIngredient.getIngredientName().equals(ingredientName)) {
+                    int currentQuantity = pantryIngredient.getQuantity();
+                    if (quantityAdded >= currentQuantity) { //remove whole ingredient
+                        List<Ingredient> updatedIngredients = currentUser.getPantryIngredients();
+                        updatedIngredients.remove(pantryIngredient);
+                        currentUser.setPantryIngredients(updatedIngredients);
+                        break;
+                    } else {
+                        int newQuantity = currentQuantity - quantityAdded;
+                        pantryIngredient.setQuantity(newQuantity);
+                        break;
+                    }
+                }
+            }
+            databaseAccess.getInstance().updateToUserDB(currentUser, userCallback -> {
+            });
+        }
+
     public void setCurrentUser(User user) {
         this.currentUser = user;
     }
     public User getCurrentUser() {
         return currentUser;
+
     }
 }
 
