@@ -86,6 +86,7 @@
         android:text="Personal Info"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteY="92dp" />
 
     <TextView
@@ -163,23 +164,31 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
-        android:layout_marginBottom="44dp"
-        android:onClick="addNewRecipeButton"
         android:clickable="true"
-        android:focusable="true"
         android:src="@android:drawable/ic_input_add"
-        app:layout_constraintBottom_toTopOf="@+id/navigation_bar"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:layout_editor_absoluteY="559dp" />
+    <!-- Dropdown for sorting/filtering -->
+
+    <Spinner
+        android:id="@+id/sortSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="148dp"
+        android:layout_marginEnd="16dp"
+        android:entries="@array/sort_options"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@id/titleTextView"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ListView
         android:id="@+id/RecipeList"
         android:layout_width="260dp"
         android:layout_height="355dp"
-        app:layout_constraintBottom_toTopOf="@+id/content_container"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleTextView"
-    />
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="75dp"
+        tools:layout_editor_absoluteY="172dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

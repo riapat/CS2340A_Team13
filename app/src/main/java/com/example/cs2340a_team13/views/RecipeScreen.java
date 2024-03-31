@@ -3,21 +3,31 @@ import static com.example.cs2340a_team13.viewModels.UserViewModel.user;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.DialogInterface;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ListView;
+import android.widget.Spinner;
 
 import com.example.cs2340a_team13.DatabaseAccess;
 import com.example.cs2340a_team13.R;
-import com.example.cs2340a_team13.model.Ingredient;
 import com.example.cs2340a_team13.model.Recipe;
 import com.example.cs2340a_team13.viewModels.UserViewModel;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import com.example.cs2340a_team13.model.Ingredient;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.HashMap;
 import java.util.List;
@@ -29,20 +39,47 @@ public class RecipeScreen extends AppCompatActivity {
     EditText recipeName;
     EditText ingredientName;
     EditText ingredientAmount;
-    HashMap<Ingredient, Integer> currentRecipe;
-    AlertDialog dialog;
+
+    private DatabaseAccess databaseAccess = DatabaseAccess.getInstance();
+
+    private UserViewModel userViewModel = UserViewModel.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_screen);
+
+        Button btnInputMeal = findViewById(R.id.InputMeal);
         Button btnRecipe = findViewById(R.id.Recipe);
         btnNewRecipe = (FloatingActionButton) findViewById(R.id.floatingAddRecipeButton);
         Button btnIngredient = findViewById(R.id.Ingredients);
         Button btnShoppingList = findViewById(R.id.ShoppingList);
         Button btnHome = findViewById(R.id.Home);
         Button btnPersonalInfo = findViewById(R.id.PersonalInfo);
+        ListView listView = findViewById(R.id.RecipeList);
+        Spinner sortSpinner = findViewById(R.id.sortSpinner);
 
+        ArrayList<String> recipeNames = new ArrayList<>();
+        // Add data to dataList
+        databaseAccess.readFromCookbookDB((queriedRecipes) -> {
+            for (Recipe recipe : queriedRecipes) {
+                recipeNames.add(recipe.getRecipeName());
+            }
+        });
+
+        MyAdapterRecipe adapter = new MyAdapterRecipe(recipeNames, userViewModel.getUser().getPantryIngredients());
+        listView.setAdapter(adapter);
+
+        // Set click listener for ListView items
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Get the clicked item
+                String selectedItem = recipeNames.get(position);
+                // Show popup
+                showPopup(selectedItem);
+            }
+        });
         btnInputMeal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,7 +122,22 @@ public class RecipeScreen extends AppCompatActivity {
         });
     }
 
-    @SuppressLint("InflateParams")
+    private void showPopup(String selectedItem) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Selected Recipe");
+        builder.setMessage("You clicked on: " + selectedItem);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Dismiss the dialog
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    //input recipe screen here + place text header
     public void addNewRecipeButton(View v){
         currentRecipe = new HashMap<Ingredient, Integer>();
         // Handle New Recipe button click (create a new Alert)
@@ -93,8 +145,9 @@ public class RecipeScreen extends AppCompatActivity {
         //Makes tapping outside the dialog cancel the alert
         builder.setCancelable(true);
         LayoutInflater inflater = RecipeScreen.this.getLayoutInflater();
-        builder.setView(inflater.inflate(R.layout.activity_add_ingredient, null);
-        dialog = builder.create();
+
+        builder.setView(inflater.inflate(R.layout.activity_add_ingredient, null));
+        AlertDialog dialog = builder.create();
         dialog.show();
     }
 

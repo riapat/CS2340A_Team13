@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="sort_options">
+        <item>Sort Alphabetically</item>
+        <item>Sort by Number of Ingredients</item>
+    </string-array>
+</resources>
