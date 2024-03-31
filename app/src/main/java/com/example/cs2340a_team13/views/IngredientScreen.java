@@ -33,6 +33,12 @@ public class IngredientScreen extends AppCompatActivity {
         Button btnShoppingList = findViewById(R.id.ShoppingList);
         Button btnHome = findViewById(R.id.Home);
         Button btnPersonalInfo = findViewById(R.id.PersonalInfo);
+        Button btnSubmitIngredient = findViewById(R.id.submitButton);
+        EditText ingredientNameEditText = findViewById(R.id.ingredientNameEditText);
+        EditText  quantityEditText = findViewById(R.id.quantityEditText);
+        EditText caloriesEditText = findViewById(R.id.caloriesEditText);
+        EditText expirationDateEditText = findViewById(R.id.expirationDateEditText);
+
 
 
         btnInputMeal.setOnClickListener(new View.OnClickListener() {
@@ -83,6 +89,7 @@ public class IngredientScreen extends AppCompatActivity {
         // Find the input ingredients button
         Button btnInputIngredients = findViewById(R.id.InputIngredients);
 
+        IngredientViewModel ingredientViewModel = new IngredientViewModel();
 
         // Set onClick listener for input ingredients button
         btnInputIngredients.setOnClickListener(new View.OnClickListener() {
@@ -100,12 +107,6 @@ public class IngredientScreen extends AppCompatActivity {
                 ((EditText) findViewById(R.id.expirationDateEditText)).setText("");
             }
         });
-
-        Button btnSubmitIngredient = findViewById(R.id.submitButton);
-        EditText ingredientNameEditText = findViewById(R.id.ingredientNameEditText);
-        EditText  quantityEditText = findViewById(R.id.quantityEditText);
-        EditText caloriesEditText = findViewById(R.id.caloriesEditText);
-        EditText expirationDateEditText = findViewById(R.id.expirationDateEditText);
 
         btnSubmitIngredient.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,7 +138,6 @@ public class IngredientScreen extends AppCompatActivity {
                     showAlert("Ingredient name must not contain numbers.");
                     return;
                 }
-                IngredientViewModel ingredientViewModel = IngredientViewModel.getInstance(); // Assuming getInstance() returns an instance of IngredientViewModel
                 Ingredient ingredient = ingredientViewModel.createIngredient(ingredientName, quantity, calories, expirationDate);
                 ingredientNameEditText.setText("");
                 quantityEditText.setText("");

@@ -7,6 +7,7 @@ public class User {
     private String username;
     private String password;
     private List<Meal> loggedMeals;
+    private List<Ingredient> pantry;
 
     private int height;
 
@@ -101,5 +102,13 @@ public class User {
         this.age = user.getAge();
         this.gender = user.getGender();
         this.loggedMeals = user.getMeals();
+    }
+
+    public List<Ingredient> getPantry() {
+        return pantry;
+    }
+
+    public void setPantry(List<Ingredient> pantry) {
+        this.pantry = pantry;
     }
 }
