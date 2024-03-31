@@ -1,11 +1,17 @@
 package com.example.cs2340a_team13;
 
 
+import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import android.view.View;
+import android.widget.EditText;
+
 import com.example.cs2340a_team13.model.Meal;
+import com.example.cs2340a_team13.viewModels.IngredientViewModel;
 import com.example.cs2340a_team13.viewModels.MealViewModel;
+import com.example.cs2340a_team13.views.IngredientScreen;
 
 public class VishruthTests {
 
@@ -31,3 +37,4 @@ public class VishruthTests {
         assertEquals(null, meal);
     }
 }
+
