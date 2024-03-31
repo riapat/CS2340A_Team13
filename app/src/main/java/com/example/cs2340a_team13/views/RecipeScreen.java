@@ -22,8 +22,11 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.cs2340a_team13.AlphabeticalSortingStrategy;
 import com.example.cs2340a_team13.DatabaseAccess;
+import com.example.cs2340a_team13.NumberOfIngredientsSortingStrategy;
 import com.example.cs2340a_team13.R;
+import com.example.cs2340a_team13.SortingStrategy;
 import com.example.cs2340a_team13.model.Recipe;
 import com.example.cs2340a_team13.viewModels.UserViewModel;
 
@@ -42,6 +45,8 @@ public class RecipeScreen extends AppCompatActivity {
     EditText recipeName;
     EditText ingredientName;
     EditText ingredientAmount;
+
+    private String selected;
 
     private DatabaseAccess databaseAccess = DatabaseAccess.getInstance();
 
@@ -62,34 +67,35 @@ public class RecipeScreen extends AppCompatActivity {
         LinearLayout recipeListLayout = findViewById(R.id.recipeListLayout);
 
 
-        Spinner sortSpinner = findViewById(R.id.sortSpinner);
+        fetchAndDisplayRecipes();
 
-        ArrayList<Recipe> recipesFromDB = new ArrayList<Recipe>();
-        // Add data to dataList
-        databaseAccess.readFromCookbookDB((queriedRecipes) -> {
-            for (Recipe recipe : queriedRecipes) {
-                recipesFromDB.add(recipe);
-            }
-        });
+        Spinner sortingSpinner = findViewById(R.id.sortSpinner);
+        ArrayList<String> spinnerItems = new ArrayList<String>();
+        spinnerItems.add("Sort Alphabetically");
+        spinnerItems.add("Sort by Number of Ingredients");
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, spinnerItems);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sortingSpinner.setAdapter(adapter);
 
-        // Example available ingredients, replace with actual available ingredients
-        List<Ingredient> pantry = UserViewModel.getInstance().getUser().getPantryIngredients();
+        sortingSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                     @Override
+                                                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                                         selected = parent.getItemAtPosition(position).toString();
 
-        for (Recipe recipe : recipesFromDB) {
-            TextView recipeNameTextView = new TextView(this);
-            recipeNameTextView.setText(recipe.getRecipeName());
-            recipeNameTextView.setTextSize(20);
-            recipeNameTextView.setPadding(0, 10, 0, 10);
-            recipeListLayout.addView(recipeNameTextView); // Add the recipe name TextView
+                                                     }
 
-            // Create and add the "Enough" or "Not Enough" TextView
-            TextView ingredientsStatusTextView = new TextView(this);
-            boolean isEnough = recipe.isIngredientsEnough(pantry, recipe.getRecipeIngredients());
-            ingredientsStatusTextView.setText(isEnough ? "Enough" : "Not Enough");
-            ingredientsStatusTextView.setTextSize(16);
-            ingredientsStatusTextView.setTextColor(isEnough ? Color.GREEN : Color.RED);
-            ingredientsStatusTextView.setPadding(0, 0, 0, 20); // Adjust padding as needed
-            recipeListLayout.addView(ingredientsStatusTextView); // Add the status TextView
+                                                     @Override
+                                                     public void onNothingSelected(AdapterView<?> parent) {
+                                                         // Do nothing
+                                                     }
+                                                 }
+
+
+        );
+        if (selected.equals("Sort Alphabetically")) {
+            onSortAlphabeticallySelected();
+        } else if (selected.equals("Sort by Number of Ingredients")) {
+            onSortByNumberOfIngredientsSelected();
         }
 
         btnInputMeal.setOnClickListener(new View.OnClickListener() {
@@ -133,6 +139,75 @@ public class RecipeScreen extends AppCompatActivity {
             }
         });
     }
+    LinearLayout recipeListLayout = findViewById(R.id.recipeListLayout);
+    ArrayList<Recipe> recipesFromDB = new ArrayList<Recipe>();
+    private void fetchAndDisplayRecipes() {
+
+        // Add data to dataList
+        databaseAccess.readFromCookbookDB((queriedRecipes) -> {
+            for (Recipe recipe : queriedRecipes) {
+                recipesFromDB.add(recipe);
+            }
+        });
+
+        // Example available ingredients, replace with actual available ingredients
+        List<Ingredient> pantry = UserViewModel.getInstance().getUser().getPantryIngredients();
+
+        for (Recipe recipe : recipesFromDB) {
+            TextView recipeNameTextView = new TextView(this);
+            boolean isEnough = recipe.isIngredientsEnough(pantry, recipe.getRecipeIngredients());
+            String enough = isEnough ? "Enough" : "Not Enough";
+            String finalString = recipe.getRecipeName() + "\n" + enough;
+            recipeNameTextView.setText(finalString);
+            recipeNameTextView.setTextSize(20);
+            recipeNameTextView.setPadding(0, 10, 0, 10);
+            //recipeListLayout.addView(recipeNameTextView); // Add the recipe name TextView
+
+            // Create and add the "Enough" or "Not Enough" TextView
+            //TextView ingredientsStatusTextView = new TextView(this);
+            //boolean isEnough = recipe.isIngredientsEnough(pantry, recipe.getRecipeIngredients());
+            //ingredientsStatusTextView.setText(isEnough ? "Enough" : "Not Enough");
+            //recipeNameTextView.setText(recipe.getRecipeName() + "\n" + (isEnough ? "Enough" : "Not Enough"));
+            //ingredientsStatusTextView.setTextSize(16);
+            //ingredientsStatusTextView.setTextColor(isEnough ? Color.GREEN : Color.RED);
+            //ingredientsStatusTextView.setPadding(0, 0, 0, 20); // Adjust padding as needed
+            recipeListLayout.addView(recipeNameTextView); // Add the status TextView
+        }
+    }
+
+    private void applySortingStrategy(SortingStrategy strategy) {
+        strategy.sort(recipesFromDB); // Apply the sorting strategy to 'recipes'
+        refreshRecipeListView(); // Refresh the display to reflect the sorted list
+    }
+
+    private void refreshRecipeListView() {
+        LinearLayout recipeListLayout = findViewById(R.id.recipeListLayout);
+        recipeListLayout.removeAllViews();
+        // Example available ingredients, replace with actual available ingredients
+        List<Ingredient> pantry = UserViewModel.getInstance().getUser().getPantryIngredients();
+        for (Recipe recipe : recipesFromDB) {
+            TextView textView = new TextView(this);
+            boolean isEnough = recipe.isIngredientsEnough(pantry, recipe.getRecipeIngredients());
+            String enough = isEnough ? "Enough" : "Not Enough";
+            String finalString = recipe.getRecipeName() + "\n" + enough;
+            textView.setText(finalString);
+            textView.setTextSize(20);
+            textView.setPadding(0, 10, 0, 10);
+
+            recipeListLayout.addView(textView); // Add the TextView to your LinearLayout
+        }
+    }
+
+    // Methods to handle user interactions that trigger sorting
+    public void onSortAlphabeticallySelected() {
+        applySortingStrategy(new AlphabeticalSortingStrategy());
+    }
+
+    public void onSortByNumberOfIngredientsSelected() {
+        applySortingStrategy(new NumberOfIngredientsSortingStrategy());
+    }
+
+
 
     private void showPopup(String selectedItem) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
