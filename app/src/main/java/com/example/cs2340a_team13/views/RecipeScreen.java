@@ -2,14 +2,27 @@ package com.example.cs2340a_team13.views;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
+import android.app.AlertDialog;
+import android.widget.Spinner;
 
+import com.example.cs2340a_team13.DatabaseAccess;
 import com.example.cs2340a_team13.R;
+import com.example.cs2340a_team13.model.Recipe;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class RecipeScreen extends AppCompatActivity {
+    private DatabaseAccess databaseAccess = DatabaseAccess.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +35,29 @@ public class RecipeScreen extends AppCompatActivity {
         Button btnShoppingList = findViewById(R.id.ShoppingList);
         Button btnHome = findViewById(R.id.Home);
         Button btnPersonalInfo = findViewById(R.id.PersonalInfo);
+        ListView listView = findViewById(R.id.RecipeList);
+        Spinner sortSpinner = findViewById(R.id.sortSpinner);
+        ArrayList<String> dataList = new ArrayList<>();
+        // Add data to dataList
+        ArrayList<String> dataFromDB = databaseAccess.readFromRecipeDB((recipes) -> {
+            for (Recipe recipe : recipes) {
+                dataList.add(recipe.getRecipeName());
+            }
+        });
 
+        MyAdapterRecipe adapter = new MyAdapterRecipe( this, dataList);
+        listView.setAdapter(adapter);
+
+        // Set click listener for ListView items
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Get the clicked item
+                String selectedItem = dataList.get(position);
+                // Show popup
+                showPopup(selectedItem);
+            }
+        });
         btnInputMeal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,6 +98,21 @@ public class RecipeScreen extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    private void showPopup(String selectedItem) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Selected Recipe");
+        builder.setMessage("You clicked on: " + selectedItem);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Dismiss the dialog
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     //input recipe screen here + place text header

@@ -6,77 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".views.RecipeScreen">
 
-    <TextView
-        android:id="@+id/textViewRecipe"
-        android:layout_width="match_parent"
-        android:layout_height="43dp"
-        android:padding="10sp"
-        android:text="Recipe"
-        android:textSize="17sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="149dp" />
-
-    <TextView
-        android:id="@+id/textViewIngredients"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10sp"
-        android:text="Ingredients"
-        android:textSize="17sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="231dp" />
-
-    <TextView
-        android:id="@+id/textViewQuantities"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10sp"
-        android:text="Quantities"
-        android:textSize="17sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="313dp" />
-
-    <EditText
-        android:id="@+id/usernameFieldRecipe"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Recipe Name"
-        android:inputType="text"
-        android:padding="10sp"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/textViewIngredients"
-        app:layout_constraintTop_toBottomOf="@+id/textViewRecipe"
-        tools:layout_editor_absoluteX="0dp" />
-
-    <EditText
-        android:id="@+id/usernameFieldIngredients"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Seperate with commas"
-        android:inputType="text"
-        android:padding="10sp"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/textViewQuantities"
-        app:layout_constraintTop_toBottomOf="@+id/textViewIngredients"
-        tools:layout_editor_absoluteX="0dp" />
-
-    <EditText
-        android:id="@+id/usernameFieldQuantities"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Seperate with commas with same order as ingredients list"
-        android:inputType="text"
-        android:padding="10sp"
-        android:textSize="14sp"
-        app:layout_constraintTop_toBottomOf="@+id/textViewQuantities"
-        tools:layout_editor_absoluteX="16dp" />
-
     <Button
         android:id="@+id/PersonalInfo"
         android:layout_width="113dp"
@@ -168,6 +97,19 @@
         android:src="@android:drawable/ic_input_add"
         app:layout_constraintEnd_toEndOf="parent"
         tools:layout_editor_absoluteY="559dp" />
+    <!-- Dropdown for sorting/filtering -->
+
+    <Spinner
+        android:id="@+id/sortSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="148dp"
+        android:layout_marginEnd="16dp"
+        android:entries="@array/sort_options"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@id/titleTextView"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ListView
         android:id="@+id/RecipeList"
