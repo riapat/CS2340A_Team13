@@ -1,6 +1,4 @@
 package com.example.cs2340a_team13.views;
-
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,7 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-
+import android.widget.LinearLayout;
 
 import com.example.cs2340a_team13.R;
 import com.example.cs2340a_team13.model.Ingredient;
@@ -19,7 +17,7 @@ import com.example.cs2340a_team13.viewModels.IngredientViewModel;
 
 
 public class IngredientScreen extends AppCompatActivity {
-
+    IngredientViewModel ingredientInstance = IngredientViewModel.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,11 +33,9 @@ public class IngredientScreen extends AppCompatActivity {
         Button btnPersonalInfo = findViewById(R.id.PersonalInfo);
         Button btnSubmitIngredient = findViewById(R.id.submitButton);
         EditText ingredientNameEditText = findViewById(R.id.ingredientNameEditText);
-        EditText  quantityEditText = findViewById(R.id.quantityEditText);
+        EditText quantityEditText = findViewById(R.id.quantityEditText);
         EditText caloriesEditText = findViewById(R.id.caloriesEditText);
         EditText expirationDateEditText = findViewById(R.id.expirationDateEditText);
-
-
 
         btnInputMeal.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,7 +116,7 @@ public class IngredientScreen extends AppCompatActivity {
                     showAlert("Please fill in all fields.");
                     return;
                 }
-                if (expirationDate.isEmpty()){
+                if (expirationDate.isEmpty()) {
                     expirationDate = "";
                 }
 
@@ -153,6 +149,112 @@ public class IngredientScreen extends AppCompatActivity {
 
             }
         });
+
+
+        //pop up for adjust ingredients button
+        Button btnAdjustIngredients = findViewById(R.id.adjustIngredientsButton);
+        btnAdjustIngredients.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Display a form for adjusting ingredients
+                showAdjustIngredientsDialog();
+            }
+        });
+    }
+
+        private void showAdjustIngredientsDialog() {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Adjust Ingredients");
+
+            final EditText inputIngredName = new EditText(this);
+            inputIngredName.setHint("Ingredient Name");
+
+            final EditText inputQuant = new EditText(this);
+            inputQuant.setHint("Quantity");
+
+            //buttons
+            builder.setPositiveButton("Add", null);
+            builder.setNegativeButton("Subtract", null);
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+
+            //input fields in layout
+            LinearLayout layout = new LinearLayout(this);
+            layout.setOrientation(LinearLayout.VERTICAL);
+            layout.addView(inputIngredName);
+            layout.addView(inputQuant);
+            builder.setView(layout);
+
+            // Create and show the dialog
+            final AlertDialog dialog = builder.create();
+            dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                @Override
+                public void onShow(DialogInterface dialogInterface) {
+
+                    String ingredName = inputIngredName.getText().toString().trim();
+                    String quantStr = inputQuant.getText().toString().trim();
+
+                    Button addButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
+                    addButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            //addition logic
+                            addIngredientQuantity(ingredName, quantStr);
+                            dialog.dismiss();
+                        }
+                    });
+
+                    Button removeButton = dialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+                    removeButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            //removal logic
+                            decreaseIngredientQuantity(ingredName, quantStr);
+                            dialog.dismiss();
+                        }
+                    });
+                }
+            });
+            dialog.show();
+        }
+
+
+    private void addIngredientQuantity(String ingredientName, String quantityStr) {
+        //quant string to int
+        int quantity = 0;
+        try {
+            quantity = Integer.parseInt(quantityStr);
+        } catch (NumberFormatException e) {
+            showAlert("Please enter a valid number.");
+            return;
+        }
+        if (!ingredientName.matches("[a-zA-Z ]+")) {
+            showAlert("Ingredient name must not contain numbers.");
+            return;
+        }
+        if (!ingredientInstance.existingIngredient(ingredientName)) {
+            showAlert("Ingredient doesn't exist in pantry.");
+            return;
+        }
+        //logic to add
+        ingredientInstance.increaseIngredient(ingredientName, quantity);
+    }
+
+    private void decreaseIngredientQuantity(String ingredientName, String quantityStr) {
+        //quant string to int
+        int quantity = 0;
+        try {
+            quantity = Integer.parseInt(quantityStr);
+        } catch (NumberFormatException e) {
+            showAlert("Please enter a valid number.");
+            return;
+        }
+        //logic to remove
+        ingredientInstance.decreaseIngredient(ingredientName, quantity);
     }
 
     private void showAlert(String message) {

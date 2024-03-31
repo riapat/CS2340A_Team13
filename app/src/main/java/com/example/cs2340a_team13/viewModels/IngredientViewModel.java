@@ -65,5 +65,50 @@ public class IngredientViewModel {
         }
         return false;
     }
+
+    public boolean existingIngredient(String ingredientName) {
+        if (currentUser != null && currentUser.getPantry() != null) {
+            for (Ingredient pantryIngredient : currentUser.getPantry()) {
+                if (pantryIngredient.getIngredientName().equalsIgnoreCase(ingredientName)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public void increaseIngredient(String ingredientName, int quantityAdded) {
+        if (currentUser != null && currentUser.getPantry() != null) {
+            for (Ingredient pantryIngredient : currentUser.getPantry()) {
+                if (pantryIngredient.getIngredientName().equalsIgnoreCase(ingredientName)) {
+                    int currentQuantity = pantryIngredient.getQuantity();
+                    int newQuantity = currentQuantity + quantityAdded;
+                    pantryIngredient.setQuantity(newQuantity);
+
+                    databaseAccess.getInstance().updateToUserDB(currentUser, userCallback -> {
+                    });
+                    return;
+                }
+            }
+        }
+    }
+
+    public void decreaseIngredient(String ingredientName, int quantityAdded) {
+        if (currentUser != null && currentUser.getPantry() != null) {
+            for (Ingredient pantryIngredient : currentUser.getPantry()) {
+                if (pantryIngredient.getIngredientName().equalsIgnoreCase(ingredientName)) {
+                    int currentQuantity = pantryIngredient.getQuantity();
+                    if (quantityAdded >= currentQuantity) { //remove whole ingredient
+                        currentUser.getPantryIngredients().remove(pantryIngredient);
+                    } else {
+                        int newQuantity = currentQuantity - quantityAdded;
+                        pantryIngredient.setQuantity(newQuantity);
+                    }
+                }
+            }
+            databaseAccess.getInstance().updateToUserDB(currentUser, userCallback -> {
+            });
+        }
+    }
 }
 
