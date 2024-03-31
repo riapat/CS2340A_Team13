@@ -88,4 +88,27 @@ public class Recipe {
     public void setCookingTime(int cookingTime) {
         this.cookingTime = cookingTime;
     }
+
+    public boolean isIngredientsEnough(List<Ingredient> pantry, List<Ingredient> recipeIngredients) {
+        for (Ingredient requiredIngredient : recipeIngredients) {
+            boolean found = false; // Flag to check if the required ingredient is found in the pantry
+
+            for (Ingredient pantryIngredient : pantry) {
+                if (requiredIngredient.getIngredientName().equals(pantryIngredient.getIngredientName())) {
+                    found = true; // The ingredient is found
+                    if (pantryIngredient.getQuantity() < requiredIngredient.getQuantity()) {
+                        return false; // Found but not enough quantity
+                    }
+                    break; // No need to continue checking this ingredient
+                }
+            }
+
+            if (!found) {
+                return false; // Required ingredient is not in the pantry
+            }
+        }
+        return true; // All required ingredients are found in sufficient quantities
+    }
+
+
 }
