@@ -74,22 +74,30 @@ public class LoginViewModel {
                                     .readFromUserDB(username, user -> {
                                         if (user != null) {
 
-                                            DatabaseAccess.getInstance().loadPantry(username, ingredients -> {
-                                                if (ingredients != null) {
-                                                    // If pantry loaded successfully, update user's pantry and complete sign-in
-                                                    user.setPantryIngredients(ingredients); // Ensure User model has a method to set pantry
-                                                    updateUser(user);
-                                                    Log.d("LoginViewModel",
-                                                            "signInWithEmail:success Username: "
-                                                                    + user.getUsername() + " Password: "
-                                                                    + user.getPassword());
-                                                    callback.onComplete(true, user);
-                                                } else {
-                                                    // Handle failure to load pantry here, if necessary
-                                                    Log.w("LoginViewModel", "Failed to load pantry");
-                                                    callback.onComplete(false, null);
-                                                }
-                                            });
+                                            DatabaseAccess.getInstance().loadPantry(username,
+                                                    ingredients -> {
+                                                    if (ingredients != null) {
+                                                        // If pantry loaded successfully
+                                                        // update user's pantry and complete sign-in
+                                                        user.setPantryIngredients(ingredients);
+                                                        // Ensure User model
+                                                        //has a method to set pantry
+                                                        updateUser(user);
+                                                        Log.d("LoginViewModel",
+                                                                "signInWithEmail:success Username: "
+                                                                        + user.getUsername()
+                                                                        + " Password: "
+                                                                        + user.getPassword());
+                                                        callback.onComplete(true, user);
+                                                    } else {
+                                                        // Handle failure to load pantry here
+                                                        // if necessary
+                                                        Log.w("LoginViewModel",
+                                                                "Failed to load pantry");
+                                                        callback.onComplete(false,
+                                                                null);
+                                                    }
+                                                });
                                         } else {
                                             Log.w("LoginViewModel",
                                                     "signInWithEmail:failure ",

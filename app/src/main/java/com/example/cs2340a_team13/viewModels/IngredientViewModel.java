@@ -15,7 +15,7 @@ public class IngredientViewModel {
     private DatabaseAccess databaseAccess = DatabaseAccess.getInstance();
 
     // Private constructor to prevent instantiation outside of this class
-    private IngredientViewModel() {}
+    private IngredientViewModel() { }
 
     // Singleton instance getter
     public static IngredientViewModel getInstance() {
@@ -25,7 +25,8 @@ public class IngredientViewModel {
         return IngredientInstance;
     }
 
-    public Ingredient createIngredient(String ingredientName, int quantity, int calories, String expirationDate) {
+    public Ingredient createIngredient(String ingredientName, int quantity,
+                                       int calories, String expirationDate) {
         Ingredient ingredient = new Ingredient();
         ingredient.setIngredientName(ingredientName);
         ingredient.setCalories(calories);
@@ -57,8 +58,8 @@ public class IngredientViewModel {
     public boolean checkDuplicate(Ingredient ingredient) {
         if (currentUser != null && currentUser.getPantry() != null) {
             for (Ingredient pantryIngredient : currentUser.getPantry()) {
-                if (pantryIngredient.getIngredientName().equals(ingredient.getIngredientName()) &&
-                        pantryIngredient.getQuantity() > 0) {
+                if (pantryIngredient.getIngredientName().equals(ingredient.getIngredientName())
+                        && pantryIngredient.getQuantity() > 0) {
                     return true;
                 }
             }
@@ -66,4 +67,3 @@ public class IngredientViewModel {
         return false;
     }
 }
-
