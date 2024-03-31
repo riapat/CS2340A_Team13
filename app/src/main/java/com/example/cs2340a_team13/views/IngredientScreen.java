@@ -1,9 +1,11 @@
 package com.example.cs2340a_team13.views;
 
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -12,6 +14,8 @@ import android.widget.EditText;
 
 
 import com.example.cs2340a_team13.R;
+import com.example.cs2340a_team13.model.Ingredient;
+import com.example.cs2340a_team13.viewModels.IngredientViewModel;
 
 
 public class IngredientScreen extends AppCompatActivity {
@@ -22,13 +26,17 @@ public class IngredientScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ingredient_screen);
 
-
         Button btnInputMeal = findViewById(R.id.InputMeal);
         Button btnRecipe = findViewById(R.id.Recipe);
-        Button btnIngredient = findViewById(R.id.Ingredients);
         Button btnShoppingList = findViewById(R.id.ShoppingList);
         Button btnHome = findViewById(R.id.Home);
         Button btnPersonalInfo = findViewById(R.id.PersonalInfo);
+        Button btnSubmitIngredient = findViewById(R.id.submitButton);
+        EditText ingredientNameEditText = findViewById(R.id.ingredientNameEditText);
+        EditText  quantityEditText = findViewById(R.id.quantityEditText);
+        EditText caloriesEditText = findViewById(R.id.caloriesEditText);
+        EditText expirationDateEditText = findViewById(R.id.expirationDateEditText);
+
 
 
         btnInputMeal.setOnClickListener(new View.OnClickListener() {
@@ -79,6 +87,7 @@ public class IngredientScreen extends AppCompatActivity {
         // Find the input ingredients button
         Button btnInputIngredients = findViewById(R.id.InputIngredients);
 
+        IngredientViewModel ingredientViewModel = new IngredientViewModel();
 
         // Set onClick listener for input ingredients button
         btnInputIngredients.setOnClickListener(new View.OnClickListener() {
@@ -96,5 +105,63 @@ public class IngredientScreen extends AppCompatActivity {
                 ((EditText) findViewById(R.id.expirationDateEditText)).setText("");
             }
         });
+
+        btnSubmitIngredient.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String ingredientName = ingredientNameEditText.getText().toString().trim();
+                String quantityText = quantityEditText.getText().toString().trim();
+                String caloriesText = caloriesEditText.getText().toString().trim();
+                String expirationDate = expirationDateEditText.getText().toString().trim();
+
+                if (ingredientName.isEmpty() || quantityText.isEmpty() || caloriesText.isEmpty()) {
+                    showAlert("Please fill in all fields.");
+                    return;
+                }
+
+                int quantity, calories;
+                try {
+                    quantity = Integer.parseInt(quantityText);
+                    calories = Integer.parseInt(caloriesText);
+                    if (quantity <= 0 || calories <= 0) {
+                        showAlert("Quantity and Calories must be positive integers.");
+                        return;
+                    }
+                } catch (NumberFormatException e) {
+                    showAlert("Quantity and Calories must be integers.");
+                    return;
+                }
+
+                if (!ingredientName.matches("[a-zA-Z ]+")) {
+                    showAlert("Ingredient name must not contain numbers.");
+                    return;
+                }
+                if (ingredientViewModel.checkDuplicate(new Ingredient(ingredientName, quantity, calories, expirationDate))) {
+                    showAlert("Ingredient already exists in pantry with nonzero quantity.");
+                    return;
+                }
+                Ingredient ingredient = ingredientViewModel.createIngredient(ingredientName, quantity, calories, expirationDate);
+                ingredientNameEditText.setText("");
+                quantityEditText.setText("");
+                caloriesEditText.setText("");
+                expirationDateEditText.setText("");
+
+            }
+        });
     }
-}
+
+    private void showAlert(String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(message)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    }
+

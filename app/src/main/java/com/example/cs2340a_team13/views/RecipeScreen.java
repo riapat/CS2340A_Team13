@@ -1,16 +1,20 @@
 package com.example.cs2340a_team13.views;
-
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Layout;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ListView;
-import android.app.AlertDialog;
 import android.widget.Spinner;
 
 import com.example.cs2340a_team13.DatabaseAccess;
@@ -21,8 +25,15 @@ import com.example.cs2340a_team13.viewModels.UserViewModel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class RecipeScreen extends AppCompatActivity {
+    FloatingActionButton btnNewRecipe;
+    Button btnAddIngredient;
+    Button submitNewRecipe;
+    EditText recipeName;
+    EditText ingredientName;
+    EditText ingredientAmount;
     private DatabaseAccess databaseAccess = DatabaseAccess.getInstance();
 
     private UserViewModel userViewModel = UserViewModel.getInstance();
@@ -34,6 +45,7 @@ public class RecipeScreen extends AppCompatActivity {
 
         Button btnInputMeal = findViewById(R.id.InputMeal);
         Button btnRecipe = findViewById(R.id.Recipe);
+        btnNewRecipe = (FloatingActionButton) findViewById(R.id.floatingAddRecipeButton);
         Button btnIngredient = findViewById(R.id.Ingredients);
         Button btnShoppingList = findViewById(R.id.ShoppingList);
         Button btnHome = findViewById(R.id.Home);
@@ -120,4 +132,19 @@ public class RecipeScreen extends AppCompatActivity {
     }
 
     //input recipe screen here + place text header
+    public void addNewRecipeButton(View v){
+        // Handle New Recipe button click (create a new Alert)
+        AlertDialog.Builder builder = new AlertDialog.Builder(RecipeScreen.this);
+        //Makes tapping outside the dialog cancel the alert
+        builder.setCancelable(true);
+        LayoutInflater inflater = RecipeScreen.this.getLayoutInflater();
+        builder.setView(inflater.inflate(R.layout.activity_add_ingredient, null));
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    public void addNewIngredient(View V){
+    }
+
+     //input recipe screen here + place text header
 }
