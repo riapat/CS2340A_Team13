@@ -150,6 +150,14 @@ public class IngredientScreen extends AppCompatActivity {
                 quantityEditText.setText("");
                 caloriesEditText.setText("");
                 expirationDateEditText.setText("");
+                findViewById(R.id.ingredientNameEditText).setVisibility(View.GONE);
+                findViewById(R.id.quantityEditText).setVisibility(View.GONE);
+                findViewById(R.id.caloriesEditText).setVisibility(View.GONE);
+                findViewById(R.id.expirationDateEditText).setVisibility(View.GONE);
+                findViewById(R.id.submitButton).setVisibility(View.GONE);
+
+
+
 
             }
         });
