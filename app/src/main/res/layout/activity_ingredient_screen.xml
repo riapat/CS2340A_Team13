@@ -22,6 +22,21 @@
     <!-- Input Ingredients Form -->
 
     <Button
+        android:id="@+id/PersonalInfo"
+        android:layout_width="113dp"
+        android:layout_height="57dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="11dp"
+        android:layout_weight="1"
+        android:text="Personal Info"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@+id/titleTextView"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleTextView"
+        tools:ignore="MissingConstraints" />
+
+    <Button
         android:id="@+id/InputIngredients"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

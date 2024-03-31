@@ -24,10 +24,8 @@ public class IngredientScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ingredient_screen);
 
-
         Button btnInputMeal = findViewById(R.id.InputMeal);
         Button btnRecipe = findViewById(R.id.Recipe);
-        Button btnIngredient = findViewById(R.id.Ingredients);
         Button btnShoppingList = findViewById(R.id.ShoppingList);
         Button btnHome = findViewById(R.id.Home);
         Button btnPersonalInfo = findViewById(R.id.PersonalInfo);
@@ -146,6 +144,14 @@ public class IngredientScreen extends AppCompatActivity {
                 quantityEditText.setText("");
                 caloriesEditText.setText("");
                 expirationDateEditText.setText("");
+                findViewById(R.id.ingredientNameEditText).setVisibility(View.GONE);
+                findViewById(R.id.quantityEditText).setVisibility(View.GONE);
+                findViewById(R.id.caloriesEditText).setVisibility(View.GONE);
+                findViewById(R.id.expirationDateEditText).setVisibility(View.GONE);
+                findViewById(R.id.submitButton).setVisibility(View.GONE);
+
+
+
 
             }
         });

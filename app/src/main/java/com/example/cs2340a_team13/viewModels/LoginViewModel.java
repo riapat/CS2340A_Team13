@@ -77,7 +77,7 @@ public class LoginViewModel {
                                             DatabaseAccess.getInstance().loadPantry(username, ingredients -> {
                                                 if (ingredients != null) {
                                                     // If pantry loaded successfully, update user's pantry and complete sign-in
-                                                    user.setPantry(ingredients); // Ensure User model has a method to set pantry
+                                                    user.setPantryIngredients(ingredients); // Ensure User model has a method to set pantry
                                                     updateUser(user);
                                                     Log.d("LoginViewModel",
                                                             "signInWithEmail:success Username: "
