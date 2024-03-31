@@ -160,6 +160,7 @@ public class IngredientScreen extends AppCompatActivity {
                 findViewById(R.id.expirationDateEditText).setVisibility(View.GONE);
                 findViewById(R.id.submitButton).setVisibility(View.GONE);
 
+                displayPantryIngredients();
 
 
 
@@ -261,6 +262,7 @@ public class IngredientScreen extends AppCompatActivity {
         }
         //logic to add
         ingredientInstance.increaseIngredient(ingredientName, quantity);
+        displayPantryIngredients();
     }
 
     private void decreaseIngredientQuantity(String ingredientName, String quantityStr) {
@@ -275,6 +277,7 @@ public class IngredientScreen extends AppCompatActivity {
         System.out.println("Going to decreaseIngredient View Model");
         //logic to remove
         ingredientInstance.decreaseIngredient(ingredientName, quantity);
+        displayPantryIngredients();
     }
 
     private void showAlert(String message) {
