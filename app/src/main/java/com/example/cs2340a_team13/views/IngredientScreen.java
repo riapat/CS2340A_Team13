@@ -138,6 +138,10 @@ public class IngredientScreen extends AppCompatActivity {
                     showAlert("Ingredient name must not contain numbers.");
                     return;
                 }
+                if (ingredientViewModel.checkDuplicate(new Ingredient(ingredientName, quantity, calories, expirationDate))) {
+                    showAlert("Ingredient already exists in pantry with nonzero quantity.");
+                    return;
+                }
                 Ingredient ingredient = ingredientViewModel.createIngredient(ingredientName, quantity, calories, expirationDate);
                 ingredientNameEditText.setText("");
                 quantityEditText.setText("");

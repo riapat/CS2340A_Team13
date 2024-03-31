@@ -43,6 +43,17 @@ public class IngredientViewModel {
 
         return ingredient;
     }
+    public boolean checkDuplicate(Ingredient ingredient) {
+        if (currentUser != null && currentUser.getPantry() != null) {
+            for (Ingredient pantryIngredient : currentUser.getPantry()) {
+                if (pantryIngredient.getIngredientName().equals(ingredient.getIngredientName()) &&
+                        pantryIngredient.getQuantity() > 0) {
+                    return true;
+                }
+            }
+        }
+        return false; 
+    }
     }
 
 
