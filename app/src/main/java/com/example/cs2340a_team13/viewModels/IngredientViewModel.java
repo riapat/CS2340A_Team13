@@ -12,7 +12,6 @@ public class IngredientViewModel {
 
     private UserViewModel userViewModel = UserViewModel.getInstance();
     private User currentUser = userViewModel.getUser(); // Reference to current user
-    private DatabaseAccess databaseAccess = DatabaseAccess.getInstance();
 
     // Private constructor to prevent instantiation outside of this class
     private IngredientViewModel() {}
@@ -33,17 +32,17 @@ public class IngredientViewModel {
         ingredient.setExpirationDate(expirationDate);
 
         if (currentUser != null) {
-            List<Ingredient> pantry = currentUser.getPantry();
+            List<Ingredient> pantry = currentUser.getPantryIngredients();
             if (pantry != null) {
                 pantry.add(ingredient);
             } else {
                 pantry = new ArrayList<>();
                 pantry.add(ingredient);
-                currentUser.setPantry(pantry);
+                currentUser.setPantryIngredients(pantry);
             }
         }
 
-        databaseAccess.addToPantry(currentUser, ingredient, userCallback -> {
+        DatabaseAccess.getInstance().addToPantry(currentUser, ingredient, userCallback -> {
             if (userCallback != null) {
                 System.out.println("Ingredient added to pantry");
             } else {
@@ -55,8 +54,9 @@ public class IngredientViewModel {
     }
 
     public boolean checkDuplicate(Ingredient ingredient) {
-        if (currentUser != null && currentUser.getPantry() != null) {
-            for (Ingredient pantryIngredient : currentUser.getPantry()) {
+        if (currentUser != null && currentUser.getPantryIngredients() != null) {
+            for (Ingredient pantryIngredient : currentUser.getPantryIngredients()) {
+                System.out.println("Pantry ingredient: " + pantryIngredient.getIngredientName() + " " + pantryIngredient.getQuantity());
                 if (pantryIngredient.getIngredientName().equals(ingredient.getIngredientName()) &&
                         pantryIngredient.getQuantity() > 0) {
                     return true;
@@ -64,6 +64,12 @@ public class IngredientViewModel {
             }
         }
         return false;
+    }
+    public void setCurrentUser(User user) {
+        this.currentUser = user;
+    }
+    public User getCurrentUser() {
+        return currentUser;
     }
 }
 
