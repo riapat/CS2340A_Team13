@@ -201,14 +201,24 @@ public class RecipeScreen extends AppCompatActivity {
         message.append("Description: ").append(recipe.getRecipeDescription()).append("\n\n");
         message.append("Ingredients:\n");
         for (Ingredient ingredient : recipe.getRecipeIngredients()) {
-            message.append("- ").append(ingredient.getIngredientName())
-                    .append(", Quantity: ").append(ingredient.getQuantity())
-                    .append(", Calories: ").append(ingredient.getCalories())
-                    .append(" per serving\n");
+            for (Ingredient pantryIngredient : UserViewModel
+                    .getInstance().getUser().getPantryIngredients()) {
+                if (ingredient.getIngredientName()
+                        .equalsIgnoreCase(pantryIngredient.getIngredientName())) {
+                    ingredient.setCalories(pantryIngredient.getCalories());
+                    message.append("- ").append(ingredient.getIngredientName())
+                            .append(", Quantity: ").append(ingredient.getQuantity())
+                            .append(", Calories: ").append(pantryIngredient.getCalories())
+                            .append(" per serving (You have ")
+                            .append(pantryIngredient.getQuantity())
+                            .append(")\n");
+                }
+            }
+
         }
         message.append("\nInstructions:\n").append(recipe.getRecipeInstructions()).append("\n\n");
         message.append("Calories per Serving: ")
-                .append(recipe.getCaloriesPerServing()).append("\n");
+                .append(recipe.calculateCaloriesPerServing()).append("\n");
         message.append("Cooking Time: ").append(recipe.getCookingTime()).append(" minutes");
 
         // Setting the message to the AlertDialog
