@@ -109,7 +109,8 @@ public class Recipe {
 
             for (Ingredient pantryIngredient : pantry) {
                 if (requiredIngredient
-                        .getIngredientName().equals(pantryIngredient.getIngredientName())) {
+                        .getIngredientName()
+                        .equalsIgnoreCase(pantryIngredient.getIngredientName())) {
                     found = true; // The ingredient is found
                     if (pantryIngredient.getQuantity() < requiredIngredient.getQuantity()) {
                         return false; // Found but not enough quantity
