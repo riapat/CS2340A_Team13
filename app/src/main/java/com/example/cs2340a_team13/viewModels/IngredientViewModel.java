@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class IngredientViewModel {
-    private static IngredientViewModel IngredientInstance;
+    private static IngredientViewModel ingredientInstance;
 
     private UserViewModel userViewModel = UserViewModel.getInstance();
     private User currentUser = userViewModel.getUser(); // Reference to current user
@@ -20,10 +20,10 @@ public class IngredientViewModel {
 
     // Singleton instance getter
     public static IngredientViewModel getInstance() {
-        if (IngredientInstance == null) {
-            IngredientInstance = new IngredientViewModel();
+        if (ingredientInstance == null) {
+            ingredientInstance = new IngredientViewModel();
         }
-        return IngredientInstance;
+        return ingredientInstance;
     }
 
     public Ingredient createIngredient(String ingredientName, int quantity,
@@ -59,8 +59,8 @@ public class IngredientViewModel {
     public boolean checkDuplicate(Ingredient ingredient) {
         if (currentUser != null && currentUser.getPantryIngredients() != null) {
             for (Ingredient pantryIngredient : currentUser.getPantryIngredients()) {
-                System.out.println("Pantry ingredient: " + pantryIngredient.getIngredientName() + " " + pantryIngredient.getQuantity());
-                if (pantryIngredient.getIngredientName().equals(ingredient.getIngredientName()) &&
+                if (pantryIngredient.getIngredientName().equals(ingredient.getIngredientName())
+                        &&
                         pantryIngredient.getQuantity() > 0) {
                     return true;
                 }
@@ -73,7 +73,6 @@ public class IngredientViewModel {
         Log.d("IngredientViewModel", "Pantry size: " + currentUser.getPantryIngredients().size());
         if (currentUser != null && currentUser.getPantryIngredients() != null) {
             for (Ingredient pantryIngredient : currentUser.getPantryIngredients()) {
-                Log.e("IngredientViewModel", pantryIngredient.getIngredientName() + " " + ingredientName);
                 if (pantryIngredient.getIngredientName().equals(ingredientName)) {
                     return true;
                 }

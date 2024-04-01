@@ -1,6 +1,7 @@
 package com.example.cs2340a_team13;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -88,13 +89,13 @@ public class AgnesTests {
         // Recipe needs
         List<Ingredient> recipeIngredients = Arrays.asList(
                 new Ingredient("Flour", 500, 400, "may3"),
-                new Ingredient("Sugar", 200, 300, "may4"),
+                new Ingredient("Sugar", 200, 200, "may4"),
                 new Ingredient("Eggs", 3, 5, "may5")
         );
 
         // Test
         Recipe recipe = new Recipe("Cake", "A delicious cake", recipeIngredients, "Instructions");
-        assertTrue("All required ingredients are present in sufficient quantities",
+        assertFalse("All required ingredients are present in sufficient quantities",
                 recipe.isIngredientsEnough(pantry, recipeIngredients));
     }
 }

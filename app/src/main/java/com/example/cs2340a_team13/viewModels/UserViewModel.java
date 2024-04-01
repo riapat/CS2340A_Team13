@@ -38,10 +38,13 @@ public class UserViewModel {
                     DatabaseAccess.getInstance().loadPantry(username, ingredients -> {
                         if (ingredients != null) {
                             Log.d("Ingredients", String.valueOf(ingredients.size()));
-                            // If pantry loaded successfully, update user's pantry and complete sign-in
-                            userCallback.setPantryIngredients(ingredients); // Ensure User model has a method to set pantry
+                            // If pantry loaded successfully,
+                            // update user's pantry and complete sign-in
+                            userCallback.setPantryIngredients(ingredients);
+                            // Ensure User model has a method to set pantry
                             user = userCallback;
-                            Log.d("UserViewModel", "User found in user database " + user.getPassword());
+                            Log.d("UserViewModel",
+                                    "User found in user database " + user.getPassword());
                         } else {
                             // Handle failure to load pantry here, if necessary
                             Log.w("LoginViewModel", "Failed to load pantry");
