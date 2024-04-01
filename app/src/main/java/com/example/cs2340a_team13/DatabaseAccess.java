@@ -187,17 +187,6 @@ public class DatabaseAccess {
                 callback.onComplete(null);
             }
         });
-        // Append the ingredient to the pantry list
-//        pantryRef.push().setValue(ingredient)
-//                .addOnCompleteListener(task -> {
-//                    if (task.isSuccessful()) {
-//                        System.out.println("Ingredient added to pantry");
-//                        callback.onComplete(user);
-//                    } else {
-//                        System.out.println("Ingredient not added to pantry");
-//                        callback.onComplete(null);
-//                    }
-//                });
     }
 
     //Load Pantry list of the User by sending in username

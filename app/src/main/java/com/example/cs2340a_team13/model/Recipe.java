@@ -75,13 +75,13 @@ public class Recipe {
     }
     public int calculateCaloriesPerServing() {
         int caloriesPerServing = 0;
-        if(recipeIngredients==null){
+        if (recipeIngredients == null) {
             return 0;
-        } else if(recipeIngredients.isEmpty()){
+        } else if (recipeIngredients.isEmpty()) {
             return 0;
         }
         for (Ingredient item:recipeIngredients) {
-                caloriesPerServing += item.getCalories() * item.getQuantity();
+            caloriesPerServing += item.getCalories() * item.getQuantity();
         }
         return caloriesPerServing;
     }
@@ -101,12 +101,15 @@ public class Recipe {
     public void setCookingTime(int cookingTime) {
         this.cookingTime = cookingTime;
     }
-    public boolean isIngredientsEnough(List<Ingredient> pantry, List<Ingredient> recipeIngredients) {
+    public boolean isIngredientsEnough(List<Ingredient> pantry,
+                                       List<Ingredient> recipeIngredients) {
         for (Ingredient requiredIngredient : recipeIngredients) {
-            boolean found = false; // Flag to check if the required ingredient is found in the pantry
+            boolean found = false;
+            // Flag to check if the required ingredient is found in the pantry
 
             for (Ingredient pantryIngredient : pantry) {
-                if (requiredIngredient.getIngredientName().equals(pantryIngredient.getIngredientName())) {
+                if (requiredIngredient
+                        .getIngredientName().equals(pantryIngredient.getIngredientName())) {
                     found = true; // The ingredient is found
                     if (pantryIngredient.getQuantity() < requiredIngredient.getQuantity()) {
                         return false; // Found but not enough quantity

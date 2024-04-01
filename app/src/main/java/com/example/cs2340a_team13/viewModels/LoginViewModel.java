@@ -73,24 +73,34 @@ public class LoginViewModel {
                             DatabaseAccess.getInstance()
                                     .readFromUserDB(username, userC -> {
                                         if (userC != null) {
-                                            DatabaseAccess.getInstance().loadPantry(username, ingredients -> {
-                                                if (ingredients != null) {
-                                                    Log.d("Ingredients", String.valueOf(ingredients.size()));
-                                                    // If pantry loaded successfully, update user's pantry and complete sign-in
-                                                    userC.setPantryIngredients(ingredients); // Ensure User model has a method to set pantry
-                                                    updateUser(userC);
-                                                    Log.d("LoginViewModel", String.valueOf(user.getPantryIngredients().size()));
-                                                    Log.d("LoginViewModel",
-                                                            "signInWithEmail:success Username: "
-                                                                    + user.getUsername() + " Password: "
+                                            DatabaseAccess.getInstance()
+                                                    .loadPantry(username, ingredients -> {
+                                                        if (ingredients != null) {
+                                                            Log.d("Ingredients", String
+                                                                    .valueOf(ingredients.size()));
+                                                            // If pantry loaded successfully,
+                                                            // update user's pantry
+                                                            // and complete sign-in
+                                                            userC
+                                                                    .setPantryIngredients(
+                                                                            ingredients);
+                                                            // Ensure
+                                                            // User model has a method to set pantry
+                                                            updateUser(userC);
+                                                            Log.d("LoginViewModel",
+                                                                "signInWithEmail:success Username: "
+                                                                    + user
+                                                                        .getUsername()
+                                                                        + " Password: "
                                                                     + user.getPassword());
-                                                    callback.onComplete(true, user);
-                                                } else {
-                                                    // Handle failure to load pantry here, if necessary
-                                                    Log.w("LoginViewModel", "Failed to load pantry");
-                                                    callback.onComplete(false, null);
-                                                }
-                                            });
+                                                            callback.onComplete(true, user);
+                                                        } else {
+                                                            // Handle failure to load pantry here
+                                                            Log.w("LoginViewModel",
+                                                                    "Failed to load pantry");
+                                                            callback.onComplete(false, null);
+                                                        }
+                                                    });
                                         } else {
                                             Log.w("LoginViewModel",
                                                     "signInWithEmail:failure ",

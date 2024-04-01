@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,7 +21,7 @@ import java.util.List;
 
 
 public class IngredientScreen extends AppCompatActivity {
-    IngredientViewModel ingredientInstance = IngredientViewModel.getInstance();
+    private IngredientViewModel ingredientInstance = IngredientViewModel.getInstance();
 
     private UserViewModel userViewModel = UserViewModel.getInstance();
 
@@ -31,9 +30,6 @@ public class IngredientScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ingredient_screen);
         displayPantryIngredients();
-
-        Log.d("USER_INGREDIENT", String.valueOf(userViewModel.getUser().getPantryIngredients().size()));
-
         Button btnInputMeal = findViewById(R.id.InputMeal);
         Button btnRecipe = findViewById(R.id.Recipe);
         Button btnShoppingList = findViewById(R.id.ShoppingList);
@@ -44,7 +40,6 @@ public class IngredientScreen extends AppCompatActivity {
         EditText quantityEditText = findViewById(R.id.quantityEditText);
         EditText caloriesEditText = findViewById(R.id.caloriesEditText);
         EditText expirationDateEditText = findViewById(R.id.expirationDateEditText);
-
         btnInputMeal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,7 +56,6 @@ public class IngredientScreen extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
 
         btnHome.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,8 +121,8 @@ public class IngredientScreen extends AppCompatActivity {
                 if (expirationDate.isEmpty()) {
                     expirationDate = "";
                 }
-
-                int quantity, calories;
+                int quantity;
+                int calories;
                 try {
                     quantity = Integer.parseInt(quantityText);
                     calories = Integer.parseInt(caloriesText);
@@ -145,11 +139,15 @@ public class IngredientScreen extends AppCompatActivity {
                     showAlert("Ingredient name must not contain numbers.");
                     return;
                 }
-                if (ingredientViewModel.checkDuplicate(new Ingredient(ingredientName, quantity, calories, expirationDate))) {
+                if (ingredientViewModel
+                        .checkDuplicate(
+                                new Ingredient(ingredientName, quantity, calories, expirationDate)
+                        )) {
                     showAlert("Ingredient already exists in pantry with nonzero quantity.");
                     return;
                 }
-                Ingredient ingredient = ingredientViewModel.createIngredient(ingredientName, quantity, calories, expirationDate);
+                Ingredient ingredient = ingredientViewModel
+                        .createIngredient(ingredientName, quantity, calories, expirationDate);
                 ingredientNameEditText.setText("");
                 quantityEditText.setText("");
                 caloriesEditText.setText("");
@@ -179,68 +177,67 @@ public class IngredientScreen extends AppCompatActivity {
         });
     }
 
-        private void showAdjustIngredientsDialog() {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Adjust Ingredients");
+    private void showAdjustIngredientsDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Adjust Ingredients");
 
-            final EditText inputIngredName = new EditText(this);
-            inputIngredName.setHint("Ingredient Name");
+        final EditText inputIngredName = new EditText(this);
+        inputIngredName.setHint("Ingredient Name");
 
-            final EditText inputQuant = new EditText(this);
-            inputQuant.setHint("Quantity");
+        final EditText inputQuant = new EditText(this);
+        inputQuant.setHint("Quantity");
 
-            //buttons
-            builder.setPositiveButton("Add", null);
-            builder.setNeutralButton("Subtract", null);
-            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
+        //buttons
+        builder.setPositiveButton("Add", null);
+        builder.setNeutralButton("Subtract", null);
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
                     dialog.cancel();
                 }
-            });
+        });
 
-            //input fields in layout
-            LinearLayout layout = new LinearLayout(this);
-            layout.setOrientation(LinearLayout.VERTICAL);
-            layout.addView(inputIngredName);
-            layout.addView(inputQuant);
-            builder.setView(layout);
+        //input fields in layout
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.addView(inputIngredName);
+        layout.addView(inputQuant);
+        builder.setView(layout);
 
-            // Create and show the dialog
-            final AlertDialog dialog = builder.create();
-            dialog.setOnShowListener(new DialogInterface.OnShowListener() {
-                @Override
-                public void onShow(DialogInterface dialogInterface) {
+        // Create and show the dialog
+        final AlertDialog dialog = builder.create();
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialogInterface) {
 
+                Button addButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
+                addButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String ingredName = inputIngredName.getText().toString().trim();
+                        String quantStr = inputQuant.getText().toString().trim();
+                        //addition logic
+                        addIngredientQuantity(ingredName, quantStr);
+                        dialog.dismiss();
+                    }
+                });
 
-                    Button addButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
-                    addButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            String ingredName = inputIngredName.getText().toString().trim();
-                            String quantStr = inputQuant.getText().toString().trim();
-                            //addition logic
-                            addIngredientQuantity(ingredName, quantStr);
-                            dialog.dismiss();
-                        }
-                    });
+                Button removeButton = dialog.getButton(DialogInterface.BUTTON_NEUTRAL);
+                removeButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
 
-                    Button removeButton = dialog.getButton(DialogInterface.BUTTON_NEUTRAL);
-                    removeButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-
-                            String ingredName = inputIngredName.getText().toString().trim();
-                            String quantStr = inputQuant.getText().toString().trim();
-                            //removal logic
-                            decreaseIngredientQuantity(ingredName, quantStr);
-                            dialog.dismiss();
-                        }
-                    });
-                }
-            });
-            dialog.show();
-        }
+                        String ingredName = inputIngredName.getText().toString().trim();
+                        String quantStr = inputQuant.getText().toString().trim();
+                        //removal logic
+                        decreaseIngredientQuantity(ingredName, quantStr);
+                        dialog.dismiss();
+                    }
+                });
+            }
+        });
+        dialog.show();
+    }
 
 
     private void addIngredientQuantity(String ingredientName, String quantityStr) {
@@ -297,7 +294,8 @@ public class IngredientScreen extends AppCompatActivity {
         LinearLayout pantryLinearLayout = findViewById(R.id.pantryLinearLayout);
         pantryLinearLayout.removeAllViews(); // Clear previous views
 
-        List<Ingredient> pantryIngredients = UserViewModel.getInstance().getUser().getPantryIngredients();
+        List<Ingredient> pantryIngredients = UserViewModel
+                .getInstance().getUser().getPantryIngredients();
         if (pantryIngredients != null) {
             for (Ingredient ingredient : pantryIngredients) {
                 //textView for each ingredient
