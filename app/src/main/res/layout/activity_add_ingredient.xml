@@ -80,7 +80,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:hint="oz"
-        android:inputType="text"
+        android:inputType="number"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

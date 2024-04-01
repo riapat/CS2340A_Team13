@@ -179,12 +179,45 @@ public class RecipeScreen extends AppCompatActivity {
                 //ingredientsStatusTextView.setTextSize(16);
                 //ingredientsStatusTextView.setTextColor(isEnough ? Color.GREEN : Color.RED);
                 //ingredientsStatusTextView.setPadding(0, 0, 0, 20); // Adjust padding as needed
+
+                if (isEnough) {
+                    recipeNameTextView.setOnClickListener(v -> showRecipeDetailsPopup(recipe));
+                }
+
                 recipeListLayout.addView(recipeNameTextView); // Add the status TextView
             }
         });
 
         // Example available ingredients, replace with actual available ingredients
 
+    }
+
+    private void showRecipeDetailsPopup(Recipe recipe) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(recipe.getRecipeName());
+
+        // You could include more detailed information about the recipe here
+        StringBuilder message = new StringBuilder();
+        message.append("Description: ").append(recipe.getRecipeDescription()).append("\n\n");
+        message.append("Ingredients:\n");
+        for (Ingredient ingredient : recipe.getRecipeIngredients()) {
+            message.append("- ").append(ingredient.getIngredientName())
+                    .append(", Quantity: ").append(ingredient.getQuantity())
+                    .append(", Calories: ").append(ingredient.getCalories())
+                    .append(" per serving\n");
+        }
+        message.append("\nInstructions:\n").append(recipe.getRecipeInstructions()).append("\n\n");
+        message.append("Calories per Serving: ")
+                .append(recipe.getCaloriesPerServing()).append("\n");
+        message.append("Cooking Time: ").append(recipe.getCookingTime()).append(" minutes");
+
+        // Setting the message to the AlertDialog
+        builder.setMessage(message.toString());
+
+        builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     private void applySortingStrategy(SortingStrategy strategy) {
@@ -270,11 +303,14 @@ public class RecipeScreen extends AppCompatActivity {
         btnAddIngredient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ingredientName.getText().toString().equals("")) {
+                if (ingredientName.getText().toString().isEmpty()) {
                     ingredientName.setError("Ingredient Name cannot be null");
                     ingredientName.requestFocus();
-                } else if (ingredientAmount.getText().toString().equals("")) {
+                } else if (ingredientAmount.getText().toString().isEmpty()) {
                     ingredientAmount.setError("Ingredient Amount cannot be null");
+                    ingredientAmount.requestFocus();
+                } else if (Integer.parseInt(ingredientAmount.getText().toString()) <= 0) {
+                    ingredientAmount.setError("Ingredient Amount must be positive");
                     ingredientAmount.requestFocus();
                 } else {
                     String ingredient = ingredientName.getText().toString().trim().toLowerCase();
