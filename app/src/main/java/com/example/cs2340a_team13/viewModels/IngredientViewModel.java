@@ -103,7 +103,7 @@ public class IngredientViewModel {
         if (currentUser != null && currentUser.getPantryIngredients() != null) {
             for (Ingredient pantryIngredient : currentUser.getPantryIngredients()) {
                 System.out.println(pantryIngredient.getIngredientName() + " " + ingredientName);
-                if (pantryIngredient.getIngredientName().equals(ingredientName)) {
+                if (pantryIngredient.getIngredientName().equalsIgnoreCase(ingredientName)) {
                     int currentQuantity = pantryIngredient.getQuantity();
                     if (quantityAdded >= currentQuantity) { //remove whole ingredient
                         List<Ingredient> updatedIngredients = currentUser.getPantryIngredients();
