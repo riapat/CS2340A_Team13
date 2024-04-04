@@ -35,6 +35,8 @@ public class IngredientScreen extends AppCompatActivity {
         Button btnShoppingList = findViewById(R.id.ShoppingList);
         Button btnHome = findViewById(R.id.Home);
         Button btnPersonalInfo = findViewById(R.id.PersonalInfo);
+        Button btnInputIngredients = findViewById(R.id.InputIngredients);
+        Button btnCancel = findViewById(R.id.cancelButton);
         Button btnSubmitIngredient = findViewById(R.id.submitButton);
         EditText ingredientNameEditText = findViewById(R.id.ingredientNameEditText);
         EditText quantityEditText = findViewById(R.id.quantityEditText);
@@ -85,7 +87,6 @@ public class IngredientScreen extends AppCompatActivity {
 
 
         // Find the input ingredients button
-        Button btnInputIngredients = findViewById(R.id.InputIngredients);
 
         IngredientViewModel ingredientViewModel = IngredientViewModel.getInstance();
 
@@ -99,6 +100,7 @@ public class IngredientScreen extends AppCompatActivity {
                 findViewById(R.id.caloriesEditText).setVisibility(View.VISIBLE);
                 findViewById(R.id.expirationDateEditText).setVisibility(View.VISIBLE);
                 findViewById(R.id.submitButton).setVisibility(View.VISIBLE);
+                findViewById(R.id.cancelButton).setVisibility(View.VISIBLE);
                 ((EditText) findViewById(R.id.ingredientNameEditText)).setText("");
                 ((EditText) findViewById(R.id.quantityEditText)).setText("");
                 ((EditText) findViewById(R.id.caloriesEditText)).setText("");
@@ -164,7 +166,18 @@ public class IngredientScreen extends AppCompatActivity {
 
             }
         });
-
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Hide all edit texts, submit button, and cancel button
+                findViewById(R.id.ingredientNameEditText).setVisibility(View.GONE);
+                findViewById(R.id.quantityEditText).setVisibility(View.GONE);
+                findViewById(R.id.caloriesEditText).setVisibility(View.GONE);
+                findViewById(R.id.expirationDateEditText).setVisibility(View.GONE);
+                findViewById(R.id.submitButton).setVisibility(View.GONE);
+                findViewById(R.id.cancelButton).setVisibility(View.GONE);
+            }
+        });
 
         //pop up for adjust ingredients button
         Button btnAdjustIngredients = findViewById(R.id.adjustIngredientsButton);
@@ -176,6 +189,7 @@ public class IngredientScreen extends AppCompatActivity {
             }
         });
     }
+
 
     private void showAdjustIngredientsDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

@@ -109,6 +109,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/caloriesEditText" />
 
+
+    <!-- Adjust Ingredients Form -->
+
     <Button
         android:id="@+id/submitButton"
         android:layout_width="wrap_content"
@@ -118,11 +121,25 @@
         android:textSize="14sp"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.235"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/expirationDateEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/expirationDateEditText"
+        app:layout_constraintVertical_bias="0.129" />
 
+    <Button
+        android:id="@+id/cancelButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cancel"
+        android:textSize="14sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/navigation_bar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.284"
+        app:layout_constraintStart_toEndOf="@+id/submitButton"
+        app:layout_constraintTop_toBottomOf="@+id/expirationDateEditText"
+        app:layout_constraintVertical_bias="0.127" />
 
-    <!-- Adjust Ingredients Form -->
     <Button
         android:id="@+id/adjustIngredientsButton"
         android:layout_width="wrap_content"
