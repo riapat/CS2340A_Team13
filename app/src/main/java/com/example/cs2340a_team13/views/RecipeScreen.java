@@ -323,7 +323,7 @@ public class RecipeScreen extends AppCompatActivity {
                     ingredientAmount.setError("Ingredient Amount must be positive");
                     ingredientAmount.requestFocus();
                 } else {
-                    String ingredient = ingredientName.getText().toString().trim().toLowerCase();
+                    String ingredient = ingredientName.getText().toString().trim();
                     int amount = Integer.parseInt(ingredientAmount.getText().toString().trim());
                     List<Ingredient> pantry = UserViewModel
                             .getInstance().getPantryIngredientsList();
@@ -331,8 +331,9 @@ public class RecipeScreen extends AppCompatActivity {
                     List<Ingredient> newRecipeIngredients = newRecipe.getRecipeIngredients();
                     if (newRecipeIngredients != null) {
                         for (Ingredient item: newRecipe.getRecipeIngredients()) {
-                            if (ingredient.equals(item.getIngredientName().toLowerCase())) {
+                            if (ingredient.equalsIgnoreCase(item.getIngredientName())) {
                                 originalRecipe = false;
+                                break;
                             }
                         }
                     }

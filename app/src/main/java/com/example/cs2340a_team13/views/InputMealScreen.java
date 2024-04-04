@@ -108,7 +108,10 @@ public class InputMealScreen extends AppCompatActivity {
         btnRecipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                // Handle recipe button click (navigate to recipe screen)
+                Intent intent = new Intent(InputMealScreen.this, RecipeScreen.class);
+                intent.putExtra("username", username);
+                startActivity(intent);
             }
         });
         btnIngredient.setOnClickListener(new View.OnClickListener() {
