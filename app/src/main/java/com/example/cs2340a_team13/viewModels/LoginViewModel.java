@@ -78,22 +78,8 @@ public class LoginViewModel {
                                                         if (ingredients != null) {
                                                             Log.d("Ingredients", String
                                                                     .valueOf(ingredients.size()));
-                                                            // If pantry loaded successfully,
-                                                            // update user's pantry
-                                                            // and complete sign-in
-                                                            userC
-                                                                    .setPantryIngredients(
+                                                            userC.setPantryIngredients(
                                                                             ingredients);
-                                                            // Ensure
-                                                            // User model has a method to set pantry
-                                                            updateUser(userC);
-                                                            Log.d("LoginViewModel",
-                                                                "signInWithEmail:success Username: "
-                                                                    + user
-                                                                        .getUsername()
-                                                                        + " Password: "
-                                                                    + user.getPassword());
-                                                            callback.onComplete(true, user);
                                                         } else {
                                                             // Handle failure to load pantry here
                                                             Log.w("LoginViewModel",
@@ -101,6 +87,28 @@ public class LoginViewModel {
                                                             callback.onComplete(false, null);
                                                         }
                                                     });
+
+                                            DatabaseAccess.getInstance().loadShoppingList(
+                                                    username, ingredients -> {
+                                                    if (ingredients != null) {
+                                                        Log.d("Shopping List",
+                                                                String.valueOf(ingredients.size()));
+                                                        userC.setShoppingList(ingredients);
+                                                    } else {
+                                                        Log.w("LoginViewModel",
+                                                                "Failed to load shopping list");
+                                                        callback.onComplete(false, null);
+                                                    }
+                                                });
+
+                                            updateUser(userC);
+                                            Log.d("LoginViewModel",
+                                                    "signInWithEmail:success Username: "
+                                                            + user
+                                                            .getUsername()
+                                                            + " Password: "
+                                                            + user.getPassword());
+                                            callback.onComplete(true, user);
                                         } else {
                                             Log.w("LoginViewModel",
                                                     "signInWithEmail:failure ",

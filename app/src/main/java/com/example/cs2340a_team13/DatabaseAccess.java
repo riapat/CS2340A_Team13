@@ -266,6 +266,49 @@ public class DatabaseAccess {
                 });
     }
 
+    //Load Shopping List of the User by sending in username
+    //and return Shopping List of the User
+    public void loadShoppingList(String username, PantryCallback callback) {
+        DatabaseReference pantryRef = fbInstance.getReference("Users")
+                .child(username).child("shoppingList");
+        pantryRef.get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        //Go through the pantry list and add each ingredient to the list
+                        List<Ingredient> ingredients = new ArrayList<>();
+                        for (DataSnapshot ingredientSnapshot : task.getResult().getChildren()) {
+                            Ingredient ingredient = ingredientSnapshot.getValue(Ingredient.class);
+                            if (ingredient != null) {
+                                ingredients.add(ingredient);
+                            }
+                        }
+                        System.out.println("Shopping List loaded" + ingredients.size());
+                        callback.onComplete(ingredients);
+                    } else {
+                        System.out.println("Shopping List not loaded");
+                        callback.onComplete(null);
+                    }
+                });
+    }
+
+    //Update Shopping List of the User by sending in the username and the updated Shopping List
+    public void updateShoppingList(String username,
+                                   List<Ingredient> shoppingList,
+                                   PantryCallback callback) {
+        DatabaseReference shoppingListRef = fbInstance.getReference("Users")
+                .child(username).child("shoppingList");
+        shoppingListRef.setValue(shoppingList)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        System.out.println("Shopping List updated");
+                        callback.onComplete(shoppingList);
+                    } else {
+                        System.out.println("Shopping List not updated");
+                        callback.onComplete(null);
+                    }
+                });
+    }
+
 
     public interface UserCallback {
         void onComplete(User user);
