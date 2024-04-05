@@ -17,6 +17,7 @@ public class User {
     private String gender;
 
     private List<Ingredient> pantryIngredients;
+    private List<Ingredient> shoppingList;
 
     public User() {
         this.username = "";
@@ -109,6 +110,13 @@ public class User {
         this.age = age;
 
     }
+    public List<Ingredient> getShoppingList() {
+        return shoppingList;
+    }
+
+    public void setShoppingList(List<Ingredient> shoppingList) {
+        this.shoppingList = shoppingList;
+    }
 
     public void setUser(User user) {
         this.username = user.getUsername();
@@ -119,4 +127,5 @@ public class User {
         this.gender = user.getGender();
         this.loggedMeals = user.getMeals();
     }
+
 }
