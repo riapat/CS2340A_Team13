@@ -59,12 +59,12 @@ public class ShoppingListScreen extends AppCompatActivity {
                 int quantity;
                 try {
                     quantity = Integer.parseInt(quantityText);
-                    if (quantity <= 0 ) {
-                        showAlert("Quantity must be positive integer.");
+                    if (quantity <= 0) {
+                        showAlert("Quantity must be a positive integer.");
                         return;
                     }
                 } catch (NumberFormatException e) {
-                    showAlert("Quantity must be integer.");
+                    showAlert("Quantity must be an integer.");
                     return;
                 }
 
@@ -72,15 +72,15 @@ public class ShoppingListScreen extends AppCompatActivity {
                     showAlert("Ingredient name must not contain numbers.");
                     return;
                 }
-                ShoppingListViewModel.getInstance().adjustShoppingListWithPantry(ingredientName, quantity);
-                ShoppingListViewModel.getInstance().addToShoppingList(ingredientName, quantity);
 
+                // Call the addToShoppingList method
+                ShoppingListViewModel.getInstance().addToShoppingList(ingredientName, quantity);
 
                 ingredientNameEditText.setText("");
                 quantityEditText.setText("");
             }
-
         });
+
 
         btnIngredient.setOnClickListener(new View.OnClickListener() {
             @Override
