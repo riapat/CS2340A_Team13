@@ -8,6 +8,7 @@ public class ShoppingListViewModel {
     private static ShoppingListViewModel instance;
     private User user = UserViewModel.getInstance().getUser();
     private final DatabaseAccess databaseAccess = DatabaseAccess.getInstance();
+    private static int pantryQuantity;
 
     private ShoppingListViewModel() { }
 
@@ -26,71 +27,61 @@ public class ShoppingListViewModel {
         }
         return null;
     }
+    private Ingredient checkIfIngredientExistsInPantry(String ingredientName) {
+        for (Ingredient ingredient : user.getPantryIngredients()) {
+            if (ingredient.getIngredientName().equalsIgnoreCase(ingredientName)) {
+                return ingredient; // Ingredient found in pantry
+            }
+        }
+        return null; // Ingredient not found in pantry
+    }
 
-    private void increaseSLQuantity(Ingredient existingIngredient, int quantity) {
-        // Increase quantity of the duplicate item
-        existingIngredient.setQuantity(existingIngredient.getQuantity() + quantity);
+
+    public void addToShoppingList(String ingredientName, int quantity) {
+        // create temp ingredient obj to test if its in SL
+        Ingredient existingIngredient = getExistingIngredient(ingredientName);
+        //aq
+        int adjustedQuantity = quantity;
+        // if its in shopping list
+        if (existingIngredient != null) {
+            existingIngredient.setQuantity(existingIngredient.getQuantity() + quantity);
+            //increase quantity
+        }
+        // create temp ingredient obj to test in pantry
+        Ingredient ingredientExistsInPantry = checkIfIngredientExistsInPantry(ingredientName);
+        // if its in pantry, get pantry quantity and subtract it from inputted quantity
+        if (ingredientExistsInPantry != null) {
+            pantryQuantity = 0;
+            for (Ingredient ingredient : user.getPantryIngredients()) {
+                if (ingredient.getIngredientName().equalsIgnoreCase(ingredientName)) {
+                    pantryQuantity = ingredient.getQuantity();
+                    break;
+                }
+            }
+        }
+
+        adjustedQuantity = quantity - pantryQuantity;
+        if (adjustedQuantity <= 0) {
+            // if quantity below 0 and in shopping list, remove and return
+            // if quantity below 0 and not in shopping list, return method
+            if (existingIngredient != null) {
+                user.getShoppingList().remove(existingIngredient);
+            }
+            return;
+        }
+        Ingredient newIngredient = null;
+        if (existingIngredient != null) {
+            existingIngredient.setQuantity(adjustedQuantity);
+        } else {
+            newIngredient = new Ingredient(ingredientName, adjustedQuantity, 0, "");
+            user.getShoppingList().add(newIngredient);
+        }
+
 
         // Update shopping list in the database
         databaseAccess.updateShoppingList(user.getUsername(), user.getShoppingList(), (DatabaseAccess.PantryCallback) ingredients -> {
         });
     }
-
-    private void adjustSLQuantityWithPantry(Ingredient existingIngredient, int quantity) {
-        // Check if the ingredient exists in the pantry
-        boolean ingredientExistsInPantry = checkIfIngredientExistsInPantry(existingIngredient.getIngredientName());
-
-        // If the ingredient exists in the pantry, adjust the quantity in the shopping list
-        if (ingredientExistsInPantry) {
-            int pantryQuantity = getPantryQuantity(existingIngredient.getIngredientName());
-            int adjustedQuantity = existingIngredient.getQuantity() - pantryQuantity;
-            if (adjustedQuantity <= 0) {
-                // Remove from shopping list if adjusted quantity is zero or negative
-                user.getShoppingList().remove(existingIngredient);
-            } else {
-                // Update quantity in shopping list
-                existingIngredient.setQuantity(adjustedQuantity);
-            }
-
-            // Update shopping list in the database
-            databaseAccess.updateShoppingList(user.getUsername(), user.getShoppingList(), (DatabaseAccess.PantryCallback) ingredients -> {
-            });
-        } else {
-            // If the ingredient doesn't exist in the pantry, increase its quantity in the shopping list
-            increaseSLQuantity(existingIngredient, quantity);
-        }
     }
 
-    private boolean checkIfIngredientExistsInPantry(String ingredientName) {
-        for (Ingredient ingredient : user.getPantryIngredients()) {
-            if (ingredient.getIngredientName().equalsIgnoreCase(ingredientName)) {
-                return true; // Ingredient found in pantry
-            }
-        }
-        return false; // Ingredient not found in pantry
-    }
 
-    private int getPantryQuantity(String ingredientName) {
-        for (Ingredient ingredient : user.getPantryIngredients()) {
-            if (ingredient.getIngredientName().equalsIgnoreCase(ingredientName)) {
-                return ingredient.getQuantity();
-            }
-        }
-        return 0; // Ingredient not found in pantry
-    }
-
-    public void addToShoppingList(String ingredientName, int quantity) {
-        Ingredient existingIngredient = getExistingIngredient(ingredientName);
-        if (existingIngredient != null) {
-            adjustSLQuantityWithPantry(existingIngredient, quantity);
-        } else {
-            Ingredient newIngredient = new Ingredient(ingredientName, quantity, 0, "");
-            user.getShoppingList().add(newIngredient);
-            user.setShoppingList(user.getShoppingList());
-
-            // Update shopping list in the database
-            databaseAccess.updateShoppingList(user.getUsername(), user.getShoppingList(), (DatabaseAccess.PantryCallback) ingredients -> {
-            });
-        }
-    }
-}
