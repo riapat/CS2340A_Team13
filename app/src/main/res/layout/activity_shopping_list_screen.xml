@@ -36,6 +36,27 @@
         android:layout_weight="1"
         app:layout_constraintBottom_toTopOf="@+id/navigation_bar" />
 
+    <!-- Shopping list items -->
+    <ScrollView
+        android:id="@+id/shoppingListScrollView"
+        android:layout_width="365dp"
+        android:layout_height="337dp"
+        app:layout_constraintBottom_toTopOf="@+id/content_container"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleTextView"
+        app:layout_constraintVertical_bias="0.583"
+        >
+
+        <LinearLayout
+            android:id="@+id/shoppingListLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+        />
+    </ScrollView>
+
     <!-- Navigation bar -->
     <LinearLayout
         android:id="@+id/navigation_bar"
@@ -89,4 +110,3 @@
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
