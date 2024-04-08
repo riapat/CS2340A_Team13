@@ -4,11 +4,13 @@ import com.example.cs2340a_team13.DatabaseAccess;
 import com.example.cs2340a_team13.model.Ingredient;
 import com.example.cs2340a_team13.model.User;
 
+import java.util.List;
+
 public class ShoppingListViewModel {
     private static ShoppingListViewModel instance;
     private User user = UserViewModel.getInstance().getUser();
     private final DatabaseAccess databaseAccess = DatabaseAccess.getInstance();
-    private static int pantryQuantity;
+    private static int pantryQuantity = 0;
 
     private ShoppingListViewModel() { }
 
@@ -38,50 +40,50 @@ public class ShoppingListViewModel {
 
 
     public void addToShoppingList(String ingredientName, int quantity) {
-        // create temp ingredient obj to test if its in SL
+        // create temp ingredient obj to test if it's in SL
         Ingredient existingIngredient = getExistingIngredient(ingredientName);
         //aq
         int adjustedQuantity = quantity;
-        // if its in shopping list
+        // if it's in the shopping list
         if (existingIngredient != null) {
-            existingIngredient.setQuantity(existingIngredient.getQuantity() + quantity);
-            //increase quantity
-        }
-        // create temp ingredient obj to test in pantry
-        Ingredient ingredientExistsInPantry = checkIfIngredientExistsInPantry(ingredientName);
-        // if its in pantry, get pantry quantity and subtract it from inputted quantity
-        if (ingredientExistsInPantry != null) {
-            pantryQuantity = 0;
-            for (Ingredient ingredient : user.getPantryIngredients()) {
+            List<Ingredient> currentsl = user.getShoppingList();
+            for (Ingredient ingredient : currentsl) {
                 if (ingredient.getIngredientName().equalsIgnoreCase(ingredientName)) {
-                    pantryQuantity = ingredient.getQuantity();
+                    ingredient.setQuantity(existingIngredient.getQuantity() + quantity);
+                    user.setShoppingList(currentsl);
                     break;
                 }
             }
-        }
-
-        adjustedQuantity = quantity - pantryQuantity;
-        if (adjustedQuantity <= 0) {
-            // if quantity below 0 and in shopping list, remove and return
-            // if quantity below 0 and not in shopping list, return method
-            if (existingIngredient != null) {
-                user.getShoppingList().remove(existingIngredient);
-            }
-            return;
-        }
-        Ingredient newIngredient = null;
-        if (existingIngredient != null) {
-            existingIngredient.setQuantity(adjustedQuantity);
+            //increase quantity
         } else {
-            newIngredient = new Ingredient(ingredientName, adjustedQuantity, 0, "");
-            user.getShoppingList().add(newIngredient);
+            // create temp ingredient obj to test in pantry
+            Ingredient ingredientExistsInPantry = checkIfIngredientExistsInPantry(ingredientName);
+            // if it's in the pantry, get pantry quantity and subtract it from the inputted quantity
+            if (ingredientExistsInPantry != null) {
+                pantryQuantity = ingredientExistsInPantry.getQuantity();
+                adjustedQuantity = quantity - pantryQuantity;
+                if (adjustedQuantity <= 0) {
+                    return;
+                } else {
+                    Ingredient newIngredient = new Ingredient(ingredientName, adjustedQuantity,
+                            0, "");
+                    List<Ingredient> currentsl = user.getShoppingList();
+                    currentsl.add(newIngredient);
+                    user.setShoppingList(currentsl);
+                    // now have to update SL
+                }
+            } else {
+                Ingredient newIngredient = new Ingredient(ingredientName, quantity, 0,
+                        "");
+                List<Ingredient> currentsl = user.getShoppingList();
+                currentsl.add(newIngredient);
+                user.setShoppingList(currentsl);
+            }
         }
-
-
         // Update shopping list in the database
-        databaseAccess.updateShoppingList(user.getUsername(), user.getShoppingList(), (DatabaseAccess.PantryCallback) ingredients -> {
-        });
+        databaseAccess.updateShoppingList(user.getUsername(), user.getShoppingList(),
+                (DatabaseAccess.PantryCallback) ingredients -> { });
     }
-    }
+}
 
 
