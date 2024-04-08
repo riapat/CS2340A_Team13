@@ -7,16 +7,12 @@ public class User {
     private String username;
     private String password;
     private List<Meal> loggedMeals;
-
     private int height;
-
     private int weight;
-
     private int age;
-
     private String gender;
-
     private List<Ingredient> pantryIngredients;
+    private List<Ingredient> shoppingList;
 
     public User() {
         this.username = "";
@@ -84,7 +80,6 @@ public class User {
         pantryIngredients.add(ingredient);
     }
 
-
     public void addMeal(Meal meal) {
         loggedMeals.add(meal);
     }
@@ -107,7 +102,14 @@ public class User {
 
     public void setAge(int age) {
         this.age = age;
+    }
 
+    public List<Ingredient> getShoppingList() {
+        return shoppingList;
+    }
+
+    public void setShoppingList(List<Ingredient> shoppingList) {
+        this.shoppingList = shoppingList;
     }
 
     public void setUser(User user) {
