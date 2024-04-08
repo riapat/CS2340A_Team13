@@ -20,6 +20,7 @@ import com.example.cs2340a_team13.NumberOfIngredientsSortingStrategy;
 import com.example.cs2340a_team13.R;
 import com.example.cs2340a_team13.SortingStrategy;
 import com.example.cs2340a_team13.model.Recipe;
+import com.example.cs2340a_team13.viewModels.ShoppingListViewModel;
 import com.example.cs2340a_team13.viewModels.UserViewModel;
 import java.util.ArrayList;
 import com.example.cs2340a_team13.model.Ingredient;
@@ -182,8 +183,9 @@ public class RecipeScreen extends AppCompatActivity {
 
                 if (isEnough) {
                     recipeNameTextView.setOnClickListener(v -> showRecipeDetailsPopup(recipe));
+                } else {
+                    recipeNameTextView.setOnClickListener(v -> updateSLRecipeDetailsPopup(recipe));
                 }
-
                 recipeListLayout.addView(recipeNameTextView); // Add the status TextView
             }
         });
@@ -230,6 +232,51 @@ public class RecipeScreen extends AppCompatActivity {
         dialog.show();
     }
 
+    //pop up for recipes with notEnough ingredients
+    private void updateSLRecipeDetailsPopup(Recipe recipe) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(recipe.getRecipeName());
+
+        StringBuilder message = new StringBuilder();
+        message.append("Description: ").append(recipe.getRecipeDescription()).append("\n\n");
+        message.append("Ingredients:\n");
+        for (Ingredient ingredient : recipe.getRecipeIngredients()) {
+            for (Ingredient pantryIngredient : UserViewModel
+                    .getInstance().getUser().getPantryIngredients()) {
+                if (ingredient.getIngredientName()
+                        .equalsIgnoreCase(pantryIngredient.getIngredientName())) {
+                    ingredient.setCalories(pantryIngredient.getCalories());
+                    message.append("- ").append(ingredient.getIngredientName())
+                            .append(", Quantity: ").append(ingredient.getQuantity())
+                            .append(", Calories: ").append(pantryIngredient.getCalories())
+                            .append(" per serving (You have ")
+                            .append(pantryIngredient.getQuantity())
+                            .append(")\n");
+                }
+            }
+
+        }
+        message.append("\nInstructions:\n").append(recipe.getRecipeInstructions()).append("\n\n");
+        message.append("Calories per Serving: ")
+                .append(recipe.calculateCaloriesPerServing()).append("\n");
+        message.append("Cooking Time: ").append(recipe.getCookingTime()).append(" minutes");
+
+        // Setting the message to the AlertDialog
+        builder.setMessage(message.toString());
+
+        builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
+        builder.setNegativeButton("Update Shopping List", (dialog, which) ->  {
+            for (Ingredient ingredient : recipe.getRecipeIngredients()) {
+                ShoppingListViewModel.getInstance().addToShoppingList(ingredient.getIngredientName(), ingredient.getQuantity());
+            }
+            dialog.dismiss();
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+
     private void applySortingStrategy(SortingStrategy strategy) {
         strategy.sort(recipesFromDB); // Apply the sorting strategy to 'recipes'
         refreshRecipeListView(); // Refresh the display to reflect the sorted list
@@ -271,7 +318,6 @@ public class RecipeScreen extends AppCompatActivity {
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // Dismiss the dialog
                 dialog.dismiss();
             }
         });
