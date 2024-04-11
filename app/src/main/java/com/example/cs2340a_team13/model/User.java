@@ -19,6 +19,7 @@ public class User {
         this.password = "";
         loggedMeals = new ArrayList<>();
         pantryIngredients = new ArrayList<>();
+        shoppingList = new ArrayList<>();
     }
 
     public User(String username, String password) {
@@ -26,6 +27,7 @@ public class User {
         this.password = password;
         loggedMeals = new ArrayList<>();
         pantryIngredients = new ArrayList<>();
+        shoppingList = new ArrayList<>();
         this.height = 0;
         this.weight = 0;
         this.age = 0;
