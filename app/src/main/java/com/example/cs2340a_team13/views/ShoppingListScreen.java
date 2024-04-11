@@ -43,6 +43,8 @@ public class ShoppingListScreen extends AppCompatActivity {
         Button btnHome = findViewById(R.id.Home);
         Button btnPersonalInfo = findViewById(R.id.PersonalInfo);
         Button btnSubmit = findViewById(R.id.submitSlButton);
+        Button btnaddItem = findViewById(R.id.addItemButton);
+        Button btnCancelItem = findViewById(R.id.cancelButton1);
         @SuppressLint("MissingInflatedId") recipeLayout = findViewById(R.id.recipeListLayout);
         initializeCart(shoppingListItems, UserViewModel.getInstance().getUser().getShoppingList());
         btnInputMeal.setOnClickListener(new View.OnClickListener() {
@@ -92,6 +94,28 @@ public class ShoppingListScreen extends AppCompatActivity {
 
                 ingredientNameEditText.setText("");
                 quantityEditText.setText("");
+            }
+        });
+        btnaddItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Set visibility of other text fields to VISIBLE
+                findViewById(R.id.ingredientNameEditText).setVisibility(View.VISIBLE);
+                findViewById(R.id.quantityEditText).setVisibility(View.VISIBLE);
+                findViewById(R.id.submitButton).setVisibility(View.VISIBLE);
+                findViewById(R.id.cancelButton).setVisibility(View.VISIBLE);
+                ((EditText) findViewById(R.id.ingredientNameEditText)).setText("");
+                ((EditText) findViewById(R.id.quantityEditText)).setText("");
+            }
+        });
+        btnCancelItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Set visibility of other text fields to VISIBLE
+                findViewById(R.id.ingredientNameEditText).setVisibility(View.GONE);
+                findViewById(R.id.quantityEditText).setVisibility(View.GONE);
+                findViewById(R.id.submitButton).setVisibility(View.GONE);
+                findViewById(R.id.cancelButton).setVisibility(View.GONE);
             }
         });
 
