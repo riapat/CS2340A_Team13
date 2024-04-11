@@ -5,6 +5,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -169,11 +170,11 @@ public class RecipeScreen extends AppCompatActivity {
                 String finalString = recipe.getRecipeName() + "\n" + enough;
                 recipeNameTextView.setText(finalString);
                 recipeNameTextView.setTextSize(16);
-                if (isEnough) {
-                    recipeNameTextView.setTextColor(0x75975e);
-                } else {
-                    recipeNameTextView.setTextColor(0xB34F5A);
-                }
+//                if (isEnough) {
+//                    recipeNameTextView.setTextColor();
+//                } else {
+//                    recipeNameTextView.setTextColor();
+//                }
                 recipeNameTextView.setPadding(0, 10, 0, 10);
                 //recipeListLayout.addView(recipeNameTextView); // Add the recipe name TextView
 
@@ -189,8 +190,10 @@ public class RecipeScreen extends AppCompatActivity {
                 //ingredientsStatusTextView.setPadding(0, 0, 0, 20); // Adjust padding as needed
 
                 if (isEnough) {
+                    recipeNameTextView.setTextColor(Color.rgb(14, 92, 37));
                     recipeNameTextView.setOnClickListener(v -> showRecipeDetailsPopup(recipe));
                 } else {
+                    recipeNameTextView.setTextColor(Color.rgb(204, 0, 0));
                     recipeNameTextView.setOnClickListener(v -> updateSLRecipeDetailsPopup(recipe));
                 }
                 recipeListLayout.addView(recipeNameTextView); // Add the status TextView
@@ -216,9 +219,9 @@ public class RecipeScreen extends AppCompatActivity {
                         .equalsIgnoreCase(pantryIngredient.getIngredientName())) {
                     ingredient.setCalories(pantryIngredient.getCalories());
                     message.append("- ").append(ingredient.getIngredientName())
-                            .append(", Quantity: ").append(ingredient.getQuantity())
+                            .append("\n\t Quantity: ").append(ingredient.getQuantity())
                             .append(", Calories: ").append(pantryIngredient.getCalories())
-                            .append(" per serving (You have ")
+                            .append(" per serving \n\t(You have ")
                             .append(pantryIngredient.getQuantity())
                             .append(")\n");
                 }
@@ -253,6 +256,7 @@ public class RecipeScreen extends AppCompatActivity {
                 }
             }
             dialog.dismiss();
+            fetchAndDisplayRecipes();
         });
         AlertDialog dialog = builder.create();
         dialog.show();
