@@ -21,7 +21,7 @@ public class ShoppingListViewModel {
         return instance;
     }
 
-    private Ingredient getExistingIngredient(String ingredientName) {
+    public Ingredient getExistingIngredient(String ingredientName) {
         for (Ingredient ingredient : user.getShoppingList()) {
             if (ingredient.getIngredientName().equalsIgnoreCase(ingredientName)) {
                 return ingredient;
@@ -29,7 +29,7 @@ public class ShoppingListViewModel {
         }
         return null;
     }
-    private Ingredient checkIfIngredientExistsInPantry(String ingredientName) {
+    public Ingredient checkIfIngredientExistsInPantry(String ingredientName) {
         for (Ingredient ingredient : user.getPantryIngredients()) {
             if (ingredient.getIngredientName().equalsIgnoreCase(ingredientName)) {
                 return ingredient; // Ingredient found in pantry
