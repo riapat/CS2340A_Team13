@@ -131,6 +131,24 @@
     </ScrollView>
 
     <!-- Navigation bar -->
+
+    <Button
+        android:id="@+id/purchaseCart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="20dp"
+        android:onClick="buySelectedIngredientsOnClick"
+        android:paddingTop="10sp"
+        android:paddingBottom="10sp"
+        android:text="Buy \n Items"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/content_container"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/shoppingListScrollView"
+        app:layout_constraintVertical_bias="0.0" />
+
     <LinearLayout
         android:id="@+id/navigation_bar"
         android:layout_width="match_parent"

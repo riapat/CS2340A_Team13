@@ -121,6 +121,23 @@ public class IngredientViewModel {
             });
         }
     }
+    public void addIngredients(List<Ingredient> ingredients) {
+        String ingredientName;
+        int quantity;
+        int calories;
+        String expirationDate;
+        for (Ingredient ingredient:ingredients) {
+            ingredientName = ingredient.getIngredientName();
+            quantity = ingredient.getQuantity();
+            calories = ingredient.getCalories();
+            expirationDate = ingredient.getExpirationDate();
+            if (existingIngredient(ingredientName)) {
+                increaseIngredient(ingredientName, quantity);
+            } else {
+                createIngredient(ingredientName, quantity, calories, expirationDate);
+            }
+        }
+    }
 
     public void setCurrentUser(User user) {
         this.currentUser = user;
@@ -130,5 +147,3 @@ public class IngredientViewModel {
 
     }
 }
-
-
