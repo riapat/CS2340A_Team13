@@ -27,8 +27,8 @@ import com.example.cs2340a_team13.viewModels.ShoppingListViewModel;
 import com.example.cs2340a_team13.viewModels.UserViewModel;
 
 public class ShoppingListScreen extends AppCompatActivity {
-    private List<CheckBox> shoppingListItems;
-    LinearLayout recipeLayout;
+    private List<CheckBox> shoppingListItems = new ArrayList<CheckBox>();
+    LinearLayout cartLayout;
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +43,8 @@ public class ShoppingListScreen extends AppCompatActivity {
         Button btnHome = findViewById(R.id.Home);
         Button btnPersonalInfo = findViewById(R.id.PersonalInfo);
         Button btnSubmit = findViewById(R.id.submitSlButton);
-        @SuppressLint("MissingInflatedId") recipeLayout = findViewById(R.id.recipeListLayout);
-        initializeCart(shoppingListItems, UserViewModel.getInstance().getUser().getShoppingList());
+        cartLayout = findViewById(R.id.shoppingListLayout);
+        updateCart(UserViewModel.getInstance().getUser().getShoppingList());
         btnInputMeal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -135,18 +135,21 @@ public class ShoppingListScreen extends AppCompatActivity {
     }
     //input shopping screen here + place text header
 
-    private void initializeCart(List<CheckBox> shoppingListButtons, List<Ingredient> shoppingCart){
-        shoppingListButtons = new LinkedList<CheckBox>();
-        recipeLayout.removeAllViews();
+    private void updateCart(List<Ingredient> shoppingCart){
+        shoppingListItems.clear();
+        if(cartLayout.getChildCount() > 0) {
+            cartLayout.removeAllViews();
+        }
         for (Ingredient cartItem:shoppingCart){
             CheckBox item = new CheckBox(this);
             String name = cartItem.getIngredientName() + "\n QTY: " + cartItem.getQuantity();
             item.setText(name);
             item.setChecked(false);
-            shoppingListButtons.add(item);
-            recipeLayout.addView(item);
+            shoppingListItems.add(item);
+            cartLayout.addView(item);
         }
     }
+
 
     private List<Ingredient> getSelectedIngredients(List<CheckBox> shoppingListButtons,
                                                     List<Ingredient> shoppingCart){
@@ -155,7 +158,7 @@ public class ShoppingListScreen extends AppCompatActivity {
             if(item.isChecked()){
                 String[] itemInfo = item.getText().toString().split("\\R");
                 for (Ingredient shoppingCartItem: shoppingCart) {
-                    if (shoppingCartItem.getIngredientName().equals(itemInfo[0]){
+                    if (shoppingCartItem.getIngredientName().equals(itemInfo[0])){
                         selectedItems.add(shoppingCartItem);
                         break;
                     }
