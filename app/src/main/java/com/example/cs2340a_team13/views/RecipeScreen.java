@@ -166,7 +166,12 @@ public class RecipeScreen extends AppCompatActivity {
                 String enough = isEnough ? "Enough" : "Not Enough";
                 String finalString = recipe.getRecipeName() + "\n" + enough;
                 recipeNameTextView.setText(finalString);
-                recipeNameTextView.setTextSize(20);
+                recipeNameTextView.setTextSize(16);
+                if (isEnough) {
+                    recipeNameTextView.setTextColor(0x75975e);
+                } else {
+                    recipeNameTextView.setTextColor(0xB34F5A);
+                }
                 recipeNameTextView.setPadding(0, 10, 0, 10);
                 //recipeListLayout.addView(recipeNameTextView); // Add the recipe name TextView
 
