@@ -16,6 +16,8 @@ public class VishruthTestSprint4 {
 
     @Before
     public void setUp() {
+        User dummyUser = new User("Dummy User", "dummy@example.com");
+        UserViewModel.getInstance().setTestUser(dummyUser);
         shoppingListViewModel = ShoppingListViewModel.getInstance();
     }
 
@@ -28,9 +30,9 @@ public class VishruthTestSprint4 {
 
         Ingredient result = shoppingListViewModel.checkIfIngredientExistsInPantry("Existing Ingredient 1");
 
-        assert result != null;
-        assertEquals("Ingredient should exist in pantry", "Existing Ingredient 1", result.getIngredientName());
-
+        // Assertions to check the outcome
+        assertNotNull("Ingredient should be found in the pantry", result);
+        assertEquals("Ingredient name should match", "Existing Ingredient 1", result.getIngredientName());
     }
     @Test
     public void testGetExistingIngredient_WhenIngredientExists_ShouldReturnIngredient() {
@@ -42,8 +44,8 @@ public class VishruthTestSprint4 {
 
         Ingredient result = shoppingListViewModel.getExistingIngredient("Sugar");
 
-        assert result != null;
         assertEquals("Sugar", result.getIngredientName());
         assertEquals(5, result.getQuantity());
     }
+
 }
