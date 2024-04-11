@@ -19,7 +19,9 @@ import com.example.cs2340a_team13.DatabaseAccess;
 import com.example.cs2340a_team13.NumberOfIngredientsSortingStrategy;
 import com.example.cs2340a_team13.R;
 import com.example.cs2340a_team13.SortingStrategy;
+import com.example.cs2340a_team13.model.Meal;
 import com.example.cs2340a_team13.model.Recipe;
+import com.example.cs2340a_team13.viewModels.MealViewModel;
 import com.example.cs2340a_team13.viewModels.ShoppingListViewModel;
 import com.example.cs2340a_team13.viewModels.UserViewModel;
 import java.util.ArrayList;
@@ -232,7 +234,26 @@ public class RecipeScreen extends AppCompatActivity {
         builder.setMessage(message.toString());
 
         builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
-
+        builder.setNegativeButton("Cook", (dialog, which) -> {
+            //1. addMeal function in User
+            MealViewModel.getInstance().createMeal(recipe.getRecipeName(), recipe.calculateCaloriesPerServing());
+            // 3. Update calorie count
+            //UserViewModel.getInstance().getUser().calculateCalories(newMeal.getCalorieCount());
+            // 4. Subtract ingredients from pantry
+            for (Ingredient ingredient : recipe.getRecipeIngredients()) {
+                for (Ingredient pantryIngredient : UserViewModel
+                        .getInstance().getUser().getPantryIngredients()) {
+                    if (ingredient.getIngredientName()
+                            .equalsIgnoreCase(pantryIngredient.getIngredientName())) {
+                        pantryIngredient.setQuantity(pantryIngredient.getQuantity() - ingredient.getQuantity());
+                        if (pantryIngredient.getQuantity() <= 0) {
+                            UserViewModel.getInstance().getUser().getPantryIngredients().remove(pantryIngredient);
+                        }
+                    }
+                }
+            }
+            dialog.dismiss();
+        });
         AlertDialog dialog = builder.create();
         dialog.show();
     }
