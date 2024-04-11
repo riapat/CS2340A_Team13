@@ -1,22 +1,35 @@
 package com.example.cs2340a_team13.views;
 
+import static com.example.cs2340a_team13.viewModels.UserViewModel.user;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import com.example.cs2340a_team13.R;
+import com.example.cs2340a_team13.model.Ingredient;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import com.example.cs2340a_team13.R;
 import com.example.cs2340a_team13.model.Ingredient;
 import com.example.cs2340a_team13.viewModels.IngredientViewModel;
 import com.example.cs2340a_team13.viewModels.ShoppingListViewModel;
+import com.example.cs2340a_team13.viewModels.UserViewModel;
 
 public class ShoppingListScreen extends AppCompatActivity {
-
+    private List<CheckBox> shoppingListItems;
+    LinearLayout recipeLayout;
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,7 +43,8 @@ public class ShoppingListScreen extends AppCompatActivity {
         Button btnHome = findViewById(R.id.Home);
         Button btnPersonalInfo = findViewById(R.id.PersonalInfo);
         Button btnSubmit = findViewById(R.id.submitSlButton);
-
+        @SuppressLint("MissingInflatedId") recipeLayout = findViewById(R.id.recipeListLayout);
+        initializeCart(shoppingListItems, UserViewModel.getInstance().getUser().getShoppingList());
         btnInputMeal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -120,4 +134,34 @@ public class ShoppingListScreen extends AppCompatActivity {
         alert.show();
     }
     //input shopping screen here + place text header
+
+    private void initializeCart(List<CheckBox> shoppingListButtons, List<Ingredient> shoppingCart){
+        shoppingListButtons = new LinkedList<CheckBox>();
+        recipeLayout.removeAllViews();
+        for (Ingredient cartItem:shoppingCart){
+            CheckBox item = new CheckBox(this);
+            String name = cartItem.getIngredientName() + "\n QTY: " + cartItem.getQuantity();
+            item.setText(name);
+            item.setChecked(false);
+            shoppingListButtons.add(item);
+            recipeLayout.addView(item);
+        }
+    }
+
+    private List<Ingredient> getSelectedIngredients(List<CheckBox> shoppingListButtons,
+                                                    List<Ingredient> shoppingCart){
+        List<Ingredient> selectedItems = new ArrayList<Ingredient>();
+        for (CheckBox item:shoppingListButtons) {
+            if(item.isChecked()){
+                String[] itemInfo = item.getText().toString().split("\\R");
+                for (Ingredient shoppingCartItem: shoppingCart) {
+                    if (shoppingCartItem.getIngredientName().equals(itemInfo[0]){
+                        selectedItems.add(shoppingCartItem);
+                        break;
+                    }
+                }
+            }
+        }
+        return selectedItems;
+    }
 }
