@@ -22,7 +22,6 @@ public class ShoppingListScreen extends AppCompatActivity {
     private List<CheckBox> shoppingListItems = new ArrayList<CheckBox>();
     private Button buySelectedIngredients;
     private LinearLayout cartLayout;
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
