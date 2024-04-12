@@ -4,6 +4,7 @@ import android.util.Log;
 import com.anychart.chart.common.dataentry.DataEntry;
 import com.anychart.chart.common.dataentry.ValueDataEntry;
 import com.example.cs2340a_team13.DatabaseAccess;
+import com.example.cs2340a_team13.UserObserver;
 import com.example.cs2340a_team13.model.Meal;
 import com.example.cs2340a_team13.model.User;
 
@@ -19,6 +20,9 @@ import com.example.cs2340a_team13.model.Ingredient;
 public class UserViewModel {
     private static User user;
     private static UserViewModel instance;
+
+    private List<UserObserver> observers = new ArrayList<>();
+
 
     public UserViewModel() {
         user = null;
@@ -58,12 +62,29 @@ public class UserViewModel {
         } else {
             Log.d("UserViewModel", "User already loaded in user view model " + user.getPassword());
         }
+        notifyObservers();
 
 
     }
 
     public User getUser() {
         return user;
+    }
+
+    public void registerObserver(UserObserver observer) {
+        if (!observers.contains(observer)) {
+            observers.add(observer);
+        }
+    }
+
+    public void removeObserver(UserObserver observer) {
+        observers.remove(observer);
+    }
+
+    private void notifyObservers() {
+        for (UserObserver observer : observers) {
+            observer.updateUser(user);
+        }
     }
 
     public void updateUserHeight(int height) {
@@ -75,6 +96,7 @@ public class UserViewModel {
                 System.out.println("User not updated in user database");
             }
         });
+        notifyObservers();
     }
 
     public void updateUserWeight(int weight) {
@@ -86,6 +108,7 @@ public class UserViewModel {
                 System.out.println("User not updated in user database");
             }
         });
+        notifyObservers();
     }
 
     public void updateUserGender(String gender) {
@@ -97,6 +120,7 @@ public class UserViewModel {
                 System.out.println("User not updated in user database");
             }
         });
+        notifyObservers();
     }
 
     public void updateUserAge(int age) {
@@ -108,6 +132,7 @@ public class UserViewModel {
                 System.out.println("User not updated in user database");
             }
         });
+        notifyObservers();
     }
     public double calculateCalories() {
         if (user == null) {
@@ -188,5 +213,6 @@ public class UserViewModel {
     //DO NOT USE - Testing Purposes Only
     public void setTestUser(User testUser) {
         this.user = testUser;
+        notifyObservers();
     }
 }

@@ -1,18 +1,22 @@
 package com.example.cs2340a_team13.viewModels;
 
 import com.example.cs2340a_team13.DatabaseAccess;
+import com.example.cs2340a_team13.UserObserver;
 import com.example.cs2340a_team13.model.Ingredient;
 import com.example.cs2340a_team13.model.User;
 
 import java.util.List;
 
-public class ShoppingListViewModel {
+public class ShoppingListViewModel implements UserObserver {
     private static ShoppingListViewModel instance;
     private User user = UserViewModel.getInstance().getUser();
-    private final DatabaseAccess databaseAccess = DatabaseAccess.getInstance();
+//    private final DatabaseAccess databaseAccess = DatabaseAccess.getInstance();
     private static int pantryQuantity = 0;
 
-    private ShoppingListViewModel() { }
+    private ShoppingListViewModel() {
+        UserViewModel.getInstance().registerObserver(this);
+    }
+
 
     public static ShoppingListViewModel getInstance() {
         if (instance == null) {
@@ -81,8 +85,18 @@ public class ShoppingListViewModel {
             }
         }
         // Update shopping list in the database
-        databaseAccess.updateShoppingList(user.getUsername(), user.getShoppingList(),
+        DatabaseAccess.getInstance().updateShoppingList(user.getUsername(), user.getShoppingList(),
                 (DatabaseAccess.PantryCallback) ingredients -> { });
+    }
+
+    // In ShoppingListViewModel (add this method for testing purpose)
+    public User getTestUser() {
+        return this.user;
+    }
+
+    @Override
+    public void updateUser(User user) {
+        this.user = user;
     }
 }
 
