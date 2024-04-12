@@ -1,7 +1,6 @@
 package com.example.cs2340a_team13.views;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -40,8 +39,7 @@ public class ShoppingListScreen extends AppCompatActivity {
         updateCart();
         Button btnaddItem = findViewById(R.id.addItemButton);
         Button btnCancelItem = findViewById(R.id.cancelButton1);
-        @SuppressLint("MissingInflatedId") recipeLayout = findViewById(R.id.recipeListLayout);
-        initializeCart(shoppingListItems, UserViewModel.getInstance().getUser().getShoppingList());
+
         btnInputMeal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,9 +56,26 @@ public class ShoppingListScreen extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        btnaddItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Set visibility of other text fields to VISIBLE
+                ingredientNameEditText.setVisibility(View.VISIBLE);
+                quantityEditText.setVisibility(View.VISIBLE);
+                btnSubmit.setVisibility(View.VISIBLE);
+                btnSubmit.setEnabled(true);
+                btnCancelItem.setVisibility(View.VISIBLE);
+                btnCancelItem.setEnabled(true);
+                ingredientNameEditText.setText("");
+                quantityEditText.setText("");
+            }
+        });
+
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                System.out.println("Submit button clicked");
                 String ingredientName = ingredientNameEditText.getText().toString().trim();
                 String quantityText = quantityEditText.getText().toString().trim();
                 if (ingredientName.isEmpty() || quantityText.isEmpty()) {
@@ -92,26 +107,14 @@ public class ShoppingListScreen extends AppCompatActivity {
             }
         });
 
-        btnaddItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Set visibility of other text fields to VISIBLE
-                findViewById(R.id.ingredientNameEditText).setVisibility(View.VISIBLE);
-                findViewById(R.id.quantityEditText).setVisibility(View.VISIBLE);
-                findViewById(R.id.submitButton).setVisibility(View.VISIBLE);
-                findViewById(R.id.cancelButton).setVisibility(View.VISIBLE);
-                ((EditText) findViewById(R.id.ingredientNameEditText)).setText("");
-                ((EditText) findViewById(R.id.quantityEditText)).setText("");
-            }
-        });
         btnCancelItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Set visibility of other text fields to VISIBLE
-                findViewById(R.id.ingredientNameEditText).setVisibility(View.GONE);
-                findViewById(R.id.quantityEditText).setVisibility(View.GONE);
-                findViewById(R.id.submitButton).setVisibility(View.GONE);
-                findViewById(R.id.cancelButton).setVisibility(View.GONE);
+                // Set visibility of other text fields to GONE
+                ingredientNameEditText.setVisibility(View.GONE);
+                quantityEditText.setVisibility(View.GONE);
+                btnSubmit.setVisibility(View.GONE);
+                btnCancelItem.setVisibility(View.GONE);
             }
         });
         btnIngredient.setOnClickListener(new View.OnClickListener() {

@@ -10,7 +10,6 @@ import java.util.List;
 public class ShoppingListViewModel implements UserObserver {
     private static ShoppingListViewModel instance;
     private User user = UserViewModel.getInstance().getUser();
-//    private final DatabaseAccess databaseAccess = DatabaseAccess.getInstance();
     private static int pantryQuantity = 0;
 
     private ShoppingListViewModel() {

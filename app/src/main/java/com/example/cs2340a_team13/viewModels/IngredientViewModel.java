@@ -126,7 +126,7 @@ public class IngredientViewModel {
         int quantity;
         int calories;
         String expirationDate;
-        for (Ingredient ingredient:ingredients) {
+        for (Ingredient ingredient : ingredients) {
             ingredientName = ingredient.getIngredientName();
             quantity = ingredient.getQuantity();
             calories = ingredient.getCalories();
@@ -137,6 +137,9 @@ public class IngredientViewModel {
                 createIngredient(ingredientName, quantity, calories, expirationDate);
             }
         }
+        DatabaseAccess.getInstance().updateShoppingList(currentUser.getUsername(),
+                currentUser.getShoppingList(),
+                (DatabaseAccess.PantryCallback) ingredients1 -> { });
     }
 
     public void setCurrentUser(User user) {
