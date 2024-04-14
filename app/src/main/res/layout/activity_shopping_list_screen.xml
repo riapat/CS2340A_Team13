@@ -102,32 +102,27 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <FrameLayout
-        android:id="@+id/content_container"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        app:layout_constraintBottom_toTopOf="@+id/navigation_bar" />
 
     <!-- Shopping list items -->
     <ScrollView
         android:id="@+id/shoppingListScrollView"
-        android:layout_width="365dp"
-        android:layout_height="337dp"
-        app:layout_constraintBottom_toTopOf="@+id/content_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="30dp"
+        app:layout_constraintBottom_toTopOf="@+id/navigation_bar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleTextView"
-        app:layout_constraintVertical_bias="0.583"
-        >
+        app:layout_constraintTop_toBottomOf="@+id/submitSlButton">
 
         <LinearLayout
             android:id="@+id/shoppingListLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp"
-        />
+            android:padding="16dp" />
     </ScrollView>
 
     <!-- Navigation bar -->
@@ -136,18 +131,16 @@
         android:id="@+id/purchaseCart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:layout_marginEnd="20dp"
+        android:layout_marginBottom="24dp"
         android:onClick="buySelectedIngredientsOnClick"
         android:paddingTop="10sp"
         android:paddingBottom="10sp"
         android:text="Buy \n Items"
         android:textColor="#FFFFFF"
         android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/content_container"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/shoppingListScrollView"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintBottom_toTopOf="@+id/navigation_bar"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <LinearLayout
         android:id="@+id/navigation_bar"
