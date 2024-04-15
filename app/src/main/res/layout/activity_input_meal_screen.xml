@@ -10,6 +10,7 @@
 
     <Button
         android:id="@+id/PersonalInfo"
+        android:backgroundTint="#94B36F"
         android:layout_width="113dp"
         android:layout_height="57dp"
         android:layout_marginStart="10dp"
@@ -135,6 +136,7 @@
 
     <Button
         android:id="@+id/submitButton"
+        android:backgroundTint="#115B14"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
@@ -171,6 +173,7 @@
     <Button
         android:id="@+id/barChart"
         android:layout_width="wrap_content"
+        android:backgroundTint="#94B36F"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="50dp"
@@ -180,6 +183,7 @@
 
     <Button
         android:id="@+id/lineChart"
+        android:backgroundTint="#94B36F"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"

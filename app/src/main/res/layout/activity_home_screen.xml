@@ -11,13 +11,13 @@
         android:id="@+id/titleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="16dp"
         android:text="Home Screen"
-        android:textColor="#E91E63"
+        android:textColor="#000000"
         android:textSize="24sp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:padding="16dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <FrameLayout
         android:id="@+id/content_container"
@@ -31,6 +31,10 @@
             android:layout_width="113dp"
             android:layout_height="57dp"
             android:layout_marginStart="16dp"
+            android:backgroundTint="#94B36F"
+            android:textColor="#FFFFFF"
+            android:textColorHighlight="#0F5312"
+            android:textColorLink="#0A680D"
             android:layout_weight="1"
             android:text="Personal Info"
             android:textSize="14sp"

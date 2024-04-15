@@ -66,6 +66,7 @@
 
     <Button
         android:id="@+id/PersonalInfo"
+        android:backgroundTint="#94B36F"
         android:layout_width="113dp"
         android:layout_height="57dp"
         android:layout_marginStart="30dp"
@@ -79,6 +80,7 @@
 
     <Button
         android:id="@+id/addItemButton"
+        android:backgroundTint="#94B36F"
         android:layout_width="113dp"
         android:layout_height="57dp"
         android:layout_marginTop="10dp"
@@ -129,6 +131,7 @@
 
     <Button
         android:id="@+id/purchaseCart"
+        android:backgroundTint="#115B14"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"

@@ -34,6 +34,7 @@
 
     <Button
         android:id="@+id/PersonalInfo"
+        android:backgroundTint="#94B36F"
         android:layout_width="113dp"
         android:layout_height="57dp"
         android:layout_marginStart="16dp"
