@@ -57,43 +57,48 @@
 
         <Button
             android:id="@+id/InputMeal"
-            android:layout_width="12dp"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="46dp"
             android:layout_weight="1"
-            android:text="Input Meal"
-            android:textSize="14sp" />
+            android:backgroundTint="#8bca84"
+            android:drawableTop="@drawable/baseline_local_dining_24"
+            android:title="Input Meal" />
 
         <Button
             android:id="@+id/Recipe"
-            android:layout_width="12dp"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="46dp"
             android:layout_weight="1"
-            android:text="Recipe"
-            android:textSize="14sp" />
+            android:backgroundTint="#8bca84"
+            android:drawableTop="@drawable/baseline_menu_book_24"
+            android:title="Recipe" />
 
 
         <Button
             android:id="@+id/Home"
-            android:layout_width="12dp"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="46dp"
             android:layout_weight="1"
-            android:text="Home"
-            android:textSize="14sp" />
+            android:title="Home"
+            android:drawableTop="@drawable/baseline_home_filled_24"
+            android:backgroundTint="#8bca84"/>
         <Button
             android:id="@+id/Ingredients"
-            android:layout_width="12dp"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="46dp"
             android:layout_weight="1"
-            android:text="Ingredients"
-            android:textSize="14sp" />
+            android:title="Ingredients"
+            android:drawableTop="@drawable/baseline_shopping_basket_24"
+            android:backgroundTint="#8bca84"/>
 
         <Button
             android:id="@+id/ShoppingList"
-            android:layout_width="12dp"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="46dp"
             android:layout_weight="1"
-            android:text="Shopping List"
-            android:textSize="14sp" />
+            android:title="Shopping List"
+            android:drawableTop="@drawable/baseline_receipt_24"
+            android:backgroundTint="#8bca84"/>
     </LinearLayout>
 </LinearLayout>
 

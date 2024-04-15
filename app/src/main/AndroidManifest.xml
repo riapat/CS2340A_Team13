@@ -10,8 +10,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CS2340A_Team13"
+        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+        tools:replace="android:appComponentFactory"
         tools:targetApi="31">
-        <activity
+
+    <activity
             android:name=".views.AccountCreationScreen"
             android:exported="false" />
         <activity
