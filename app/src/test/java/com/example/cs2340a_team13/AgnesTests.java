@@ -11,8 +11,10 @@ import com.example.cs2340a_team13.model.Recipe;
 import com.example.cs2340a_team13.model.User;
 import com.example.cs2340a_team13.viewModels.UserViewModel;
 
+import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -97,5 +99,19 @@ public class AgnesTests {
         Recipe recipe = new Recipe("Cake", "A delicious cake", recipeIngredients, "Instructions");
         assertFalse("All required ingredients are present in sufficient quantities",
                 recipe.isIngredientsEnough(pantry, recipeIngredients));
+    }
+
+    @Test
+    public void testCalculateCaloriesForNull(){
+        List<Ingredient> items = null;
+        Recipe milkshake = new Recipe("Smoothie", null, items, null );
+        Assert.assertEquals(milkshake.calculateCaloriesPerServing(), 0);
+    }
+
+    @Test
+    public void testCalculateCaloriesIfEmpty(){
+        List<Ingredient> items = new ArrayList<Ingredient>();
+        Recipe water = new Recipe("Milkshake", null, items, null );
+        Assert.assertEquals(water.calculateCaloriesPerServing(), 0);
     }
 }
