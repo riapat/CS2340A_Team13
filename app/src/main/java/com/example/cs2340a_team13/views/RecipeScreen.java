@@ -20,6 +20,8 @@ import com.example.cs2340a_team13.DatabaseAccess;
 import com.example.cs2340a_team13.NumberOfIngredientsSortingStrategy;
 import com.example.cs2340a_team13.R;
 import com.example.cs2340a_team13.SortingStrategy;
+import com.example.cs2340a_team13.SortingStrategyFactory;
+import com.example.cs2340a_team13.SortingStrategyFactoryImpl;
 import com.example.cs2340a_team13.model.Meal;
 import com.example.cs2340a_team13.model.Recipe;
 import com.example.cs2340a_team13.viewModels.MealViewModel;
@@ -77,11 +79,12 @@ public class RecipeScreen extends AppCompatActivity {
         sortingSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                SortingStrategyFactory factory = new SortingStrategyFactoryImpl();
                 selected = parent.getItemAtPosition(position).toString();
                 if (selected.equals("Sort Alphabetically")) {
-                    onSortAlphabeticallySelected();
+                    SortingStrategy strategy = factory.createSortingStrategy("alphabetical");
                 } else if (selected.equals("Sort by Number of Ingredients")) {
-                    onSortByNumberOfIngredientsSelected();
+                    SortingStrategy strategy = factory.createSortingStrategy("numberofingredients");
                 }
 
                 LinearLayout recipeListLayout = findViewById(R.id.recipeListLayout);
