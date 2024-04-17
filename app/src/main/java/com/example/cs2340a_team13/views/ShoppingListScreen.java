@@ -7,12 +7,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import com.example.cs2340a_team13.DatabaseAccess;
 import com.example.cs2340a_team13.R;
 import com.example.cs2340a_team13.model.Ingredient;
 import java.util.ArrayList;
 import java.util.List;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import com.example.cs2340a_team13.viewModels.IngredientViewModel;
 import com.example.cs2340a_team13.viewModels.ShoppingListViewModel;
 import com.example.cs2340a_team13.viewModels.UserViewModel;
@@ -21,6 +23,8 @@ public class ShoppingListScreen extends AppCompatActivity {
     private List<CheckBox> shoppingListItems = new ArrayList<CheckBox>();
     private Button buySelectedIngredients;
     private LinearLayout cartLayout;
+    private DatabaseAccess databaseAccess = DatabaseAccess.getInstance();
+    private UserViewModel userViewModel = UserViewModel.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,9 +40,9 @@ public class ShoppingListScreen extends AppCompatActivity {
         Button btnSubmit = findViewById(R.id.submitSlButton);
         buySelectedIngredients = findViewById(R.id.purchaseCart);
         cartLayout = findViewById(R.id.shoppingListLayout);
-        updateCart();
         Button btnaddItem = findViewById(R.id.addItemButton);
         Button btnCancelItem = findViewById(R.id.cancelButton1);
+        updateCart();
 
         btnInputMeal.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,7 +105,7 @@ public class ShoppingListScreen extends AppCompatActivity {
 
                 // Call the addToShoppingList method
                 ShoppingListViewModel.getInstance().addToShoppingList(ingredientName, quantity);
-
+                updateCart();
                 ingredientNameEditText.setText("");
                 quantityEditText.setText("");
             }
@@ -153,44 +157,69 @@ public class ShoppingListScreen extends AppCompatActivity {
         alert.show();
     }
     //input shopping screen here + place text header
-
     private void updateCart() {
-        List<Ingredient> shoppingCart = UserViewModel.getInstance().getUser().getShoppingList();
         shoppingListItems.clear();
         if (cartLayout.getChildCount() > 0) {
             cartLayout.removeAllViews();
         }
-        for (Ingredient cartItem:shoppingCart) {
-            CheckBox item = new CheckBox(this);
-            String name = cartItem.getIngredientName() + "\n QTY: " + cartItem.getQuantity();
-            item.setText(name);
-            item.setChecked(false);
-            shoppingListItems.add(item);
-            cartLayout.addView(item);
-        }
-    }
-    public void buySelectedIngredientsOnClick(View v) {
-        List<Ingredient> shoppingCart = UserViewModel.getInstance().getUser().getShoppingList();
-        List<Ingredient> selectedItems = new ArrayList<Ingredient>();
-        for (int i = 0; i < cartLayout.getChildCount(); i++) {
-            View view = cartLayout.getChildAt(i);
-            if (view instanceof CheckBox) {
-                CheckBox currentCheckbox = (CheckBox) view;
-                String[] itemInfo = currentCheckbox.getText().toString().split("\\R");
-                Ingredient itemSelected = null;
-                for (Ingredient shoppingCartItem: shoppingCart) {
-                    if (itemInfo[0].equalsIgnoreCase(shoppingCartItem.getIngredientName())) {
-                        selectedItems.add(shoppingCartItem);
-                        itemSelected = shoppingCartItem;
-                        break;
+        databaseAccess.loadShoppingList(UserViewModel.getInstance().getUser().getUsername(),
+                (shoppingCart) -> {
+                if (shoppingCart.isEmpty()) {
+                    TextView textView = new TextView(this);
+                    textView.setText("Your Shopping Cart is Empty");
+                    cartLayout.addView(textView);
+                } else {
+                    for (Ingredient cartItem:shoppingCart) {
+                        CheckBox item = new CheckBox(this);
+                        String name = cartItem.getIngredientName()
+                                + "\n Quantity: " + cartItem.getQuantity();
+                        name = Character.toUpperCase(name.charAt(0)) + name.substring(1);
+                        item.setText(name);
+                        item.setChecked(false);
+                        shoppingListItems.add(item);
+                        cartLayout.addView(item);
                     }
                 }
-                if (itemSelected != null) {
-                    shoppingCart.remove(itemSelected);
+            });
+    }
+    public void buySelectedIngredientsOnClick(View v) {
+        databaseAccess.loadShoppingList(UserViewModel.getInstance().getUser().getUsername(),
+                (shoppingCart) -> {
+                List<Ingredient> selectedItems = new ArrayList<Ingredient>();
+                if (shoppingCart.isEmpty()) {
+                    showAlert("Cannot Buy Items: \n Cart is Empty");
+                } else {
+                    for (int i = 0; i < cartLayout.getChildCount(); i++) {
+                        View view = cartLayout.getChildAt(i);
+                        if (view instanceof CheckBox) {
+                            CheckBox currentCheckbox = (CheckBox) view;
+                            String[] itemInfo = currentCheckbox.getText().toString().split("\\R");
+                            Ingredient itemSelected = null;
+                            for (Ingredient shoppingCartItem: shoppingCart) {
+                                String itemName = shoppingCartItem.getIngredientName();
+                                if (itemInfo[0].equalsIgnoreCase(itemName)) {
+                                    if (currentCheckbox.isChecked()) {
+                                        selectedItems.add(shoppingCartItem);
+                                        itemSelected = shoppingCartItem;
+                                    }
+
+                                    break;
+                                }
+                            }
+                            if (itemSelected != null) {
+                                shoppingCart.remove(itemSelected);
+                            }
+                        }
+                    }
+                    UserViewModel.getInstance().updateUserShoppingCart(shoppingCart);
+                    IngredientViewModel.getInstance().addIngredients(selectedItems);
+                    updateCart();
+                    if (selectedItems.isEmpty()) {
+                        showAlert("No Items Selected \n Please Try Again");
+                    } else {
+                        showAlert("Items Purchased Successfully");
+                    }
                 }
-            }
-        }
-        UserViewModel.getInstance().getUser().setShoppingList(shoppingCart);
-        IngredientViewModel.getInstance().addIngredients(selectedItems);
+            });
     }
 }

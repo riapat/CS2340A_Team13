@@ -20,15 +20,14 @@
         android:layout_height="wrap_content"
         android:padding="16dp"
         android:text="Home Screen"
-<<<<<<< HEAD
         android:textColor="#000000"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
-=======
         android:textAlignment="center"
+        android:textColor="#000000"
         android:textSize="24sp"
+        android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="@id/recipeImageView"
->>>>>>> fccd001a1b131d893b1965453d1b8777854565af
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

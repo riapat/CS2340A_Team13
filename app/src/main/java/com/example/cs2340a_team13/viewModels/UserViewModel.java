@@ -134,6 +134,18 @@ public class UserViewModel {
         });
         notifyObservers();
     }
+    public void updateUserShoppingCart(List<Ingredient> ingredients) {
+        this.user.setShoppingList(ingredients);
+        DatabaseAccess.getInstance().updateToUserDB(user, userCallback -> {
+            if (userCallback != null) {
+                System.out.println("User updated in user database");
+            } else {
+                System.out.println("User not updated in user database");
+            }
+        });
+        notifyObservers();
+    }
+
     public double calculateCalories() {
         if (user == null) {
             return 0;

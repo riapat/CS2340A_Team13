@@ -1,14 +1,28 @@
 package com.example.cs2340a_team13;
 
+import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import com.example.cs2340a_team13.model.Ingredient;
 import com.example.cs2340a_team13.model.Meal;
 import com.example.cs2340a_team13.model.User;
+import com.example.cs2340a_team13.viewModels.ShoppingListViewModel;
+import com.example.cs2340a_team13.viewModels.UserViewModel;
+
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class RiaPatelTests {
 
+    private ShoppingListViewModel shoppingListViewModel;
+    @Before
+    public void setUp() {
+        User dummyUser = new User("Dummy User", "dummy@example.com");
+        UserViewModel.getInstance().setTestUser(dummyUser);
+        shoppingListViewModel = ShoppingListViewModel.getInstance();
+    }
 // Testing User logged Meals cleared
     @Test
     public void testClearLoggedMeals() {
@@ -34,5 +48,34 @@ public class RiaPatelTests {
         //Initialized Date
         Date expectedDate = new Date();
         assertEquals(expectedDate,user.getMeals().get(0).getDate());
+    }
+
+    // Check if ingredient does not exist in pantry
+    @Test
+    public void testCheckIfIngredientExistsInPantry_WhenIngredientDoesNotExist_ShouldReturnNull() {
+        User user = UserViewModel.getInstance().getUser();
+        List<Ingredient> pantryIngredients = new ArrayList<>();
+        pantryIngredients.add(new Ingredient("Existing Ingredient 1", 1, 100, "2024-04-15"));
+        pantryIngredients.add(new Ingredient("Existing Ingredient 2", 1, 100, "2024-04-30"));
+        user.setPantryIngredients(pantryIngredients);
+
+
+        Ingredient result = shoppingListViewModel.checkIfIngredientExistsInPantry("Non-Existing Ingredient");
+
+        assertNull("Ingredient should not be found in the pantry", result);
+    }
+
+    //Does not exist in Shopping List
+    @Test
+    public void testGetExistingIngredient_WhenIngredientDoesNotExist_ShouldReturnNull() {
+        User user = UserViewModel.getInstance().getUser();
+        List<Ingredient> shoppingList = new ArrayList<>();
+        shoppingList.add(new Ingredient("Flour", 2, 0, ""));
+        shoppingList.add(new Ingredient("Sugar", 5, 0, ""));
+        user.setShoppingList(shoppingList);
+
+        Ingredient result = shoppingListViewModel.getExistingIngredient("Salt");
+
+        assertNull(result);
     }
 }
