@@ -27,20 +27,22 @@
         android:layout_width="113dp"
         android:layout_height="57dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="16dp"
         android:layout_weight="1"
+        android:backgroundTint="#94B36F"
         android:text="Personal Info"
+        android:textColor="#FFFFFF"
+        android:textColorHighlight="#0F5312"
+        android:textColorLink="#0A680D"
         android:textSize="14sp"
-        app:layout_constraintEnd_toStartOf="@+id/titleTextView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="87dp" />
 
     <Button
         android:id="@+id/InputIngredients"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="#115B14"
         android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
         android:text="Input Ingredients"
@@ -138,6 +140,7 @@
 
     <Button
         android:id="@+id/adjustIngredientsButton"
+        android:backgroundTint="#115B14"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
