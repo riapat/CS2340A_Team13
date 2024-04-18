@@ -187,7 +187,8 @@ public class UserViewModel {
         String currentMealDate = "";
         for (Meal meal:meals) {
             currentMealDate = dateFormat.format(meal.getDate());
-            System.out.println("Meal Date: " + currentMealDate + " Today: " + today + "Meal Name" + meal.getMealName());
+            System.out.println("Meal Date: " + currentMealDate
+                    + " Today: " + today + "Meal Name" + meal.getMealName());
             if (today.equals(currentMealDate)) {
                 currentCal += meal.getCalorieCount();
             }

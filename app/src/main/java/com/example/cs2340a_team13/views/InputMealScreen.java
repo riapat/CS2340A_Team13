@@ -31,7 +31,6 @@ import com.anychart.enums.Position;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.example.cs2340a_team13.model.Meal;
 import com.example.cs2340a_team13.viewModels.MealViewModel;
 import com.example.cs2340a_team13.viewModels.UserViewModel;
 

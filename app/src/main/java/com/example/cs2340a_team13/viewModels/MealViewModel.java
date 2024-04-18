@@ -9,7 +9,7 @@ import java.util.Date;
 public class MealViewModel {
 
     private UserViewModel userViewModel = UserViewModel.getInstance();
-    private Meal meal = null;
+
     private User currentUser = userViewModel.getUser(); // Reference to current user
     private static MealViewModel instance;
 
@@ -22,9 +22,8 @@ public class MealViewModel {
     private DatabaseAccess databaseAccess = DatabaseAccess.getInstance();
 
     public void createMeal(String mealName, int calories, DatabaseAccess.MealCallback callback) {
-        if (meal == null) {
-            meal = new Meal();
-        }
+        Meal meal = new Meal();
+
 
         meal.setName(mealName);
         meal.setCalorieCount(calories);
@@ -38,7 +37,6 @@ public class MealViewModel {
         databaseAccess.writeToMealsDB(meal, mealCallback -> {
             if (mealCallback != null) {
                 System.out.println("Meal added to meal database in MealViewModel");
-                meal = mealCallback;
                 if (currentUser != null) {
                     currentUser.addMeal(meal);
                     // Update the user's entry in the database
@@ -46,6 +44,9 @@ public class MealViewModel {
                     databaseAccess.updateToUserDB(currentUser, userCallback -> {
                         if (userCallback != null) {
                             System.out.println("User updated in user database in MealViewModel");
+                            for (Meal existingMeal: userCallback.getMeals()) {
+                                System.out.println(meal.getMealName());
+                            }
                             callback.onComplete(meal);
                         } else {
                             System.out.println("User not updated in user database");
@@ -64,4 +65,3 @@ public class MealViewModel {
     }
 
 }
-

@@ -83,7 +83,7 @@ public class User {
     }
 
     public void addMeal(Meal meal) {
-        for(Meal m : loggedMeals) {
+        for (Meal m : loggedMeals) {
             System.out.println(m.getMealName());
         }
         loggedMeals.add(meal);

@@ -173,11 +173,11 @@ public class RecipeScreen extends AppCompatActivity {
                 String finalString = recipe.getRecipeName() + "\n" + enough;
                 recipeNameTextView.setText(finalString);
                 recipeNameTextView.setTextSize(16);
-//                if (isEnough) {
-//                    recipeNameTextView.setTextColor();
-//                } else {
-//                    recipeNameTextView.setTextColor();
-//                }
+                //                if (isEnough) {
+                //                    recipeNameTextView.setTextColor();
+                //                } else {
+                //                    recipeNameTextView.setTextColor();
+                //                }
                 recipeNameTextView.setPadding(0, 10, 0, 10);
                 //recipeListLayout.addView(recipeNameTextView); // Add the recipe name TextView
 
@@ -242,14 +242,17 @@ public class RecipeScreen extends AppCompatActivity {
         builder.setNegativeButton("Cook", (dialog, which) -> {
             //1. addMeal function in User
             System.out.println("Creating meal 1");
-            MealViewModel.getInstance().createMeal(recipe.getRecipeName(), recipe.calculateCaloriesPerServing(), meal -> {
-                System.out.println(userViewModel.getUser().getPantryIngredients().size());
-                for (Ingredient ingredient : recipe.getRecipeIngredients()) {
-                    IngredientViewModel.getInstance().decreaseIngredient(ingredient.getIngredientName(), ingredient.getQuantity());
-                }
-                dialog.dismiss();
-                fetchAndDisplayRecipes();
-            });
+            MealViewModel.getInstance().createMeal(recipe.getRecipeName(),
+                    recipe.calculateCaloriesPerServing(), meal -> {
+                    System.out.println(userViewModel.getUser().getPantryIngredients().size());
+                    for (Ingredient ingredient : recipe.getRecipeIngredients()) {
+                        IngredientViewModel.getInstance()
+                                .decreaseIngredient(ingredient.getIngredientName(),
+                                ingredient.getQuantity());
+                    }
+                    dialog.dismiss();
+                    fetchAndDisplayRecipes();
+                });
             // 3. Update calorie count
             //UserViewModel.getInstance().getUser().calculateCalories(newMeal.getCalorieCount());
             // 4. Subtract ingredients from pantry
@@ -298,7 +301,9 @@ public class RecipeScreen extends AppCompatActivity {
         builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
         builder.setNegativeButton("Update Shopping List", (dialog, which) ->  {
             for (Ingredient ingredient : recipe.getRecipeIngredients()) {
-                ShoppingListViewModel.getInstance().addToShoppingList(ingredient.getIngredientName(), ingredient.getQuantity());
+                ShoppingListViewModel.getInstance().
+                        addToShoppingList(ingredient.getIngredientName(),
+                        ingredient.getQuantity());
             }
             dialog.dismiss();
         });
