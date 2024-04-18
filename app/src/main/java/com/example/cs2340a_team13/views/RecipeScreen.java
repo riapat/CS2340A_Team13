@@ -271,18 +271,24 @@ public class RecipeScreen extends AppCompatActivity {
         message.append("Description: ").append(recipe.getRecipeDescription()).append("\n\n");
         message.append("Ingredients:\n");
         for (Ingredient ingredient : recipe.getRecipeIngredients()) {
+            message.append("- ").append(ingredient.getIngredientName())
+                    .append(", Quantity: ").append(ingredient.getQuantity())
+                    .append("\n");
+            boolean isFound = false;
             for (Ingredient pantryIngredient : UserViewModel
                     .getInstance().getUser().getPantryIngredients()) {
                 if (ingredient.getIngredientName()
                         .equalsIgnoreCase(pantryIngredient.getIngredientName())) {
+                    isFound = true;
                     ingredient.setCalories(pantryIngredient.getCalories());
-                    message.append("- ").append(ingredient.getIngredientName())
-                            .append(", Quantity: ").append(ingredient.getQuantity())
-                            .append(", Calories: ").append(pantryIngredient.getCalories())
+                    message.append(", Calories: ").append(pantryIngredient.getCalories())
                             .append(" per serving (You have ")
                             .append(pantryIngredient.getQuantity())
                             .append(")\n");
                 }
+            }
+            if (!isFound) {
+                message.append(" (You don't have this ingredient)\n");
             }
 
         }
@@ -323,9 +329,16 @@ public class RecipeScreen extends AppCompatActivity {
             String enough = isEnough ? "Enough" : "Not Enough";
             String finalString = recipe.getRecipeName() + "\n" + enough;
             textView.setText(finalString);
-            textView.setTextSize(20);
+            textView.setTextSize(16);
             textView.setPadding(0, 10, 0, 10);
 
+            if (isEnough) {
+                textView.setTextColor(Color.rgb(14, 92, 37));
+                textView.setOnClickListener(v -> showRecipeDetailsPopup(recipe));
+            } else {
+                textView.setTextColor(Color.rgb(204, 0, 0));
+                textView.setOnClickListener(v -> updateSLRecipeDetailsPopup(recipe));
+            }
             recipeListLayout.addView(textView); // Add the TextView to your LinearLayout
         }
     }
