@@ -158,6 +158,7 @@ public class IngredientScreen extends AppCompatActivity {
                 findViewById(R.id.quantityEditText).setVisibility(View.GONE);
                 findViewById(R.id.caloriesEditText).setVisibility(View.GONE);
                 findViewById(R.id.expirationDateEditText).setVisibility(View.GONE);
+                findViewById(R.id.cancelButton).setVisibility(View.GONE);
                 findViewById(R.id.submitButton).setVisibility(View.GONE);
 
                 displayPantryIngredients();
@@ -307,7 +308,7 @@ public class IngredientScreen extends AppCompatActivity {
     private void displayPantryIngredients() {
         LinearLayout pantryLinearLayout = findViewById(R.id.pantryLinearLayout);
         pantryLinearLayout.removeAllViews(); // Clear previous views
-
+        System.out.println(UserViewModel.getInstance().getUser().getPantryIngredients().size());
         List<Ingredient> pantryIngredients = UserViewModel
                 .getInstance().getUser().getPantryIngredients();
         if (pantryIngredients != null) {

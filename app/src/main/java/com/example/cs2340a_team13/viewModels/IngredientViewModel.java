@@ -73,7 +73,7 @@ public class IngredientViewModel {
         Log.d("IngredientViewModel", "Pantry size: " + currentUser.getPantryIngredients().size());
         if (currentUser != null && currentUser.getPantryIngredients() != null) {
             for (Ingredient pantryIngredient : currentUser.getPantryIngredients()) {
-                if (pantryIngredient.getIngredientName().equals(ingredientName)) {
+                if (pantryIngredient.getIngredientName().equalsIgnoreCase(ingredientName)) {
                     return true;
                 }
             }
@@ -118,6 +118,11 @@ public class IngredientViewModel {
                 }
             }
             DatabaseAccess.getInstance().updateToUserDB(currentUser, userCallback -> {
+                if (userCallback != null) {
+                    System.out.println("Pantry Updated from decreaseIngredient");
+                } else {
+                    System.out.println("Pantry Not Updated from decreaseIngredient");
+                }
             });
         }
     }

@@ -21,9 +21,11 @@ public class VishruthTests {
         String mealName = "Salad";
         int calories = 350;
 
-        Meal meal = mealViewModel.createMeal(mealName, calories);
-        assertEquals(mealName, meal.getMealName());
-        assertEquals(calories, meal.getCalorieCount());
+        mealViewModel.createMeal(mealName, calories, meal -> {
+            assertEquals(mealName, meal.getMealName());
+            assertEquals(calories, meal.getCalorieCount());
+
+        });
     }
 
     @Test
@@ -32,9 +34,10 @@ public class VishruthTests {
         String mealName = "Pizza";
         int calories = -200;
 
-        Meal meal = mealViewModel.createMeal(mealName, calories);
+        mealViewModel.createMeal(mealName, calories, meal -> {
+            assertEquals(null, meal);
+        });
         // Since calories are negative, the meal object should not be created
-        assertEquals(null, meal);
     }
 }
 

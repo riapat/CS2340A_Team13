@@ -21,7 +21,7 @@ public class MealViewModel {
     }
     private DatabaseAccess databaseAccess = DatabaseAccess.getInstance();
 
-    public Meal createMeal(String mealName, int calories) {
+    public void createMeal(String mealName, int calories, DatabaseAccess.MealCallback callback) {
         if (meal == null) {
             meal = new Meal();
         }
@@ -33,29 +33,34 @@ public class MealViewModel {
         Date currentDate = new Date();
         meal.setDate(currentDate);
 
+        System.out.println("Logging"  + mealName + "to database");
         // write to meal db
         databaseAccess.writeToMealsDB(meal, mealCallback -> {
             if (mealCallback != null) {
-                System.out.println("Meal added to meal database");
+                System.out.println("Meal added to meal database in MealViewModel");
                 meal = mealCallback;
+                if (currentUser != null) {
+                    currentUser.addMeal(meal);
+                    // Update the user's entry in the database
+                    System.out.println("Adding meal to user's meal list");
+                    databaseAccess.updateToUserDB(currentUser, userCallback -> {
+                        if (userCallback != null) {
+                            System.out.println("User updated in user database in MealViewModel");
+                            callback.onComplete(meal);
+                        } else {
+                            System.out.println("User not updated in user database");
+                            callback.onComplete(null);
+                        }
+                    });
+                }
+
+
             } else {
                 System.out.println("Meal not added to meal database");
+                callback.onComplete(null);
             }
         });
 
-        // Add created meal to array of user
-        if (currentUser != null) {
-            currentUser.addMeal(meal);
-            // Update the user's entry in the database
-            databaseAccess.updateToUserDB(currentUser, userCallback -> {
-                if (userCallback != null) {
-                    System.out.println("User updated in user database");
-                } else {
-                    System.out.println("User not updated in user database");
-                }
-            });
-        }
-        return meal;
     }
 
 }

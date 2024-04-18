@@ -22,8 +22,8 @@ import com.example.cs2340a_team13.R;
 import com.example.cs2340a_team13.SortingStrategy;
 import com.example.cs2340a_team13.SortingStrategyFactory;
 import com.example.cs2340a_team13.SortingStrategyFactoryImpl;
-import com.example.cs2340a_team13.model.Meal;
 import com.example.cs2340a_team13.model.Recipe;
+import com.example.cs2340a_team13.viewModels.IngredientViewModel;
 import com.example.cs2340a_team13.viewModels.MealViewModel;
 import com.example.cs2340a_team13.viewModels.ShoppingListViewModel;
 import com.example.cs2340a_team13.viewModels.UserViewModel;
@@ -163,7 +163,7 @@ public class RecipeScreen extends AppCompatActivity {
                 recipesFromDB.add(recipe);
             }
 
-            List<Ingredient> pantry = UserViewModel.getInstance().getUser().getPantryIngredients();
+            List<Ingredient> pantry = userViewModel.getUser().getPantryIngredients();
 
             for (Recipe recipe : recipesFromDB) {
                 TextView recipeNameTextView = new TextView(this);
@@ -216,8 +216,7 @@ public class RecipeScreen extends AppCompatActivity {
         message.append("Description: ").append(recipe.getRecipeDescription()).append("\n\n");
         message.append("Ingredients:\n");
         for (Ingredient ingredient : recipe.getRecipeIngredients()) {
-            for (Ingredient pantryIngredient : UserViewModel
-                    .getInstance().getUser().getPantryIngredients()) {
+            for (Ingredient pantryIngredient : userViewModel.getUser().getPantryIngredients()) {
                 if (ingredient.getIngredientName()
                         .equalsIgnoreCase(pantryIngredient.getIngredientName())) {
                     ingredient.setCalories(pantryIngredient.getCalories());
@@ -242,24 +241,18 @@ public class RecipeScreen extends AppCompatActivity {
         builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
         builder.setNegativeButton("Cook", (dialog, which) -> {
             //1. addMeal function in User
-            MealViewModel.getInstance().createMeal(recipe.getRecipeName(), recipe.calculateCaloriesPerServing());
+            System.out.println("Creating meal 1");
+            MealViewModel.getInstance().createMeal(recipe.getRecipeName(), recipe.calculateCaloriesPerServing(), meal -> {
+                System.out.println(userViewModel.getUser().getPantryIngredients().size());
+                for (Ingredient ingredient : recipe.getRecipeIngredients()) {
+                    IngredientViewModel.getInstance().decreaseIngredient(ingredient.getIngredientName(), ingredient.getQuantity());
+                }
+                dialog.dismiss();
+                fetchAndDisplayRecipes();
+            });
             // 3. Update calorie count
             //UserViewModel.getInstance().getUser().calculateCalories(newMeal.getCalorieCount());
             // 4. Subtract ingredients from pantry
-            for (Ingredient ingredient : recipe.getRecipeIngredients()) {
-                for (Ingredient pantryIngredient : UserViewModel
-                        .getInstance().getUser().getPantryIngredients()) {
-                    if (ingredient.getIngredientName()
-                            .equalsIgnoreCase(pantryIngredient.getIngredientName())) {
-                        pantryIngredient.setQuantity(pantryIngredient.getQuantity() - ingredient.getQuantity());
-                        if (pantryIngredient.getQuantity() <= 0) {
-                            UserViewModel.getInstance().getUser().getPantryIngredients().remove(pantryIngredient);
-                        }
-                    }
-                }
-            }
-            dialog.dismiss();
-            fetchAndDisplayRecipes();
         });
         AlertDialog dialog = builder.create();
         dialog.show();
@@ -278,8 +271,7 @@ public class RecipeScreen extends AppCompatActivity {
                     .append(", Quantity: ").append(ingredient.getQuantity())
                     .append("\n");
             boolean isFound = false;
-            for (Ingredient pantryIngredient : UserViewModel
-                    .getInstance().getUser().getPantryIngredients()) {
+            for (Ingredient pantryIngredient : userViewModel.getUser().getPantryIngredients()) {
                 if (ingredient.getIngredientName()
                         .equalsIgnoreCase(pantryIngredient.getIngredientName())) {
                     isFound = true;
@@ -325,7 +317,7 @@ public class RecipeScreen extends AppCompatActivity {
         LinearLayout recipeListLayout = findViewById(R.id.recipeListLayout);
         recipeListLayout.removeAllViews();
         // Example available ingredients, replace with actual available ingredients
-        List<Ingredient> pantry = UserViewModel.getInstance().getUser().getPantryIngredients();
+        List<Ingredient> pantry = userViewModel.getUser().getPantryIngredients();
         for (Recipe recipe : recipesFromDB) {
             TextView textView = new TextView(this);
             boolean isEnough = recipe.isIngredientsEnough(pantry, recipe.getRecipeIngredients());
@@ -417,8 +409,7 @@ public class RecipeScreen extends AppCompatActivity {
                 } else {
                     String ingredient = ingredientName.getText().toString().trim();
                     int amount = Integer.parseInt(ingredientAmount.getText().toString().trim());
-                    List<Ingredient> pantry = UserViewModel
-                            .getInstance().getPantryIngredientsList();
+                    List<Ingredient> pantry = userViewModel.getPantryIngredientsList();
                     boolean originalRecipe = true;
                     List<Ingredient> newRecipeIngredients = newRecipe.getRecipeIngredients();
                     if (newRecipeIngredients != null) {
