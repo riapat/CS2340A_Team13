@@ -52,18 +52,14 @@ public class IngredientScreen extends AppCompatActivity {
         });
         btnRecipe.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                // Handle recipe button click (navigate to recipe screen)
+            public void onClick(View v) {  // Handle recipe button click (navigate to recipe screen)
                 Intent intent = new Intent(IngredientScreen.this, RecipeScreen.class);
                 startActivity(intent);
             }
         });
-
         btnHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 Intent intent = new Intent(IngredientScreen.this, HomeScreen.class);
                 startActivity(intent);
             }
@@ -71,7 +67,6 @@ public class IngredientScreen extends AppCompatActivity {
         btnShoppingList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Handle shopping list button click (navigate to shopping list screen)
                 Intent intent = new Intent(IngredientScreen.this, ShoppingListScreen.class);
                 startActivity(intent);
             }
@@ -79,18 +74,11 @@ public class IngredientScreen extends AppCompatActivity {
         btnPersonalInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Handle personal info button click (navigate to personal info screen)
                 Intent intent = new Intent(IngredientScreen.this, PersonalInformation.class);
                 startActivity(intent);
             }
         });
-
-
-        // Find the input ingredients button
-
         IngredientViewModel ingredientViewModel = IngredientViewModel.getInstance();
-
-        // Set onClick listener for input ingredients button
         btnInputIngredients.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,7 +95,6 @@ public class IngredientScreen extends AppCompatActivity {
                 ((EditText) findViewById(R.id.expirationDateEditText)).setText("");
             }
         });
-
         btnSubmitIngredient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -115,7 +102,6 @@ public class IngredientScreen extends AppCompatActivity {
                 String quantityText = quantityEditText.getText().toString().trim();
                 String caloriesText = caloriesEditText.getText().toString().trim();
                 String expirationDate = expirationDateEditText.getText().toString().trim();
-
                 if (ingredientName.isEmpty() || quantityText.isEmpty() || caloriesText.isEmpty()) {
                     showAlert("Please fill in all fields.");
                     return;
@@ -136,7 +122,6 @@ public class IngredientScreen extends AppCompatActivity {
                     showAlert("Quantity and Calories must be integers.");
                     return;
                 }
-
                 if (!ingredientName.matches("[a-zA-Z ]+")) {
                     showAlert("Ingredient name must not contain numbers.");
                     return;
@@ -158,6 +143,7 @@ public class IngredientScreen extends AppCompatActivity {
                 findViewById(R.id.quantityEditText).setVisibility(View.GONE);
                 findViewById(R.id.caloriesEditText).setVisibility(View.GONE);
                 findViewById(R.id.expirationDateEditText).setVisibility(View.GONE);
+                findViewById(R.id.cancelButton).setVisibility(View.GONE);
                 findViewById(R.id.submitButton).setVisibility(View.GONE);
 
                 displayPantryIngredients();
@@ -307,7 +293,7 @@ public class IngredientScreen extends AppCompatActivity {
     private void displayPantryIngredients() {
         LinearLayout pantryLinearLayout = findViewById(R.id.pantryLinearLayout);
         pantryLinearLayout.removeAllViews(); // Clear previous views
-
+        System.out.println(UserViewModel.getInstance().getUser().getPantryIngredients().size());
         List<Ingredient> pantryIngredients = UserViewModel
                 .getInstance().getUser().getPantryIngredients();
         if (pantryIngredients != null) {
@@ -323,4 +309,3 @@ public class IngredientScreen extends AppCompatActivity {
         }
     }
 }
-

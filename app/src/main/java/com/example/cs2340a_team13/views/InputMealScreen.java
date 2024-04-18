@@ -31,7 +31,6 @@ import com.anychart.enums.Position;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.example.cs2340a_team13.model.Meal;
 import com.example.cs2340a_team13.viewModels.MealViewModel;
 import com.example.cs2340a_team13.viewModels.UserViewModel;
 
@@ -202,13 +201,15 @@ public class InputMealScreen extends AppCompatActivity {
                     builder.show();
                 } else {
                     // Create meal object
-                    Meal meal = mealViewModel.createMeal(mealName, calories);
-                    currentCaloriesTextView
-                            .setText(String.format("Current Day's Calories: %d",
-                                    userViewModel.currentCalories()));
-                    // Clear EditText fields
-                    mealNameEditText.setText("");
-                    caloriesEditText.setText("");
+                    mealViewModel.createMeal(mealName, calories, meal -> {
+                        currentCaloriesTextView
+                                .setText(String.format("Current Day's Calories: %d",
+                                        userViewModel.currentCalories()));
+                        // Clear EditText fields
+                        mealNameEditText.setText("");
+                        caloriesEditText.setText("");
+                    });
+
                 }
             } catch (NumberFormatException e) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(InputMealScreen.this);

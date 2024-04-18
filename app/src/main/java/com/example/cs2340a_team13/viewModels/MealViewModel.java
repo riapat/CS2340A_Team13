@@ -9,7 +9,7 @@ import java.util.Date;
 public class MealViewModel {
 
     private UserViewModel userViewModel = UserViewModel.getInstance();
-    private Meal meal = null;
+
     private User currentUser = userViewModel.getUser(); // Reference to current user
     private static MealViewModel instance;
 
@@ -21,10 +21,9 @@ public class MealViewModel {
     }
     private DatabaseAccess databaseAccess = DatabaseAccess.getInstance();
 
-    public Meal createMeal(String mealName, int calories) {
-        if (meal == null) {
-            meal = new Meal();
-        }
+    public void createMeal(String mealName, int calories, DatabaseAccess.MealCallback callback) {
+        Meal meal = new Meal();
+
 
         meal.setName(mealName);
         meal.setCalorieCount(calories);
@@ -33,30 +32,36 @@ public class MealViewModel {
         Date currentDate = new Date();
         meal.setDate(currentDate);
 
+        System.out.println("Logging"  + mealName + "to database");
         // write to meal db
         databaseAccess.writeToMealsDB(meal, mealCallback -> {
             if (mealCallback != null) {
-                System.out.println("Meal added to meal database");
-                meal = mealCallback;
+                System.out.println("Meal added to meal database in MealViewModel");
+                if (currentUser != null) {
+                    currentUser.addMeal(meal);
+                    // Update the user's entry in the database
+                    System.out.println("Adding meal to user's meal list");
+                    databaseAccess.updateToUserDB(currentUser, userCallback -> {
+                        if (userCallback != null) {
+                            System.out.println("User updated in user database in MealViewModel");
+                            for (Meal existingMeal: userCallback.getMeals()) {
+                                System.out.println(meal.getMealName());
+                            }
+                            callback.onComplete(meal);
+                        } else {
+                            System.out.println("User not updated in user database");
+                            callback.onComplete(null);
+                        }
+                    });
+                }
+
+
             } else {
                 System.out.println("Meal not added to meal database");
+                callback.onComplete(null);
             }
         });
 
-        // Add created meal to array of user
-        if (currentUser != null) {
-            currentUser.addMeal(meal);
-            // Update the user's entry in the database
-            databaseAccess.updateToUserDB(currentUser, userCallback -> {
-                if (userCallback != null) {
-                    System.out.println("User updated in user database");
-                } else {
-                    System.out.println("User not updated in user database");
-                }
-            });
-        }
-        return meal;
     }
 
 }
-
