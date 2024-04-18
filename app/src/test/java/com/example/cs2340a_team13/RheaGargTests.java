@@ -1,10 +1,12 @@
 package com.example.cs2340a_team13;
 
+import org.junit.Assert;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 import com.example.cs2340a_team13.model.Ingredient;
 import com.example.cs2340a_team13.model.Meal;
+import com.example.cs2340a_team13.model.Recipe;
 import com.example.cs2340a_team13.model.User;
 import com.example.cs2340a_team13.viewModels.IngredientViewModel;
 import com.example.cs2340a_team13.viewModels.MealViewModel;
@@ -74,5 +76,19 @@ public class RheaGargTests {
 
         Ingredient nonDuplicateIngredient = new Ingredient("Ingredient3", 15, 150);
         assertFalse(ingredientViewModel.checkDuplicate(nonDuplicateIngredient));
+    }
+
+    @Test
+    public void testCalculateCaloriesIsNull(){
+        List<Ingredient> items = null;
+        Recipe pie = new Recipe("Pie", null, items, null );
+        Assert.assertEquals(pie.calculateCaloriesPerServing(), 0);
+    }
+
+    @Test
+    public void testCalculateCaloriesIsEmpty(){
+        List<Ingredient> recipe = new ArrayList<Ingredient>();
+        Recipe acai = new Recipe("Acai", null, recipe, null );
+        Assert.assertEquals(acai.calculateCaloriesPerServing(), 0);
     }
 }
