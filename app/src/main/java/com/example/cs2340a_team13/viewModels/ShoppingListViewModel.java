@@ -42,7 +42,7 @@ public class ShoppingListViewModel implements UserObserver {
     }
 
 
-    public void addToShoppingList(String ingredientName, int quantity) {
+    public void addToShoppingList(String ingredientName, int quantity, int calories) {
         // create temp ingredient obj to test if it's in SL
         Ingredient existingIngredient = getExistingIngredient(ingredientName);
         //aq
@@ -69,14 +69,14 @@ public class ShoppingListViewModel implements UserObserver {
                     return;
                 } else {
                     Ingredient newIngredient = new Ingredient(ingredientName, adjustedQuantity,
-                            0, "");
+                            calories, "");
                     List<Ingredient> currentsl = user.getShoppingList();
                     currentsl.add(newIngredient);
                     user.setShoppingList(currentsl);
                     // now have to update SL
                 }
             } else {
-                Ingredient newIngredient = new Ingredient(ingredientName, quantity, 0,
+                Ingredient newIngredient = new Ingredient(ingredientName, quantity, calories,
                         "");
                 List<Ingredient> currentsl = user.getShoppingList();
                 currentsl.add(newIngredient);
