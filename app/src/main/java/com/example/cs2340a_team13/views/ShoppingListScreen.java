@@ -34,10 +34,10 @@ public class ShoppingListScreen extends AppCompatActivity {
         Button btnInputMeal = findViewById(R.id.InputMeal);
         Button btnRecipe = findViewById(R.id.Recipe);
         Button btnIngredient = findViewById(R.id.Ingredients);
-        Button btnShoppingList = findViewById(R.id.ShoppingList);
         Button btnHome = findViewById(R.id.Home);
         Button btnPersonalInfo = findViewById(R.id.PersonalInfo);
         Button btnSubmit = findViewById(R.id.submitSlButton);
+        EditText caloriesInput = findViewById(R.id.caloriesEditText);
         buySelectedIngredients = findViewById(R.id.purchaseCart);
         cartLayout = findViewById(R.id.shoppingListLayout);
         Button btnaddItem = findViewById(R.id.addItemButton);
@@ -67,12 +67,14 @@ public class ShoppingListScreen extends AppCompatActivity {
                 // Set visibility of other text fields to VISIBLE
                 ingredientNameEditText.setVisibility(View.VISIBLE);
                 quantityEditText.setVisibility(View.VISIBLE);
+                caloriesInput.setVisibility(View.VISIBLE);
                 btnSubmit.setVisibility(View.VISIBLE);
                 btnSubmit.setEnabled(true);
                 btnCancelItem.setVisibility(View.VISIBLE);
                 btnCancelItem.setEnabled(true);
                 ingredientNameEditText.setText("");
                 quantityEditText.setText("");
+                caloriesInput.setText("");
             }
         });
 
@@ -82,19 +84,26 @@ public class ShoppingListScreen extends AppCompatActivity {
                 System.out.println("Submit button clicked");
                 String ingredientName = ingredientNameEditText.getText().toString().trim();
                 String quantityText = quantityEditText.getText().toString().trim();
-                if (ingredientName.isEmpty() || quantityText.isEmpty()) {
+                String caloriesText = caloriesInput.getText().toString().trim();
+                if (ingredientName.isEmpty() || quantityText.isEmpty() || caloriesText.isEmpty()) {
                     showAlert("Please fill in all fields.");
                     return;
                 }
                 int quantity;
+                int calories;
                 try {
                     quantity = Integer.parseInt(quantityText);
                     if (quantity <= 0) {
                         showAlert("Quantity must be a positive integer.");
                         return;
                     }
+                    calories = Integer.parseInt(caloriesText);
+                    if (calories < 0) {
+                        showAlert("Calories must be a nonnegative integer.");
+                        return;
+                    }
                 } catch (NumberFormatException e) {
-                    showAlert("Quantity must be an integer.");
+                    showAlert("Quantity/Calories per serving must be an integer.");
                     return;
                 }
 
@@ -104,10 +113,12 @@ public class ShoppingListScreen extends AppCompatActivity {
                 }
 
                 // Call the addToShoppingList method
-                ShoppingListViewModel.getInstance().addToShoppingList(ingredientName, quantity);
+                ShoppingListViewModel.getInstance()
+                        .addToShoppingList(ingredientName, quantity, calories);
                 updateCart();
                 ingredientNameEditText.setText("");
                 quantityEditText.setText("");
+                caloriesInput.setText("");
             }
         });
 
@@ -117,6 +128,7 @@ public class ShoppingListScreen extends AppCompatActivity {
                 // Set visibility of other text fields to GONE
                 ingredientNameEditText.setVisibility(View.GONE);
                 quantityEditText.setVisibility(View.GONE);
+                caloriesInput.setVisibility(View.GONE);
                 btnSubmit.setVisibility(View.GONE);
                 btnCancelItem.setVisibility(View.GONE);
             }
@@ -172,7 +184,8 @@ public class ShoppingListScreen extends AppCompatActivity {
                     for (Ingredient cartItem:shoppingCart) {
                         CheckBox item = new CheckBox(this);
                         String name = cartItem.getIngredientName()
-                                + "\n Quantity: " + cartItem.getQuantity();
+                                + "\n Quantity: " + cartItem.getQuantity()
+                                + "\n Calories: " + cartItem.getCalories();
                         name = Character.toUpperCase(name.charAt(0)) + name.substring(1);
                         item.setText(name);
                         item.setChecked(false);

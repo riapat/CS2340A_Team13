@@ -303,7 +303,7 @@ public class RecipeScreen extends AppCompatActivity {
             for (Ingredient ingredient : recipe.getRecipeIngredients()) {
                 ShoppingListViewModel.getInstance().
                         addToShoppingList(ingredient.getIngredientName(),
-                        ingredient.getQuantity());
+                        ingredient.getQuantity(), ingredient.getCalories());
             }
             dialog.dismiss();
         });
