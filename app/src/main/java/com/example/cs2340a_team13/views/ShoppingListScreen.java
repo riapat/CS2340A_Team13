@@ -172,7 +172,8 @@ public class ShoppingListScreen extends AppCompatActivity {
                     for (Ingredient cartItem:shoppingCart) {
                         CheckBox item = new CheckBox(this);
                         String name = cartItem.getIngredientName()
-                                + "\n Quantity: " + cartItem.getQuantity();
+                                + "\n Quantity: " + cartItem.getQuantity()
+                                + "\n Calories per Serving: " + cartItem.getCalories();
                         name = Character.toUpperCase(name.charAt(0)) + name.substring(1);
                         item.setText(name);
                         item.setChecked(false);
