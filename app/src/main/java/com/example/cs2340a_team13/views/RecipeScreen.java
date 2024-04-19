@@ -20,8 +20,6 @@ import com.example.cs2340a_team13.DatabaseAccess;
 import com.example.cs2340a_team13.NumberOfIngredientsSortingStrategy;
 import com.example.cs2340a_team13.R;
 import com.example.cs2340a_team13.SortingStrategy;
-import com.example.cs2340a_team13.SortingStrategyFactory;
-import com.example.cs2340a_team13.SortingStrategyFactoryImpl;
 import com.example.cs2340a_team13.model.Recipe;
 import com.example.cs2340a_team13.viewModels.IngredientViewModel;
 import com.example.cs2340a_team13.viewModels.MealViewModel;
@@ -79,12 +77,11 @@ public class RecipeScreen extends AppCompatActivity {
         sortingSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                SortingStrategyFactory factory = new SortingStrategyFactoryImpl();
                 selected = parent.getItemAtPosition(position).toString();
                 if (selected.equals("Sort Alphabetically")) {
-                    SortingStrategy strategy = factory.createSortingStrategy("alphabetical");
+                    onSortAlphabeticallySelected();
                 } else if (selected.equals("Sort by Number of Ingredients")) {
-                    SortingStrategy strategy = factory.createSortingStrategy("numberofingredients");
+                    onSortByNumberOfIngredientsSelected();
                 }
 
                 LinearLayout recipeListLayout = findViewById(R.id.recipeListLayout);
@@ -351,8 +348,6 @@ public class RecipeScreen extends AppCompatActivity {
     public void onSortByNumberOfIngredientsSelected() {
         applySortingStrategy(new NumberOfIngredientsSortingStrategy());
     }
-
-
 
     private void showPopup(String selectedItem) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
